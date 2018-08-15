@@ -7,22 +7,27 @@ import {MatPaginator,MatSort, MatTableDataSource } from '@angular/material';
 })
 export class TareasComponent implements OnInit {
   displayedColumns: string[] = ['name', 'position', 'email','actions'];
+  
   msg:string="";
 
- 
+  selected:string = "";
+  imputValue:string = "";
+  toggle:boolean = false;
 
   employees:Employee[] = [
-    { 'name': 'Andres', position: 'manager', email: 'example@gmail.com' },
-    { 'name': 'David', position: 'manager', email: 'example@gmail.com' },
-    { 'name': 'Jorge', position: 'manager', email: 'example@gmail.com' },
-    { 'name': 'Carlos', position: 'manager', email: 'example@gmail.com' },
-    { 'name': 'Luis', position: 'manager', email: 'example@gmail.com' },
-    { 'name': 'Ramiro', position: 'manager', email: 'example@gmail.com' }
+    { 'name': 'Andres', position: 'Manager', email: 'example@gmail.com',enabledType:true },
+    { 'name': 'David', position: 'Manager', email: 'example@gmail.com' , enabledType:false},
+    { 'name': 'Jorge', position: 'Desarrollador', email: 'example@gmail.com' ,enabledType:true},
+    { 'name': 'Carlos', position: 'Manager', email: 'example@gmail.com' ,enabledType:true},
+    { 'name': 'Luis', position: 'Desarrollador', email: 'example@gmail.com' ,enabledType:true},
+    { 'name': 'Ramiro', position: 'Gerente', email: 'example@gmail.com' ,enabledType:false}
   ]
 
+  //Datos para paginar
   dataSource : MatTableDataSource<Employee>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
   //Variables para ordenar datos por tipo de dato
   path: string[] = ['name'];
   order: number = 1; // 1 asc, -1 desc;
@@ -30,7 +35,7 @@ export class TareasComponent implements OnInit {
 
   //
 
-  model: any = {};
+  model : any = {} ;
   model2: any = {};
   hideForm : boolean = false;
 
@@ -41,25 +46,27 @@ export class TareasComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+   this.setFilterDataTable();
   }
 
   applyFilter(filterValue: string) {
-    filterValue = filterValue.trim(); // Remove whitespace
-    filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    this.dataSource.filter = filterValue;
+    //filterValue = filterValue.trim(); // Remove whitespace
+    //filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
+    console.log("filtervalue "+filterValue.toString());
+    this.dataSource.filter = this.selected+this.imputValue+this.toggle;
+
+   
   }
 
   addEmployee(): void {
+    this.model.enabledType=true;
     this.employees.push(this.model);
     this.model=[];
     this.msg = "Campo Agregado";
     this.dataSource= new MatTableDataSource<Employee>(this.employees);
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+   this.setFilterDataTable();
   }
 
 
@@ -103,10 +110,29 @@ export class TareasComponent implements OnInit {
     this.order = this.order * (-1); // change order
     return false; // do not reload
   }
+
+  setFilterDataTable(){
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+        this.dataSource.filterPredicate =  (data: Employee, filter: string)=>{
+          console.log(this.selected);
+          console.log(this.imputValue);
+          return /*data.name.toLowerCase().indexOf(this.imputValue)!==-1 || data.position==(this.selected) ||*/ (data.name.toLowerCase().indexOf(this.imputValue)!==-1 && (data.position==(this.selected)||this.selected=="") && (data.enabledType==(!this.toggle)||this.toggle==false)) ;
+        };
+  }
+
+
+  clearInput(){
+    this.imputValue='';
+    this.applyFilter(this.imputValue);
+  }
+
+ 
+
 }
 export interface Employee{
     name:string;
     position:string;
     email:string;
-    
+    enabledType:boolean ;
 }

@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="container-fluid">
-   
+
     <div class="row">
       <!--Agregar un empleado-->
       <div class="col-sm-12">
@@ -40,17 +40,20 @@
           </div>
         </div>
       </div>
-
+      <!--Fin formulario agregar empleado-->
 
     </div>
+    <!--Mensaje de confirmacion-->
     <div class="alert alert-success alert-with-icon" data-notify="container" *ngIf="msg">
       <i class="material-icons" data-notify="icon">check</i>
       <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
         <i class="material-icons">close</i>
       </button>
-      <span data-notify="message" >
+      <span data-notify="message">
         <b>Confirmación:</b> {{msg}} </span>
     </div>
+    <!--Fin mensaje confirmacion-->
+
     <div class="row">
       <!--Tabla empleado-->
       <div class="col-sm-8">
@@ -60,55 +63,84 @@
             <p class="card-category">Registro de los empleados</p>
           </div>
           <div class="card-body">
-                    <div class="example-header">
-                      <mat-form-field>
-                        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Buscar por nombre">
-                      </mat-form-field>
-                    </div>
-              <div class="table-responsive mat-elevation-z8">
-            <mat-table [dataSource]="dataSource" matSort class="table table-hover">
+            <!--Filtros  -->
+            <div class="row">
+
+              <!--Input filtro de un campo-->
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput [(ngModel)]="imputValue" (keyup)="applyFilter(imputValue)" placeholder="Buscar por nombre">
+                  <button mat-button *ngIf="imputValue" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+              <!--Fin filtro input -->
+
+              <!--Filtro Selector de un campo-->
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <mat-select placeholder="Posicion" [(ngModel)]="selected" (change)="applyFilter(selected)">
+                    <mat-option value="">Todos</mat-option>
+                    <mat-option value="Manager">Manager</mat-option>
+                    <mat-option value="Desarrollador">Desarrollador</mat-option>
+                    <mat-option value="Gerente">Gerente</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!--Fin filtro selector-->
+              
+              <!--Filtro boton  toggle inhabilidatos -->
+              <div class="col-sm-4">
+                <mat-slide-toggle (change)="applyFilter(toggle)" [(ngModel)]="toggle" >Mostrar inhabilitados</mat-slide-toggle>
+              </div>
+              <!--Fin Filtro boton toggle -->
+
+              <!--Fin Filtros-->
+            </div>
+
+            <div class="table-responsive mat-elevation-z8">
+              <mat-table [dataSource]="dataSource" matSort class="table table-hover">
                 <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
-                    <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="position">
-                    <mat-header-cell  *matHeaderCellDef mat-sort-header>Posicion</mat-header-cell>
-                  <mat-cell  *matCellDef="let element"> {{element.position}} </mat-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Posicion</mat-header-cell>
+                  <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="email">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> email </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.email}} </mat-cell>
                 </ng-container>
-               
+
                 <ng-container matColumnDef="actions">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
-                    <mat-cell *matCellDef="let element ; let i=index"> 
-                      
-                        <button mat-icon-button matTooltip="editar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                        class="example-button" (click)="editEmployee(i)" >
-                        <i class="material-icons ">edit</i>
-                      </button>
-    
-                      <button mat-icon-button matTooltip="eliminar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                        class="example-button" (click)="deleteEmployee(i)">
-                        <i class="material-icons ">delete</i>
-                      </button>
-                    </mat-cell>
-                  </ng-container>
-              
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
+                  <mat-cell *matCellDef="let element ; let i=index">
+
+                    <button mat-icon-button matTooltip="editar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="editEmployee(i)" [disabled]="!element.enabledType">
+                      <i class="material-icons ">edit</i>
+                    </button>
+
+                    <button mat-icon-button matTooltip="eliminar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="deleteEmployee(i)" [disabled]="!element.enabledType">
+                      <i class="material-icons ">delete</i>
+                    </button>
+                  </mat-cell>
+                </ng-container>
+
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-               <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-            </mat-table>
-            <mat-paginator #paginator
-            [pageSize]="5"
-            [pageSizeOptions]="[5, 10, 20]"
-            [showFirstLastButtons]="true">
-          </mat-paginator>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+              </mat-table>
+              <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+              </mat-paginator>
             </div>
           </div>
         </div>
 
       </div>
+      <!--Fin Tabla empelados-->
 
       <div class="col-sm-4" *ngIf="hideForm">
         <div class="card">
@@ -116,19 +148,19 @@
             <h4 class="card-title">Actualizar un empleado</h4>
             <p class="card-category">Formulario para Actualizar un empleado</p>
           </div>
-          <div class="card-body" >
+          <div class="card-body">
             <form>
               <div class="form-group">
 
-                    <mat-form-field class="example-full-width">
-                      <input matInput type="text" placeholder="Nombre del empleado" id="name" name="name" [(ngModel)]="model2.name">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <input matInput type="text" placeholder="posicion" id="position" name="position" [(ngModel)]="model2.position">
-                    </mat-form-field>
-                    <mat-form-field class="example-full-width">
-                      <input matInput type="text" placeholder="Email" id="email" name="email" [(ngModel)]="model2.email">
-                    </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Nombre del empleado" id="name" name="name" [(ngModel)]="model2.name">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="posicion" id="position" name="position" [(ngModel)]="model2.position">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Email" id="email" name="email" [(ngModel)]="model2.email">
+                </mat-form-field>
               </div>
               <button mat-raised-button class="btn btn-primary btn-sm" type="submit" (click)="updateEmployee()">Actualizar empleado</button>
 
@@ -141,8 +173,8 @@
 
       <!--<app-tabla-paginada></app-tabla-paginada>-->
     </div>
-  
-    
+
+
   </div>
 
 </div>

@@ -15,6 +15,9 @@ import { TareasComponent } from '../../tareas/tareas.component'
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
+import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
 import {
@@ -39,8 +42,10 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
     MatTooltipModule,
     MatTableModule,
     MatPaginatorModule,
-    MatSortModule
-    
+    MatSortModule,
+    MatSelectModule,
+    MatIconModule,
+    MatSlideToggleModule
   ],
   declarations: [
     DashboardComponent,
