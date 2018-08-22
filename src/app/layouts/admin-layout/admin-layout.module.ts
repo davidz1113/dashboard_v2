@@ -12,40 +12,19 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { TareasComponent } from '../../tareas/tareas.component'
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
-import {MatSelectModule} from '@angular/material/select';
-import {MatIconModule} from '@angular/material/icon';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 
-import {
-  MatButtonModule,
-  MatInputModule,
-  MatRippleModule,
-  MatTooltipModule,
-  MatSort,
-  MatPaginator, 
-  MatTableDataSource
-} from '@angular/material';
+
+
 import { SortingEmployeesPipe } from 'app/tareas/ordenamiento.pipe';
 import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.component';
+import { MaterialModules } from '../../material.modules';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
-    MatButtonModule,
-    MatRippleModule,
-    MatInputModule,
-    MatTooltipModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatSelectModule,
-    MatIconModule,
-    MatSlideToggleModule
+    MaterialModules
   ],
   declarations: [
     DashboardComponent,
@@ -58,8 +37,11 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
     UpgradeComponent,
     TareasComponent,
     SortingEmployeesPipe,
-   TablaPaginadaComponent
+    TablaPaginadaComponent
+       
+    
+
   ]
 })
 
-export class AdminLayoutModule {}
+export class AdminLayoutModule { }

@@ -28,6 +28,10 @@ import { TareasComponent } from './tareas/tareas.component';
 import { SortingEmployeesPipe} from './tareas/ordenamiento.pipe';
 import { TablaPaginadaComponent } from './tabla-paginada/tabla-paginada.component';
 import { LoginComponent } from './login/login.component'
+import { MaterialModules } from './material.modules';
+
+
+
 
 @NgModule({
   imports: [
@@ -39,13 +43,15 @@ import { LoginComponent } from './login/login.component'
     AppRoutingModule,
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
-    })
+    }),
+    MaterialModules
   ],
+  
+
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent,
-   
+    LoginComponent  
    
   ],
   providers: [],
