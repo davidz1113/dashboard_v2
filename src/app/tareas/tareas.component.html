@@ -100,7 +100,7 @@
             </div>
 
             <div class="table-responsive mat-elevation-z8">
-              <mat-table [dataSource]="dataSource" matSort class="table table-hover">
+              <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </mat-header-cell>
                   <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>

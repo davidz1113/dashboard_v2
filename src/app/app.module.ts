@@ -26,7 +26,8 @@ import { TareasComponent } from './tareas/tareas.component';
 
 //importar el pipe
 import { SortingEmployeesPipe} from './tareas/ordenamiento.pipe';
-import { TablaPaginadaComponent } from './tabla-paginada/tabla-paginada.component'
+import { TablaPaginadaComponent } from './tabla-paginada/tabla-paginada.component';
+import { LoginComponent } from './login/login.component'
 
 @NgModule({
   imports: [
@@ -43,6 +44,7 @@ import { TablaPaginadaComponent } from './tabla-paginada/tabla-paginada.componen
   declarations: [
     AppComponent,
     AdminLayoutComponent,
+    LoginComponent,
    
    
   ],
