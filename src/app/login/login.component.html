@@ -1,5 +1,6 @@
 <div class="main-content">
   <div class="container-fluid">
+    <!--Formulario del login-->
     <div class="col-sm-6 mx-auto">
       <div class="card">
         <div class="card-header card-header-danger ">
@@ -7,25 +8,43 @@
           <h4 class="card-category text-center">Inicia sesión para ingresar al sistema</h4>
         </div>
         <div class="card-body" >
-          <form>
+            <!--Mensaje de confirmacion-->
+            <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
+                <i class="material-icons" data-notify="icon">warning</i>
+                <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                  <i class="material-icons">close</i>
+                </button>
+                <span data-notify="message">
+                  <b>Info:</b> {{msg}} </span>
+              </div>
+              <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"  [hidden]="!logeandose"></mat-progress-bar>
+             
+          <!--Fin mensaje confirmacion-->
+          <form [formGroup]="identificacionForm" (ngSubmit)="identificarUsuario()" >
             <div class="row align-content-xl-center">
-
               <div class="col-sm-8 mx-auto">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite Identificación" id="name" name="name" >
+                  <input matInput type="number" placeholder="Digite Identificación" id="identificacionUsuario" name="identificacionUsuario" formControlName="identificacionUsuario" >
+                  <mat-error *ngIf="identificacionForm.get('identificacionUsuario').hasError('required')">
+                    La identificación es <strong>requerida</strong>
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="col-sm-8 mx-auto">
-                <mat-form-field class="example-full-width">
-                  <input matInput type="password" placeholder="Digite contraseña" id="name" name="name" >
+                <mat-form-field class="example-full-width mt-3">
+                  <input matInput type="password" placeholder="Digite contraseña" id="contraseniaUsuario" name="contraseniaUsuario"  formControlName="contraseniaUsuario">
+                  <mat-error *ngIf="identificacionForm.get('contraseniaUsuario').hasError('required')">
+                    La contraseña es <strong>obligatoria</strong>
+                  </mat-error>
                 </mat-form-field>
               </div>
-
+              <button mat-button class="btn btn-outline-danger col-sm-8 mx-auto mt-3" type="submit" [disabled]="!identificacionForm.valid">Iniciar sessón</button>
             </div>
           </form>
         </div>
       </div>
 
     </div>
+    <!--Fin formulario login-->
   </div>
 </div>

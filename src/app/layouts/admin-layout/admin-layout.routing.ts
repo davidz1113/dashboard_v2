@@ -1,4 +1,4 @@
-import { Routes } from '@angular/router';
+import { Routes, UrlSegmentGroup } from '@angular/router';
 
 import { DashboardComponent } from '../../dashboard/dashboard.component';
 import { UserProfileComponent } from '../../user-profile/user-profile.component';
@@ -9,7 +9,8 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { TareasComponent } from '../../tareas/tareas.component'
-import { LoginComponent } from '../../login/login.component';
+import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.component';
+
 
 export const AdminLayoutRoutes: Routes = [
     // {
@@ -55,6 +56,7 @@ export const AdminLayoutRoutes: Routes = [
     //     }]
     // }
     { path: 'dashboard', component: DashboardComponent },
+    { path: 'usuarios-roles', component: UsuariosRolesComponent },
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'table-list', component: TableListComponent },
     { path: 'typography', component: TypographyComponent },

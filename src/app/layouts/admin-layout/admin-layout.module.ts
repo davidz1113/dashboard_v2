@@ -12,6 +12,7 @@ import { MapsComponent } from '../../maps/maps.component';
 import { NotificationsComponent } from '../../notifications/notifications.component';
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { TareasComponent } from '../../tareas/tareas.component'
+import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.component';
 
 
 
@@ -37,8 +38,8 @@ import { MaterialModules } from '../../material.modules';
     UpgradeComponent,
     TareasComponent,
     SortingEmployeesPipe,
-    TablaPaginadaComponent
-       
+    TablaPaginadaComponent,
+    UsuariosRolesComponent   
     
 
   ]

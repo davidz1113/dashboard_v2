@@ -11,6 +11,7 @@ const routes: Routes = [
 
   { path: '', pathMatch: 'full', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'login/:id', component: LoginComponent },
   {
     path: '',
     component: AdminLayoutComponent,

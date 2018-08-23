@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
-
+import { ReactiveFormsModule } from '@angular/forms'
 
 import { AppRoutingModule } from './app.routing';
 import { ComponentsModule } from './components/components.module';
@@ -27,9 +27,9 @@ import { TareasComponent } from './tareas/tareas.component';
 //importar el pipe
 import { SortingEmployeesPipe} from './tareas/ordenamiento.pipe';
 import { TablaPaginadaComponent } from './tabla-paginada/tabla-paginada.component';
+
 import { LoginComponent } from './login/login.component'
 import { MaterialModules } from './material.modules';
-
 
 
 
@@ -44,14 +44,15 @@ import { MaterialModules } from './material.modules';
     AgmCoreModule.forRoot({
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),
-    MaterialModules
+    MaterialModules,
+    ReactiveFormsModule
   ],
   
 
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent  
+    LoginComponent
    
   ],
   providers: [],
