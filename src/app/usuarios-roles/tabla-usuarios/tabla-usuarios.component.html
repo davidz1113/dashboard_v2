@@ -35,7 +35,7 @@
               <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
             </div>
             <div class="col-sm-4">
-              <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="nUsuario= !nUsuario">Nuevo
+              <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);">Nuevo
                 Usuario</button>
             </div>
             <div class="table-responsive mat-elevation-z8">
@@ -62,12 +62,12 @@
                   <mat-cell *matCellDef="let element ; let i=index">
 
                     <button mat-icon-button matTooltip="editar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="editarUsuario(element.getIdentificacion())" [disabled]="!element.getUsuarioActivo()"> <i
+                      class="example-button" (click)="editarUsuario(element.getIdentificacion())"> <i
                         class="material-icons ">edit</i>
                     </button>
 
                     <button mat-icon-button matTooltip="eliminar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarDialog(element.getIdentificacion())" [disabled]="!element.getUsuarioActivo()">
+                      class="example-button" (click)="llamarDialog(element.getIdentificacion())">
                       <i class="material-icons ">delete</i>
                     </button>
                   </mat-cell>

@@ -20,7 +20,8 @@ export class Usuario {
 	
 
 
-    constructor(idUsuario: number,
+    constructor(
+        idUsuario: number,
         codigoUsuario: string,
         identificacion: number,
         nombreUsuario: string,

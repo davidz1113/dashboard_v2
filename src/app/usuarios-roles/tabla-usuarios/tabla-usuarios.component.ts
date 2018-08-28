@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Usuario } from '../../modelos/usuario';
 import { UsuarioServices } from '../../servicios/usuarioServices.services';
@@ -37,13 +37,12 @@ export class TablaUsuariosComponent implements OnInit {
   //respuesta del servidor
   public respuesta;
 
+  //PAra alternar entre formularios
+  @Output() llamarFormulario = new EventEmitter();
+  @Output() enviarUSuario = new EventEmitter();
+
 
   constructor(private _userService: UsuarioServices, public dialog: MatDialog) {
-
-  }
-
-  ngOnInit() {
-    //this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
     this._userService.consultarUsuarios().subscribe(
       response => {
         this.respuesta = response;
@@ -58,17 +57,17 @@ export class TablaUsuariosComponent implements OnInit {
           //guardamos el objeto en la variable
           this.usuarios = plainToClass(Usuario, this.respuesta.users);
 
-          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+          //asignacion de los datos en el datasource para la tabla
+       
           console.log(this.respuesta);
           console.log(this.usuarios[0].getIdentificacion());
           console.log(this.respuesta.users[0].roles);
-
-
 
           for (let i = 0; i < this.usuarios.length; i++) {
             console.log(this.respuesta.users[i].roles);
             this.usuarios[i].setRoles(this.respuesta.users[i].roles);
           }
+          this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
           //console.log("rol: "+this.usuarios[0].getRoles().pkidrol);
           //Aplicamos el filtro de paginado, ordenamiento y filtros
           this.setFilterDataTable();
@@ -77,21 +76,27 @@ export class TablaUsuariosComponent implements OnInit {
 
       },
       error => {
-
+        this.msg = 'Error en el servidor';
+          console.log('Error en el servidor');
       }
     );
-
   }
 
   ngAfterViewInit() {
-    //Consultar datos de la api 
+    //this.setFilterDataTable();
+  }
+
+
+  ngOnInit() {
+    //this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
+  
 
   }
 
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    this.dataSource.filter = this.filtroNombreCedula + this.toggleActDesc;
+    this.dataSource.filter = this.filtroNombreCedula + (this.toggleActDesc);
   }
 
 
@@ -111,6 +116,17 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
 
+  editarUsuario(idUser){
+    let user: Usuario;
+    for (let i = 0; i < this.usuarios.length; i++) {
+      if (this.usuarios[i].getIdentificacion() == idUser) {
+        user = this.usuarios[i];
+      }
+    }
+    this.enviarUSuario.emit({usuario:user});
+
+  }
+
   llamarDialog(idUser) {
     console.log(this.usuarios[0].getIdentificacion());
     let user: Usuario;
@@ -121,27 +137,23 @@ export class TablaUsuariosComponent implements OnInit {
     }
     console.log(user.getNombreUsuario());
 
-    this.openDialog(user.getNombreUsuario(),user.getPkidusuario());
+    this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
 
   }
 
-  openDialog(nombreUser,idUser): void {
+  //dialogo de confirmacion para eliminar o no el usuario
+  openDialog(nombreUser, idUser): void {
     const dialogRef = this.dialog.open(DialogConfirmacionComponent, {
       width: '250px',
-      data: { nombreUser: nombreUser, idUser:idUser }
+      data: { nombreUser: nombreUser, idUser: idUser }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
+      console.log()
+
     });
   }
-
-  editarUsuario() {
-
-  }
-
-
-
 
 }
 
@@ -149,4 +161,5 @@ export class TablaUsuariosComponent implements OnInit {
 export interface DialogData {
   nombreUser: string;
   idUser: number;
+  respuestaServer: string;
 }

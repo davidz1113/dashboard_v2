@@ -15,20 +15,33 @@ export class UsuarioServices {
     constructor(private _http: Http) {
         this.url = GLOBAL.url;
         this.headers =  new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        //let headers = new Headers({'Content-Type': 'multipart/form-data'});
     }
 
     //Servicio para crear un usuario
     crearUsuario(nuevo_usuario: Usuario, uploadData:FormData) {
         let json = JSON.stringify(nuevo_usuario);
-        let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
-        
+        //let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
+    
+        uploadData.append('json',json);
+        uploadData.append('authorization',this.getToken());
 
         console.log(uploadData);
         //console.log(JSON.stringify(this.getToken()));
         
-        return this._http.post(this.url+ '/user/new',uploadData, {headers: this.headers } )
+        return this._http.post(this.url+ '/user/new',uploadData)
             .pipe(map(res=>res.json()));
     }
+
+    actualizarUsuario(usuario_editar: Usuario, uploadData:FormData){
+        let json = JSON.stringify(usuario_editar);
+        uploadData.append('json',json);
+        uploadData.append('authorization',this.getToken());
+
+        return this._http.post(this.url+ '/user/edit',uploadData)
+            .pipe(map(res=>res.json()));
+    }
+    
 
     //metodo para eliminar usuario
     eliminarUsuario(pkidusuario){
@@ -94,6 +107,6 @@ export class UsuarioServices {
     }
 
 
-
+   
 
 }

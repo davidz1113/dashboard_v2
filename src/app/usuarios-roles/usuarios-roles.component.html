@@ -1,7 +1,6 @@
-<div class="main-content">
-  <div class="container-fluid">
+
     
-    <app-tabla-usuarios></app-tabla-usuarios>
-    <app-user-agregar-editar></app-user-agregar-editar>
-  </div>
-</div>
+    <app-tabla-usuarios *ngIf="ocultarTabla" (llamarFormulario)="cambiarEstados($event)" (enviarUSuario)="enviarUsuario($event)"></app-tabla-usuarios>
+    <app-user-agregar-editar *ngIf="ocultarAgreEdit" (llamarFormulario)="cambiarEstados($event)" [usuario]="usuario"></app-user-agregar-editar>
+
+
