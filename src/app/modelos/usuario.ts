@@ -1,39 +1,65 @@
+import { Rol } from "./rol";
+
 //Clase usuario que refleja la identidad de la base de datos
 export class Usuario {
     //Definicion implicita de los atributos
-    
+    private pkidusuario: number;
+    private idusuario: number;
+    private codigousuario: string;
+    private identificacion: number;
+    private nombreusuario: string;
+    private apellido: string;
+    private usuarioactivo: string;
+    private creacionusuario: Date;
+    private modificacionusuario: Date;
+    private roles: Rol;
+    private contrasenia: string;
+    private rutaimagen: string;
+    private fkidrol: number;
 
-    constructor(private idUsuario: number,
-        private codigoUsuario: string,
-        private identificacion: number,
-        private nombreUsuario: string,
-        private apellido: string,
-        private usuarioActivo: boolean,
-        private creacionUsuario: Date,
-        private modificacionUsuario: Date,
-        private idRol: number,
-        private permisos: string
+	
+
+
+    constructor(idUsuario: number,
+        codigoUsuario: string,
+        identificacion: number,
+        nombreUsuario: string,
+        apellido: string,
+        usuarioActivo: string,
+        creacionUsuario: Date,
+        modificacionUsuario: Date,
+        contrasenia: string
+
     ) {
-        
+        this.idusuario = idUsuario;
+        this.codigousuario = codigoUsuario;
+        this.identificacion = identificacion;
+        this.nombreusuario = nombreUsuario,
+        this.apellido = apellido;
+        this.usuarioactivo = usuarioActivo;
+        this.creacionusuario = creacionUsuario;
+        this.modificacionusuario = modificacionUsuario;
+       
+        this.contrasenia = contrasenia;
     }
     //Metodos getter and setters
 
     public getIdUsuario(): number {
-        return this.idUsuario;
+        return this.idusuario;
     }
 
     public setIdUsuario(idUsuario: number
     ): void {
-        this.idUsuario = idUsuario;
+        this.idusuario = idUsuario;
     }
 
     public getCodigoUsuario(): string {
-        return this.codigoUsuario;
+        return this.codigousuario;
     }
 
     public setCodigoUsuario(codigoUsuario: string
     ): void {
-        this.codigoUsuario = codigoUsuario;
+        this.codigousuario = codigoUsuario;
     }
 
     public getIdentificacion(): number {
@@ -46,12 +72,12 @@ export class Usuario {
     }
 
     public getNombreUsuario(): string {
-        return this.nombreUsuario;
+        return this.nombreusuario;
     }
 
     public setNombreUsuario(nombreUsuario: string
     ): void {
-        this.nombreUsuario = nombreUsuario;
+        this.nombreusuario = nombreUsuario;
     }
 
     public getApellido(): string {
@@ -64,54 +90,73 @@ export class Usuario {
     }
 
     public getUsuarioActivo(): boolean {
-        return this.usuarioActivo;
+        return Boolean(this.usuarioactivo);
     }
 
     public setUsuarioActivo(usuarioActivo: boolean
     ): void {
-        this.usuarioActivo = usuarioActivo;
+        this.usuarioactivo = String(usuarioActivo);
     }
 
     public getCreacionUsuario(): Date {
-        return this.creacionUsuario;
+        return this.creacionusuario;
     }
 
     public setCreacionUsuario(creacionUsuario: Date
     ): void {
-        this.creacionUsuario = creacionUsuario;
+        this.creacionusuario = creacionUsuario;
     }
 
     public getModificacionUsuario(): Date {
-        return this.modificacionUsuario;
+        return this.modificacionusuario;
     }
 
     public setModificacionUsuario(modificacionUsuario: Date
     ): void {
-        this.modificacionUsuario = modificacionUsuario;
+        this.modificacionusuario = modificacionUsuario;
     }
-
-    public getIdRol(): number {
-        return this.idRol;
-    }
-
-    public setIdRol(idRol: number
-    ): void {
-        this.idRol = idRol;
-    }
-
-    public getPermisos(): string {
-        return this.permisos;
-    }
-
-    public setPermisos(permisos: string): void {
-        this.permisos = permisos;
-    }
-
-
-
 
   
+    public getContrasenia(): string {
+        return this.contrasenia;
+    }
+
+    public setContrasenia(contrasenia: string): void {
+        this.contrasenia = contrasenia;
+    }
 
 
+	public getRutaimagen(): string {
+		return this.rutaimagen;
+	}
 
+	public setRutaimagen(rutaimagen: string): void {
+		this.rutaimagen = rutaimagen;
+	}
+    
+
+    public getRoles(): Rol {
+		return this.roles;
+	}
+
+	public setRoles(roles: Rol): void {
+		this.roles = roles;
+	}
+
+
+    public getFkidrol(): number {
+		return this.fkidrol;
+	}
+
+	public setFkidrol(fkidrol: number): void {
+		this.fkidrol = fkidrol;
+    }
+    
+    public getPkidusuario(): number {
+		return this.pkidusuario;
+	}
+
+	public setPkidusuario(pkidusuario: number): void {
+		this.pkidusuario = pkidusuario;
+	}
 }

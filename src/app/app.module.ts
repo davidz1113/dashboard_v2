@@ -32,7 +32,8 @@ import { LoginComponent } from './login/login.component'
 import { MaterialModules } from './material.modules';
 
 
-
+import "reflect-metadata";
+import "es6-shim";
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -52,7 +53,7 @@ import { MaterialModules } from './material.modules';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent
+    LoginComponent,
    
   ],
   providers: [],

@@ -13,19 +13,22 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { TareasComponent } from '../../tareas/tareas.component'
 import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.component';
-
+import { TablaUsuariosComponent } from '../../usuarios-roles/tabla-usuarios/tabla-usuarios.component';
 
 
 
 import { SortingEmployeesPipe } from 'app/tareas/ordenamiento.pipe';
 import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.component';
 import { MaterialModules } from '../../material.modules';
+import { UserAgregarEditarComponent } from '../../usuarios-roles/user-agregar-editar/user-agregar-editar.component';
+import { DialogConfirmacionComponent } from '../../usuarios-roles/tabla-usuarios/dialog.confirm.component';
 @NgModule({
   imports: [
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
-    MaterialModules
+    MaterialModules,
+    ReactiveFormsModule
   ],
   declarations: [
     DashboardComponent,
@@ -39,10 +42,15 @@ import { MaterialModules } from '../../material.modules';
     TareasComponent,
     SortingEmployeesPipe,
     TablaPaginadaComponent,
-    UsuariosRolesComponent   
-    
+    UsuariosRolesComponent,
+    TablaUsuariosComponent,   
+    UserAgregarEditarComponent,
+    DialogConfirmacionComponent
 
-  ]
+  ],
+  entryComponents: [
+    DialogConfirmacionComponent
+  ],
 })
 
 export class AdminLayoutModule { }

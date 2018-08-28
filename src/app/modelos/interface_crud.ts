@@ -2,7 +2,7 @@
 interface Crud<T>{
     crear():void
     Leer():T
-    actualizar():void
+    actualizar(entidad:T):void
     eliminar():void
 
 }

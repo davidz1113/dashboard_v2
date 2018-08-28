@@ -1,23 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators, NgForm, FormGroupDirective, AbstractControl } from '@angular/forms';
-import { Router, ActivatedRoute, Params } from '@angular/router';
-import { UsuarioServices } from '../servicios/usuarioServices.services';
-import { Usuario } from '../modelos/usuario';
-import { ValidateContrasenia } from './user-agregar-editar/contraseña.validator';
-import { Rol } from '../modelos/rol';
-
+import { UsuarioServices } from '../../servicios/usuarioServices.services';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Usuario } from '../../modelos/usuario';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ValidateContrasenia } from './contrase\u00F1a.validator';
+import { Rol } from '../../modelos/rol';
 
 @Component({
-  selector: 'app-usuarios-roles',
-  templateUrl: './usuarios-roles.component.html',
-  styleUrls: ['./usuarios-roles.component.scss'],
+  selector: 'app-user-agregar-editar',
+  templateUrl: './user-agregar-editar.component.html',
+  styleUrls: ['./user-agregar-editar.component.scss'],
   providers: [UsuarioServices]
 })
+export class UserAgregarEditarComponent implements OnInit {
 
-export class UsuariosRolesComponent implements OnInit {
-
-
-
+ 
   //formulario reactive
   nuevoUsuarioForm: FormGroup;
   //archivo seleccionado
@@ -100,16 +97,14 @@ export class UsuariosRolesComponent implements OnInit {
     this.identidad.setIdentificacion(this.nuevoUsuarioForm.get('identificacion').value);
     this.identidad.setCodigoUsuario(this.nuevoUsuarioForm.get('codigoUsuario').value);
     this.identidad.setUsuarioActivo(this.active);
-    this.identidad.getRoles().setPkidrol(this.nuevoUsuarioForm.get('idRol').value);
-
+    this.identidad.setFkidrol(this.nuevoUsuarioForm.get('idRol').value);
     this.identidad.setContrasenia(this.nuevoUsuarioForm.get('contrasenia').value);
 
+    const uploadData = new FormData();
+    uploadData.append('fichero_usuario', this.archivoSelect);
 
-    //const uploadData = new FormData();
-    //uploadData.append('fichero_usuario', this.archivoSelect, this.archivoSelect.name);
 
-
-    this._usuarioService.crearUsuario(this.identidad, this.url).subscribe(
+    this._usuarioService.crearUsuario(this.identidad, uploadData).subscribe(
       response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
@@ -157,12 +152,17 @@ export class UsuariosRolesComponent implements OnInit {
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = (event) => { // called once readAsDataURL is completed
         this.url = reader.result;
+
       }
     }
   }
 
+  selectedFile: File;
 
+  onFileChanged(event) {
+    this.selectedFile = event.target.files[0]
+  }
 
+ 
 }
-
 

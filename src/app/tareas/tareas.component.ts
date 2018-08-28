@@ -41,7 +41,6 @@ export class TareasComponent implements OnInit {
 
   constructor() {
     this.dataSource = new MatTableDataSource<Employee>(this.employees);
-
   }
 
   ngOnInit() {
@@ -54,7 +53,7 @@ export class TareasComponent implements OnInit {
   applyFilter(filterValue: string) {
     //filterValue = filterValue.trim(); // Remove whitespace
     //filterValue = filterValue.toLowerCase(); // Datasource defaults to lowercase matches
-    console.log("filtervalue " + filterValue.toString());
+    //console.log("filtervalue " + filterValue.toString())
     this.dataSource.filter = this.selected + this.imputValue + this.toggle;
 
 

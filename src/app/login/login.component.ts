@@ -1,7 +1,6 @@
 import { Component, OnInit, } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, NgForm, FormGroupDirective } from '@angular/forms';
 import { UsuarioServices } from '../servicios/usuarioServices.services';
-import { ThrowStmt } from '@angular/compiler';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
@@ -40,10 +39,12 @@ export class LoginComponent implements OnInit {
 
   
   ngOnInit() {
-    //valdacion y asignacion de condiciones para el formulario
+    //cuando llega el parametro 1 para salir de sesion
     this.logOut();
-   this._usuarioService.redirigirSiEstaIdentificado(this._router);
+    //En caso de que el usuario quiera dirijirse con autenticacion 
+    this._usuarioService.redirigirSiEstaIdentificado(this._router);
     
+    //valdacion y asignacion de condiciones para el formulario
     this.validarFormulario();
   }
 
