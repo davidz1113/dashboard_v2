@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter,Inject  } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter,Inject, Input  } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Usuario } from '../../modelos/usuario';
 import { UsuarioServices } from '../../servicios/usuarioServices.services';
@@ -21,7 +21,9 @@ export class TablaUsuariosComponent implements OnInit {
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreCedula: string = '';
   //varible de mostrar desctivados
-  toggleActDesc: boolean = true;
+  toggleActDesc: boolean = false;
+
+
 
   //datos a llenar mediante la consulta
   usuarios: Usuario[] = [];
@@ -41,20 +43,30 @@ export class TablaUsuariosComponent implements OnInit {
   @Output() llamarFormulario = new EventEmitter();
   @Output() enviarUSuario = new EventEmitter();
 
+  //para recibir el mensaje del usuario agregado
+  @Input() mensaje: string;
+
+  //clase dinamica pra carga de mensajes
+  claseDinamic = "alert alert-warning alert-with-icon";
+  iconAlert = "warning";
+  
+ //boton desactivado en caso q no hayan usuarios o este caragndo
+ botonBloqueo: boolean =true;
 
   constructor(private _userService: UsuarioServices, public dialog: MatDialog) {
     
   }
   closeDialog(){
-    this.msg='';
+    this.mensaje='';
   }
 
   consultarUsuarios(){
+    this.respuesta = null;
     this._userService.consultarUsuarios().subscribe(
       response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
-          this.msg = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor');
         } else {
           //cabeceras
@@ -65,32 +77,42 @@ export class TablaUsuariosComponent implements OnInit {
           this.usuarios = plainToClass(Usuario, this.respuesta.users);
 
           //asignacion de los datos en el datasource para la tabla
-       
           console.log(this.respuesta);
           console.log(this.usuarios[0].getIdentificacion());
           console.log(this.respuesta.users[0].roles);
-
+          
           for (let i = 0; i < this.usuarios.length; i++) {
             console.log(this.respuesta.users[i].roles);
             this.usuarios[i].setRoles(this.respuesta.users[i].roles);
+           
+            
           }
           this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
           //console.log("rol: "+this.usuarios[0].getRoles().pkidrol);
           //Aplicamos el filtro de paginado, ordenamiento y filtros
+          this.botonBloqueo = false;
+          this.aplicarFiltro();
           this.setFilterDataTable();
 
         }
 
       },
       error => {
-        this.msg = 'Error en el servidor';
-          console.log('Error en el servidor');
+        this.mensaje = 'Error en el servidor';
+        this.respuesta = 'error';
+        console.log('Error en el servidor');
       }
     );
   }
 
   ngAfterViewInit() {
     //this.setFilterDataTable();
+    if(this.mensaje!=null){
+      //this.msg = this.mensaje;
+      this.claseDinamic = "alert alert-success alert-with-icon";
+      this.iconAlert = "done";
+
+    }
     this.consultarUsuarios();
   }
 
@@ -101,7 +123,7 @@ export class TablaUsuariosComponent implements OnInit {
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    this.dataSource.filter = this.filtroNombreCedula + (this.toggleActDesc);
+    this.dataSource.filter = this.filtroNombreCedula + (!this.toggleActDesc);
   }
 
 
@@ -111,7 +133,7 @@ export class TablaUsuariosComponent implements OnInit {
     this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
       //console.log(this.filtroNombreCedula);
       //console.log("holaaa");
-      return   ((data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 || data.getIdentificacion().toString().indexOf(this.filtroNombreCedula)!==-1)  &&  (data.getUsuarioActivo() == true || this.toggleActDesc == true));
+      return   ((data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 || data.getIdentificacion().toString().indexOf(this.filtroNombreCedula)!==-1)  && (data.getUsuarioActivo() == true || this.toggleActDesc==true));
     };
   }
 
@@ -155,10 +177,22 @@ export class TablaUsuariosComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      this.msg = result;
+      this.mensaje = result.respuesta;
+      if(result!=null){
+      console.log(result.status);
+          if(result.status=="error"){
+          this.claseDinamic = "alert alert-warning alert-with-icon";
+          this.iconAlert = "warning";
+        }else{
+          this.claseDinamic = "alert alert-success alert-with-icon";
+          this.iconAlert = "done";
+          this.consultarUsuarios();
+          
+        }
+      }
       //console.log("respuesta desde el confirm"+ this.respuestaServer);
       //this.respuestaServer = result;
-      this.consultarUsuarios();
+      
 
     });
   }

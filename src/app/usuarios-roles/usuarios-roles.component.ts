@@ -21,6 +21,9 @@ export class UsuariosRolesComponent implements OnInit {
 
   usuario:Usuario;
 
+
+  mensaje: string;
+
   constructor(
 
   ) {
@@ -50,6 +53,14 @@ export class UsuariosRolesComponent implements OnInit {
     //console.log(this.usuario);
     this.cambiarEstados(null);
 
+  }
+
+
+
+  ponerMensaje(event){
+    if(event!=null){
+      this.mensaje = event.mensaje;
+    }
   }
 
 

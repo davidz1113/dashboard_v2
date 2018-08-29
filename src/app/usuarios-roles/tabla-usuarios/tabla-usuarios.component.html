@@ -9,7 +9,7 @@
             <h4 class="card-title">Tabla Usuarios</h4>
             <p class="card-category">Registro de los Usuarios</p>
           </div>
-          
+
           <div class="card-body">
             <!--Filtros  -->
             <div class="row">
@@ -35,58 +35,79 @@
 
             </div>
 
-             <!--Mensaje de confirmacion-->
-          <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
-            <i class="material-icons" data-notify="icon">warning</i>
-            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
-              <i class="material-icons">close</i>
-            </button>
-            <span data-notify="message">
-              <b>Info:</b> {{msg}} </span>
-          </div>
-          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
+            <!--Mensaje de confirmacion-->
+            <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">
+              <i class="material-icons" data-notify="icon">{{iconAlert}}</i>
+              <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                <i class="material-icons">close</i>
+              </button>
+              <span data-notify="message">
+                <b>Info:</b> {{mensaje}} </span>
+                <div class="col-sm-4">
+                  <button mat-raised-button class="btn btn-outline-primary mb-3"  (click)="consultarUsuarios()"  *ngIf="respuesta=='error'" >Nuevo
+                    Usuario
+                  </button>
+                </div>
+            </div>
+            <!--
+            <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
+          -->
 
-          <!--Fin mensaje confirmacion-->
+            <!--Fin mensaje confirmacion-->
             <div *ngIf="respuesta==null">
               Cargando usuarios
               <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
             </div>
+
+
+
             <div class="col-sm-4">
-              <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);">Nuevo
-                Usuario</button>
+              <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);" [disabled]="botonBloqueo">Nuevo
+                Usuario
+              </button>
             </div>
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="Identificación">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[0]}} </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.getIdentificacion()}} </mat-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getIdentificacion()}}
+                    </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Nombres">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecerasColumnas[1]}}</mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.getNombreUsuario()}} </mat-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getNombreUsuario()}}
+                    </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="Rol">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[2]}} </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.getRoles().nombrerol}} </mat-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getRoles().nombrerol}}
+                    </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="Usuario Activo/Inactivo">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[3]}} </mat-header-cell>
-                  <mat-cell *matCellDef="let element"> {{element.getUsuarioActivo()?'Activo':'Desactivado'}} </mat-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getUsuarioActivo()?'Activo':'Desactivado'}}
+                    </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="actions">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                   <mat-cell *matCellDef="let element ; let i=index">
 
-                    <button mat-icon-button matTooltip="editar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="editarUsuario(element.getIdentificacion())"> <i
-                        class="material-icons ">edit</i>
+                    <button mat-icon-button matTooltip="Editar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="editarUsuario(element.getIdentificacion())"> <i class="material-icons ">edit</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="eliminar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                    <button mat-icon-button matTooltip="Eliminar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
                       class="example-button" (click)="llamarDialog(element.getIdentificacion())">
                       <i class="material-icons ">delete</i>
                     </button>
+
+                    <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="llamarDialog(element.getIdentificacion())">
+                      <i class="material-icons ">not_interested</i>
+                    </button>
+
+
                   </mat-cell>
                 </ng-container>
 

@@ -11,7 +11,7 @@ import { plainToClass } from "class-transformer";
   selector: 'app-user-agregar-editar',
   templateUrl: './user-agregar-editar.component.html',
   styleUrls: ['./user-agregar-editar.component.scss'],
-  providers: [UsuarioServices,RolesServices]
+  providers: [UsuarioServices, RolesServices]
 })
 export class UserAgregarEditarComponent implements OnInit {
 
@@ -48,22 +48,23 @@ export class UserAgregarEditarComponent implements OnInit {
 
   //PAra alternar entre formularios
   @Output() llamarFormulario = new EventEmitter();
+  @Output() enviarMensaje = new EventEmitter();
 
   //traemos el usuario desde el componente tabla
-  @Input() usuario:Usuario;
+  @Input() usuario: Usuario;
 
   //roles
-  roles:Rol[]=[];
+  roles: Rol[] = [];
 
   //mensaje del boton actulizar guardar
-  mensajeBoton:string;
+  mensajeBoton: string;
 
   //progress de envio
-  creandoUsuario =false;
+  creandoUsuario = false;
 
   //idRol y nombre rol en caso de una actualizacion
-  idRol:number = null;
-  rolName : string = '--';
+  idRol: number = null;
+  rolName: string = '--';
 
   constructor(
     private nuevoForm: FormBuilder,
@@ -96,10 +97,10 @@ export class UserAgregarEditarComponent implements OnInit {
       valor => {
         this.contrasenia = valor.contrasenia;
         this.contrasenia2 = valor.repetirContrasenia;
-        
-        if(this.usuario!=null){//actualziacion 
+
+        if (this.usuario != null) {//actualziacion 
           //los campos de contraseña no son obligatorios
-          if(this.contrasenia!=''  || valor.repetirContrasenia!='' ){
+          if (this.contrasenia != '' || valor.repetirContrasenia != '') {
 
             if (this.contrasenia != this.contrasenia2) {
               this.nuevoUsuarioForm.get('repetirContrasenia').setValidators([ValidateContrasenia(this.contrasenia)]);
@@ -111,7 +112,7 @@ export class UserAgregarEditarComponent implements OnInit {
             }
             this.nuevoUsuarioForm.get('repetirContrasenia').updateValueAndValidity({ emitEvent: false, onlySelf: false });
           }
-        }else{//si el usuario no esta definido(nuevo usuario)
+        } else {//si el usuario no esta definido(nuevo usuario)
           //se agrega siempre la validacion 
           if (this.contrasenia != this.contrasenia2) {
             this.nuevoUsuarioForm.get('repetirContrasenia').setValidators([ValidateContrasenia(this.contrasenia)]);
@@ -123,9 +124,9 @@ export class UserAgregarEditarComponent implements OnInit {
           }
           this.nuevoUsuarioForm.get('repetirContrasenia').updateValueAndValidity({ emitEvent: false, onlySelf: false });
         }
-          
-        }
-      );
+
+      }
+    );
 
 
   }
@@ -144,50 +145,56 @@ export class UserAgregarEditarComponent implements OnInit {
     this.identidad.setContrasenia(this.nuevoUsuarioForm.get('contrasenia').value);
 
     const uploadData = new FormData();
-    if(this.selectedFile!=null){
+    if (this.selectedFile != null) {
 
       uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
       console.log(this.selectedFile.size);
     }
-    if(this.usuario==null){
+    if (this.usuario == null) {
 
-    this._usuarioService.crearUsuario(this.identidad, uploadData).subscribe(
-      response => {
-        this.respuesta = response;
-        if (this.respuesta.length <= 1) {
+      this._usuarioService.crearUsuario(this.identidad, uploadData).subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //this.msg = this.respuesta.msg;
+            this.creandoUsuario = false;
+            this.enviarMensaje.emit({mensaje:this.respuesta.msg}); 
+            this.llamarFormulario.emit({cancel:'1'});
+
+          }
+        },
+        error => {
           this.msg = 'Error en el servidor';
           console.log('Error en el servidor');
-        } else {
-          this.msg = this.respuesta.msg;
-          this.creandoUsuario = false;
         }
-      },
-      error => {
-        this.msg = 'Error en el servidor';
-        console.log('Error en el servidor');
-      }
-
-    );
-  }else{//{Actualzia
-    this.identidad.setPkidusuario(this.usuario.getPkidusuario());
-    this._usuarioService.actualizarUsuario(this.identidad,uploadData).subscribe(
-      response => {
-        this.respuesta = response;
-        if (this.respuesta.length <= 1) {
+        
+      );
+    } else {//{Actualzia
+      this.identidad.setPkidusuario(this.usuario.getPkidusuario());
+      this._usuarioService.actualizarUsuario(this.identidad, uploadData).subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //this.msg = this.respuesta.msg;
+            this.creandoUsuario = false;
+            this.enviarMensaje.emit({mensaje:this.respuesta.msg}); 
+            this.llamarFormulario.emit({cancel:'1'});
+          }
+        },
+        error => {
           this.msg = 'Error en el servidor';
           console.log('Error en el servidor');
-        } else {
-          this.msg = this.respuesta.msg;
-          this.creandoUsuario = false;
+          
         }
-      },
-      error => {
-        this.msg = 'Error en el servidor';
-        console.log('Error en el servidor');
-      }
 
-    );
-  }
+      );
+    }
 
     //console.log(this.identidad);
 
@@ -195,18 +202,18 @@ export class UserAgregarEditarComponent implements OnInit {
 
 
   validarFormulario() {
-    if(this.usuario!=null){//si llega por actualizar
+    if (this.usuario != null) {//si llega por actualizar
       //this.url = this.url.substring(2);
-      if(this.usuario.getRutaimagen()!=null){
+      if (this.usuario.getRutaimagen() != null) {
 
-        this.url = "http://192.168.1.21/SistemaRecaudoBackend/"+(this.usuario.getRutaimagen().substring(3));
+        this.url = "http://192.168.1.21/SistemaRecaudoBackend/" + (this.usuario.getRutaimagen().substring(3));
       }
-      console.log("url: "+this.url.toString());
+      console.log("url: " + this.url.toString());
       this.active = this.usuario.getUsuarioActivo();
       this.textActive = this.active ? "Activado" : "Desactivado";
       this.mensajeBoton = "Actualizar";
 
-      this.idRol=this.usuario.getRoles().pkidrol;
+      this.idRol = this.usuario.getRoles().pkidrol;
       this.rolName = this.usuario.getRoles().nombrerol;
 
       console.log(this.usuario);
@@ -220,8 +227,8 @@ export class UserAgregarEditarComponent implements OnInit {
         contrasenia: '',
         repetirContrasenia: ''
       });
-      
-    }else{
+
+    } else {
       this.mensajeBoton = "Guardar";
 
       this.nuevoUsuarioForm = this.nuevoForm.group({
@@ -259,9 +266,9 @@ export class UserAgregarEditarComponent implements OnInit {
   }
 
 
-  consultarRoles(){
+  consultarRoles() {
     this._rolesServices.consultarRol().subscribe(
-      response=>{
+      response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
           this.msg = 'Error en el servidor';
@@ -270,16 +277,18 @@ export class UserAgregarEditarComponent implements OnInit {
           this.roles = plainToClass(Rol, this.respuesta.roles);
         }
       },
-      error=>{
+      error => {
         this.msg = 'Error en el servidor';
         console.log('Error en el servidor');
       }
     );
   }
 
-  closeDialog(){
-    this.msg='';
+  closeDialog() {
+    this.msg = '';
   }
+
+
 
 }
 

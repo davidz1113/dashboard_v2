@@ -51,7 +51,7 @@ export class DialogConfirmacionComponent implements DialogData {
                     this.respuesta2 = 'Error en el servidor';
                     console.log('Error en el servidor');
                 }else{
-                    this.dialogRef.close(this.respuesta2.msg);
+                    this.dialogRef.close({respuesta:this.respuesta2.msg,status:this.respuesta2.status});
                     this.data['respuesta']= this.respuesta2.msg;
                     //console.log(this.respuesta);
                     
