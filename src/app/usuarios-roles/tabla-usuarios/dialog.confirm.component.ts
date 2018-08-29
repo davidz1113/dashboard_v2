@@ -10,7 +10,7 @@ import { UsuarioServices } from '../../servicios/usuarioServices.services';
     <h1 mat-dialog-title>¿Esta seguro de que eliminara el usuario {{nombreUser}} ?</h1>
     <div mat-dialog-actions>
      <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button cdkFocusInitial (click)="eliminarUsuario()">Eliminar</button>
+    <button mat-button cdkFocusInitial  (click)="eliminarUsuario()">Eliminar</button>
     </div>
         
     `,
@@ -21,12 +21,11 @@ export class DialogConfirmacionComponent implements DialogData {
     //variables de la interfaz
     nombreUser: string;
     idUser: number;
-    respuestaServer: string;
+    respuesta :string;
     //variable respuesta servidor
-    public respuesta;
+    public respuesta2;
 
-    // //msg de respuesta del servidor
-    msg: string = '';
+  
 
 
 
@@ -35,7 +34,7 @@ export class DialogConfirmacionComponent implements DialogData {
 
         this.nombreUser = data['nombreUser'];
         this.idUser = data['idUser'];
-        
+        this.respuesta = data['respuesta'];
 
     }
 
@@ -47,14 +46,15 @@ export class DialogConfirmacionComponent implements DialogData {
     eliminarUsuario() {
         this._userServices.eliminarUsuario(this.idUser).subscribe(
             respose => {
-                this.respuesta = respose;
-                if (this.respuesta.length <= 1) {
-                    this.msg = 'Error en el servidor';
+                this.respuesta2 = respose;
+                if (this.respuesta2.length <= 1) {
+                    this.respuesta2 = 'Error en el servidor';
                     console.log('Error en el servidor');
                 }else{
-                    this.dialogRef.close();
-                    this.respuestaServer = this.respuesta.msg;
-                    //console.log(this.respuesta.msg);
+                    this.dialogRef.close(this.respuesta2.msg);
+                    this.data['respuesta']= this.respuesta2.msg;
+                    //console.log(this.respuesta);
+                    
                 }
 
             },

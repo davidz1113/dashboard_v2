@@ -9,6 +9,7 @@
             <h4 class="card-title">Tabla Usuarios</h4>
             <p class="card-category">Registro de los Usuarios</p>
           </div>
+          
           <div class="card-body">
             <!--Filtros  -->
             <div class="row">
@@ -29,7 +30,23 @@
               </div>
               <!--Fin Filtro boton toggle -->
               <!--Fin Filtros-->
+
+
+
             </div>
+
+             <!--Mensaje de confirmacion-->
+          <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
+            <i class="material-icons" data-notify="icon">warning</i>
+            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+              <i class="material-icons">close</i>
+            </button>
+            <span data-notify="message">
+              <b>Info:</b> {{msg}} </span>
+          </div>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
+
+          <!--Fin mensaje confirmacion-->
             <div *ngIf="respuesta==null">
               Cargando usuarios
               <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>

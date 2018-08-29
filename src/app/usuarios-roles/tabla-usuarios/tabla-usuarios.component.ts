@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter,Inject  } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Usuario } from '../../modelos/usuario';
 import { UsuarioServices } from '../../servicios/usuarioServices.services';
@@ -21,7 +21,7 @@ export class TablaUsuariosComponent implements OnInit {
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreCedula: string = '';
   //varible de mostrar desctivados
-  toggleActDesc: boolean = false;
+  toggleActDesc: boolean = true;
 
   //datos a llenar mediante la consulta
   usuarios: Usuario[] = [];
@@ -43,6 +43,13 @@ export class TablaUsuariosComponent implements OnInit {
 
 
   constructor(private _userService: UsuarioServices, public dialog: MatDialog) {
+    
+  }
+  closeDialog(){
+    this.msg='';
+  }
+
+  consultarUsuarios(){
     this._userService.consultarUsuarios().subscribe(
       response => {
         this.respuesta = response;
@@ -84,15 +91,13 @@ export class TablaUsuariosComponent implements OnInit {
 
   ngAfterViewInit() {
     //this.setFilterDataTable();
+    this.consultarUsuarios();
   }
 
 
   ngOnInit() {
     //this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
-  
-
   }
-
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
@@ -104,9 +109,9 @@ export class TablaUsuariosComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
-      console.log(this.filtroNombreCedula);
-      console.log("holaaa");
-      return /*data.name.toLowerCase().indexOf(this.imputValue)!==-1 || data.position==(this.selected) ||*/ (data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 && (data.getUsuarioActivo() == (!this.toggleActDesc) || this.toggleActDesc == false));
+      //console.log(this.filtroNombreCedula);
+      //console.log("holaaa");
+      return   ((data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 || data.getIdentificacion().toString().indexOf(this.filtroNombreCedula)!==-1)  &&  (data.getUsuarioActivo() == true || this.toggleActDesc == true));
     };
   }
 
@@ -140,17 +145,20 @@ export class TablaUsuariosComponent implements OnInit {
     this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
 
   }
-
+  respuestaServer:string;
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(nombreUser, idUser): void {
     const dialogRef = this.dialog.open(DialogConfirmacionComponent, {
       width: '250px',
-      data: { nombreUser: nombreUser, idUser: idUser }
+      data: { nombreUser: nombreUser, idUser: idUser, respuesta:this.respuestaServer }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-      console.log()
+      this.msg = result;
+      //console.log("respuesta desde el confirm"+ this.respuestaServer);
+      //this.respuestaServer = result;
+      this.consultarUsuarios();
 
     });
   }
@@ -161,5 +169,5 @@ export class TablaUsuariosComponent implements OnInit {
 export interface DialogData {
   nombreUser: string;
   idUser: number;
-  respuestaServer: string;
+  respuesta: string;
 }

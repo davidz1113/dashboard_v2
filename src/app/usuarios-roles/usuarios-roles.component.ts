@@ -35,6 +35,14 @@ export class UsuariosRolesComponent implements OnInit {
   cambiarEstados(event){
     this.ocultarAgreEdit = !this.ocultarAgreEdit;
     this.ocultarTabla = !this.ocultarTabla;
+    
+    if(event!=null){
+      if(event.cancel=='1'){
+        this.usuario =null;
+      }
+    }
+
+
   }
 
   enviarUsuario(event){

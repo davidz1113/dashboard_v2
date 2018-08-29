@@ -58,6 +58,12 @@ export class UserAgregarEditarComponent implements OnInit {
   //mensaje del boton actulizar guardar
   mensajeBoton:string;
 
+  //progress de envio
+  creandoUsuario =false;
+
+  //idRol y nombre rol en caso de una actualizacion
+  idRol:number = null;
+  rolName : string = '--';
 
   constructor(
     private nuevoForm: FormBuilder,
@@ -127,7 +133,7 @@ export class UserAgregarEditarComponent implements OnInit {
 
   //conecta a la api rest e inserta o actualiza  los campos del usuario
   nuevoUsuario() {
-
+    this.creandoUsuario = true;
     //seteamos en el objeto usuario las variables del formulario
     this.identidad.setNombreUsuario(this.nuevoUsuarioForm.get('nombreUsuario').value);
     this.identidad.setApellido(this.nuevoUsuarioForm.get('apellido').value);
@@ -138,8 +144,11 @@ export class UserAgregarEditarComponent implements OnInit {
     this.identidad.setContrasenia(this.nuevoUsuarioForm.get('contrasenia').value);
 
     const uploadData = new FormData();
-    uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
-    console.log(this.selectedFile.size);
+    if(this.selectedFile!=null){
+
+      uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
+      console.log(this.selectedFile.size);
+    }
     if(this.usuario==null){
 
     this._usuarioService.crearUsuario(this.identidad, uploadData).subscribe(
@@ -150,6 +159,7 @@ export class UserAgregarEditarComponent implements OnInit {
           console.log('Error en el servidor');
         } else {
           this.msg = this.respuesta.msg;
+          this.creandoUsuario = false;
         }
       },
       error => {
@@ -168,6 +178,7 @@ export class UserAgregarEditarComponent implements OnInit {
           console.log('Error en el servidor');
         } else {
           this.msg = this.respuesta.msg;
+          this.creandoUsuario = false;
         }
       },
       error => {
@@ -186,11 +197,17 @@ export class UserAgregarEditarComponent implements OnInit {
   validarFormulario() {
     if(this.usuario!=null){//si llega por actualizar
       //this.url = this.url.substring(2);
-      this.url = "http://192.168.1.21/SistemaRecaudoBackend/"+(this.usuario.getRutaimagen().substring(3));
+      if(this.usuario.getRutaimagen()!=null){
+
+        this.url = "http://192.168.1.21/SistemaRecaudoBackend/"+(this.usuario.getRutaimagen().substring(3));
+      }
       console.log("url: "+this.url.toString());
       this.active = this.usuario.getUsuarioActivo();
       this.textActive = this.active ? "Activado" : "Desactivado";
       this.mensajeBoton = "Actualizar";
+
+      this.idRol=this.usuario.getRoles().pkidrol;
+      this.rolName = this.usuario.getRoles().nombrerol;
 
       console.log(this.usuario);
       this.nuevoUsuarioForm = this.nuevoForm.group({
@@ -199,10 +216,11 @@ export class UserAgregarEditarComponent implements OnInit {
         nombreUsuario: [this.usuario.getNombreUsuario(), Validators.required],
         apellido: [this.usuario.getApellido(), Validators.required],
         usuarioActivo: [this.usuario.getUsuarioActivo(), Validators.required],
-        idRol: [this.usuario.getFkidrol(), Validators.required],
+        idRol: [this.idRol, Validators.required],
         contrasenia: '',
         repetirContrasenia: ''
       });
+      
     }else{
       this.mensajeBoton = "Guardar";
 
@@ -224,9 +242,9 @@ export class UserAgregarEditarComponent implements OnInit {
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
 
-  url: any;
+  url: any = '../assets/img/empleado.png';
 
-  selectedFile: File;
+  selectedFile: File = null;
 
   onFileChanged(event) {
     if (event.target.files && event.target.files[0]) {
@@ -253,7 +271,8 @@ export class UserAgregarEditarComponent implements OnInit {
         }
       },
       error=>{
-
+        this.msg = 'Error en el servidor';
+        console.log('Error en el servidor');
       }
     );
   }
