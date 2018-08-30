@@ -15,12 +15,12 @@ export class TareasComponent implements OnInit {
   toggle: boolean = false;
 
   employees: Employee[] = [
-    { 'name': 'Andres', position: 'Manager', email: 'example@gmail.com', enabledType: true },
-    { 'name': 'David', position: 'Manager', email: 'example@gmail.com', enabledType: false },
-    { 'name': 'Jorge', position: 'Desarrollador', email: 'example@gmail.com', enabledType: true },
-    { 'name': 'Carlos', position: 'Manager', email: 'example@gmail.com', enabledType: true },
-    { 'name': 'Luis', position: 'Desarrollador', email: 'example@gmail.com', enabledType: true },
-    { 'name': 'Ramiro', position: 'Gerente', email: 'example@gmail.com', enabledType: false }
+    { name: 'Andres', position: 'Manager', email: 'example@gmail.com', enabledType: true },
+    { name: 'David', position: 'Manager', email: 'example@gmail.com', enabledType: false },
+    { name: 'Jorge', position: 'Desarrollador', email: 'example@gmail.com', enabledType: true },
+    { name: 'Carlos', position: 'Manager', email: 'example@gmail.com', enabledType: true },
+    { name: 'Luis', position: 'Desarrollador', email: 'example@gmail.com', enabledType: true },
+    { name: 'Ramiro', position: 'Gerente', email: 'example@gmail.com', enabledType: false }
   ]
 
   //Datos para paginar

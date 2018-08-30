@@ -34,6 +34,7 @@ import { MaterialModules } from './material.modules';
 
 import "reflect-metadata";
 import "es6-shim";
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -53,7 +54,7 @@ import "es6-shim";
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent,
+    LoginComponent
    
   ],
   providers: [],

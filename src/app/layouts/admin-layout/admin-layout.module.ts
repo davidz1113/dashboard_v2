@@ -22,6 +22,7 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
 import { MaterialModules } from '../../material.modules';
 import { UserAgregarEditarComponent } from '../../usuarios-roles/user-agregar-editar/user-agregar-editar.component';
 import { DialogConfirmacionComponent } from '../../usuarios-roles/tabla-usuarios/dialog.confirm.component';
+import { PlazaMercadoComponent } from '../../plaza-mercado/plaza-mercado.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -45,7 +46,8 @@ import { DialogConfirmacionComponent } from '../../usuarios-roles/tabla-usuarios
     UsuariosRolesComponent,
     TablaUsuariosComponent,   
     UserAgregarEditarComponent,
-    DialogConfirmacionComponent
+    DialogConfirmacionComponent,
+    PlazaMercadoComponent
 
   ],
   entryComponents: [
