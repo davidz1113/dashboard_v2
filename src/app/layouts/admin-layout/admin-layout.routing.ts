@@ -10,6 +10,7 @@ import { NotificationsComponent } from '../../notifications/notifications.compon
 import { UpgradeComponent } from '../../upgrade/upgrade.component';
 import { TareasComponent } from '../../tareas/tareas.component'
 import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.component';
+import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -57,6 +58,7 @@ export const AdminLayoutRoutes: Routes = [
     // }
     { path: 'dashboard', component: DashboardComponent },
     { path: 'usuarios-roles', component: UsuariosRolesComponent },
+    { path: 'plazas-mercado', component: PlazasMercadoComponent },
     { path: 'user-profile', component: UserProfileComponent },
     { path: 'table-list', component: TableListComponent },
     { path: 'typography', component: TypographyComponent },

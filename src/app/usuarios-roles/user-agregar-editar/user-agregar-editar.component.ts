@@ -161,8 +161,12 @@ export class UserAgregarEditarComponent implements OnInit {
           } else {
             //this.msg = this.respuesta.msg;
             this.creandoUsuario = false;
-            this.enviarMensaje.emit({mensaje:this.respuesta.msg}); 
-            this.llamarFormulario.emit({cancel:'1'});
+            if(this.respuesta.status=="Exito"){
+              this.enviarMensaje.emit({mensaje:this.respuesta.msg}); 
+              this.llamarFormulario.emit({cancel:'1'});
+            }else{
+              this.msg = this.respuesta.msg;
+            }
 
           }
         },

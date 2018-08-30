@@ -21,9 +21,8 @@ export class DialogConfirmacionComponent implements DialogData {
     //variables de la interfaz
     nombreUser: string;
     idUser: number;
-    respuesta :string;
+    public respuesta ;
     //variable respuesta servidor
-    public respuesta2;
 
   
 
@@ -34,7 +33,6 @@ export class DialogConfirmacionComponent implements DialogData {
 
         this.nombreUser = data['nombreUser'];
         this.idUser = data['idUser'];
-        this.respuesta = data['respuesta'];
 
     }
 
@@ -46,13 +44,13 @@ export class DialogConfirmacionComponent implements DialogData {
     eliminarUsuario() {
         this._userServices.eliminarUsuario(this.idUser).subscribe(
             respose => {
-                this.respuesta2 = respose;
-                if (this.respuesta2.length <= 1) {
-                    this.respuesta2 = 'Error en el servidor';
+                this.respuesta = respose;
+                if (this.respuesta.length <= 1) {
+                    this.respuesta = 'Error en el servidor';
                     console.log('Error en el servidor');
                 }else{
-                    this.dialogRef.close({respuesta:this.respuesta2.msg,status:this.respuesta2.status});
-                    this.data['respuesta']= this.respuesta2.msg;
+                    this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
+                    this.data['respuesta']= this.respuesta.msg;
                     //console.log(this.respuesta);
                     
                 }

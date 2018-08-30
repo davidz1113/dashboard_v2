@@ -9,7 +9,7 @@ export class Usuario {
     private identificacion: number;
     private nombreusuario: string;
     private apellido: string;
-    private usuarioactivo: string;
+    public usuarioactivo: string;
     private creacionusuario: Date;
     private modificacionusuario: Date;
     private roles: Rol;

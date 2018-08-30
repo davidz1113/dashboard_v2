@@ -44,8 +44,7 @@
               <span data-notify="message">
                 <b>Info:</b> {{mensaje}} </span>
                 <div class="col-sm-4">
-                  <button mat-raised-button class="btn btn-outline-primary mb-3"  (click)="consultarUsuarios()"  *ngIf="respuesta=='error'" >Nuevo
-                    Usuario
+                  <button mat-raised-button class="btn btn-outline-primary mb-3"  (click)="consultarUsuarios();mensaje=''"  *ngIf="respuesta=='error'" >Intentar nuevamente
                   </button>
                 </div>
             </div>
@@ -68,25 +67,25 @@
             </div>
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
-                <ng-container matColumnDef="Identificación">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[0]}} </mat-header-cell>
+                <ng-container matColumnDef="identificacion">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Identificación </mat-header-cell>
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getIdentificacion()}}
                     </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Nombres">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecerasColumnas[1]}}</mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getNombreUsuario()}}
+                <ng-container matColumnDef="nombreusuario">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getNombreUsuario()}} {{element.getApellido()}}
                     </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Rol">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[2]}} </mat-header-cell>
+                <ng-container matColumnDef="nombrerol">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Rol </mat-header-cell>
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getRoles().nombrerol}}
                     </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="Usuario Activo/Inactivo">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecerasColumnas[3]}} </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getUsuarioActivo()?'Activo':'Desactivado'}}
+                <ng-container matColumnDef="usuarioactivo">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Usuario Activo/Desactivado</mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.usuarioactivo }"> {{element.usuarioactivo?'Activo':'Desactivado'}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="actions">
@@ -102,12 +101,10 @@
                       <i class="material-icons ">delete</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarDialog(element.getIdentificacion())">
+                    <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="primary-tooltip" 
+                      class="example-button" (click)="cambiarEstado(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
-
-
                   </mat-cell>
                 </ng-container>
 

@@ -14,45 +14,45 @@ export class UsuarioServices {
     public headers;
     constructor(private _http: Http) {
         this.url = GLOBAL.url;
-        this.headers =  new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
         //let headers = new Headers({'Content-Type': 'multipart/form-data'});
     }
 
     //Servicio para crear un usuario
-    crearUsuario(nuevo_usuario: Usuario, uploadData:FormData) {
+    crearUsuario(nuevo_usuario: Usuario, uploadData: FormData) {
         let json = JSON.stringify(nuevo_usuario);
         //let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
-    
-        uploadData.append('json',json);
-        uploadData.append('authorization',this.getToken());
+
+        uploadData.append('json', json);
+        uploadData.append('authorization', this.getToken());
 
         console.log(uploadData);
         //console.log(JSON.stringify(this.getToken()));
-        
-        return this._http.post(this.url+ '/user/new',uploadData)
-            .pipe(map(res=>res.json()));
+
+        return this._http.post(this.url + '/user/new', uploadData)
+            .pipe(map(res => res.json()));
     }
 
-    actualizarUsuario(usuario_editar: Usuario, uploadData:FormData){
+    actualizarUsuario(usuario_editar: Usuario, uploadData: FormData) {
         let json = JSON.stringify(usuario_editar);
-        uploadData.append('json',json);
-        uploadData.append('authorization',this.getToken());
+        uploadData.append('json', json);
+        uploadData.append('authorization', this.getToken());
 
-        return this._http.post(this.url+ '/user/edit',uploadData)
-            .pipe(map(res=>res.json()));
+        return this._http.post(this.url + '/user/edit', uploadData)
+            .pipe(map(res => res.json()));
     }
-    
+
 
     //metodo para eliminar usuario
-    eliminarUsuario(pkidusuario){
-        let user = {pkidusuario:pkidusuario};
+    eliminarUsuario(pkidusuario) {
+        let user = { pkidusuario: pkidusuario };
         let json = JSON.stringify(user);
-        let params =  "json="+json+"&authorization="+this.getToken();
+        let params = "json=" + json + "&authorization=" + this.getToken();
         console.log(params);
         //console.log(JSON.stringify(this.getToken()));
-        
-        return this._http.post(this.url+ '/user/remove',params, { headers: this.headers } )
-            .pipe(map(res=>res.json()));
+
+        return this._http.post(this.url + '/user/remove', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
     }
 
     //Servicio para iniciar sesion
@@ -65,11 +65,29 @@ export class UsuarioServices {
 
 
     //metodo q consulta todos los usuarios de la base de datos
-    consultarUsuarios(){
-        let token = "authorization="+this.getToken();
-        return this._http.post(this.url+ '/user/query',token, { headers: this.headers } )
-        .pipe(map(res=>res.json()));
+    consultarUsuarios() {
+        let token = "authorization=" + this.getToken();
+        return this._http.post(this.url + '/user/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
     }
+
+
+    //
+    //paramtros de usuario
+    /*
+      pkidusuario: identificador del usuario a cambiar estado
+      active : valor de usuario activo/inactivo
+      nombre_tabla: nombre de la tabla a eliminar
+    */
+    cambiarEstadoUsuario(pkidusuario: number, active: boolean, nombre_tabla: string) {
+        let enviarDatos = { pkid: pkidusuario, active: String(active), nombretabla: nombre_tabla };
+        let json = JSON.stringify(enviarDatos);
+        let params = "json=" + json + "&authorization=" + this.getToken();
+        return this._http.post(this.url + '/active/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+
+    }
+
 
     //Obtener de manera globar los datos del usuario
     getIdentity() {
@@ -107,6 +125,6 @@ export class UsuarioServices {
     }
 
 
-   
+
 
 }
