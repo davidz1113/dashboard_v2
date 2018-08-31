@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Excepcion } from "../modelos/excepcion";
 import { GLOBAL } from "./globales";
-import { Http } from "@angular/http";
+import { Http, Response, Headers } from '@angular/http';
 import { map } from "rxjs/operators";
 
 @Injectable()
@@ -28,11 +28,7 @@ export class ExcepcionService {
      * stack: la pila del error
      */
     capturarExcepcion(excepcion: any) {
-        console.log(excepcion.mensaje);
-        console.log(excepcion.url);
-        console.log(excepcion.stack);
-        console.log(excepcion.funcion);
-
+         
         let excepcions: Excepcion = new Excepcion();
         excepcions.setFkidusuario(this.getIdentity().sub);
         excepcions.setNombreusuario(this.getIdentity().name + this.getIdentity().surname);
@@ -42,23 +38,23 @@ export class ExcepcionService {
         excepcions.setPila(excepcion.stack);
         excepcions.setTipoexcepcion('');
         excepcions.setOrigen('web');
-
         let json = JSON.stringify(excepcions);
-        let params = "json=" + json + "&authorization=" + this.getToken();
+       
+        let params = "json="+json+"&authorization=" + this.getToken();
         console.log(params);
 
-        return this._http.post(this.url + '/exepcion', params, { headers: this.headers })
+        return this._http.post(this.url + '/excepcion', params,{headers:this.headers})
             .pipe(map(res => res.json()));
 
+            
+            
+        }
         //let indiceFin = excepcion.stack.indexOf(" (");
         //let indiceIni = excepcion.stack.indexOf("at");
         //console.log(indiceFin);
 
         //let funcion = excepcion.stack.substr(indiceIni+2,(indiceFin));
 
-
-
-    }
 
 
 

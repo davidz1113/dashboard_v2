@@ -61,10 +61,7 @@ export class TablaUsuariosComponent implements OnInit {
   botonBloqueo: boolean = true;
 
 
-  //variables para la excepcion
-  public location;
-  public url;
-
+  
   constructor(private _userService: UsuarioServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) {
 
 
@@ -79,7 +76,6 @@ export class TablaUsuariosComponent implements OnInit {
   consultarUsuarios() {
     try {
       //throw new Error('Im errorn');
-
       this.respuesta = null;
 
       this._userService.consultarUsuarios().subscribe(
@@ -128,17 +124,17 @@ export class TablaUsuariosComponent implements OnInit {
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "constultarUsuario()"
-
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
   }
 
   ngAfterViewInit() {
-    this.location = this.injector.get(LocationStrategy);
-    this.url = location instanceof PathLocationStrategy
-      ? location.path() : '';
+   
     //this.setFilterDataTable();
     if (this.mensaje != null) {
       //this.msg = this.mensaje;
@@ -150,6 +146,9 @@ export class TablaUsuariosComponent implements OnInit {
 
 
   ngOnInit() {
+    
+    
+      
     //this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
   }
 
@@ -174,7 +173,10 @@ export class TablaUsuariosComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "setFilterDataTable()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -213,7 +215,10 @@ export class TablaUsuariosComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "llamarDialog()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -250,7 +255,10 @@ export class TablaUsuariosComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "openDialog()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -310,7 +318,10 @@ export class TablaUsuariosComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "CambiarEstado()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -328,14 +339,17 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
 
-  enviarExcepcion(mensaje, e, funcion) {
-    this._exceptionService.capturarExcepcion({ mensaje, url: this.url, stack: e.stack, funcion: funcion }).subscribe(
+  enviarExcepcion(mensaje, e, funcion,url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
       response => {
-        if (this.respuesta.length <= 1) {
+        
+        if (response.length <= 1) {
           //this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor al enviar excepcion');
         } else {
-          console.log('La excepcion se envio correctamente');
+          if(response.status=!"error"){
+            console.log('La excepcion se envio correctamente');
+          }
         }
       },
       error => {

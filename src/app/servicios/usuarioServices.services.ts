@@ -5,7 +5,6 @@ import { GLOBAL } from "./globales";
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-
 @Injectable()
 export class UsuarioServices {
     public url: string;
@@ -32,6 +31,9 @@ export class UsuarioServices {
         return this._http.post(this.url + '/user/new', uploadData)
             .pipe(map(res => res.json()));
     }
+
+
+    
 
     actualizarUsuario(usuario_editar: Usuario, uploadData: FormData) {
         let json = JSON.stringify(usuario_editar);

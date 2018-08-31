@@ -48,7 +48,7 @@ export class UserAgregarEditarComponent implements OnInit {
   //mensaje dialog error creacion de usuario
   msg: string = '';
 
-  //PAra alternar entre formularios
+  //PAra alternar entre formularios Y ENVIAR MENSAJE
   @Output() llamarFormulario = new EventEmitter();
   @Output() enviarMensaje = new EventEmitter();
 
@@ -139,7 +139,10 @@ export class UserAgregarEditarComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "onChanges()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -222,7 +225,10 @@ export class UserAgregarEditarComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "nuevoUsuario()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -277,7 +283,10 @@ export class UserAgregarEditarComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "validarFormulario()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -310,7 +319,10 @@ export class UserAgregarEditarComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "onFileChanged()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -340,15 +352,18 @@ export class UserAgregarEditarComponent implements OnInit {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "consultarRoles()"
 
-      this.enviarExcepcion(mensaje, e, funcion);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
       //console.log("error asdasd a:" + e.stack);
 
     }
   }
 
 
-  enviarExcepcion(mensaje, e, funcion) {
-    this._exceptionService.capturarExcepcion({ mensaje, url: this.url, stack: e.stack, funcion: funcion }).subscribe(
+  enviarExcepcion(mensaje, e, funcion,url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
       response => {
         if (this.respuesta.length <= 1) {
           //this.mensaje = 'Error en el servidor';

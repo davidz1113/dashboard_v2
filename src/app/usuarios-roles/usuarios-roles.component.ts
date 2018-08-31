@@ -24,9 +24,11 @@ export class UsuariosRolesComponent implements OnInit {
 
 
   usuario: Usuario;
+  rol: Rol;
 
 
   mensaje: string;
+  mensaje2: string;
 
   constructor(
 
@@ -75,7 +77,7 @@ export class UsuariosRolesComponent implements OnInit {
 
 
   
-  //MEtodo que oculta la tabla de usuarios y muestra la de roles
+  //MEtodo que oculta la tabla de usuarios y muestra la de roles o al contrario
   cambiarRoles(event){
     this.ocultarTabla = !this.ocultarTabla;
     this.ocultarTablaRoles = !this.ocultarTablaRoles;
@@ -85,9 +87,25 @@ export class UsuariosRolesComponent implements OnInit {
   //MEtodo que llamar el formulario de agregar un rol y oculta la tabla e roles
   llamarFormAgregarRol(event){
     this.ocultarTablaRoles = !this.ocultarTablaRoles;
-    
     this.ocultarAgreEditRoles = !this.ocultarAgreEditRoles;
+    if (event != null) {
+      if (event.cancel == '1') {
+        this.rol = null;
+      }
+    }
     console.log(this.ocultarAgreEditRoles);
+    console.log(this.ocultarTablaRoles);
+  }
+
+  enviarRol(event){
+    this.rol = event.rol;
+    this.llamarFormAgregarRol(null);
+  }
+
+  ponerMensajeRol(event){
+    if (event != null) {
+      this.mensaje2 = event.mensaje;
+    }
   }
 
 }

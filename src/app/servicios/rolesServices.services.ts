@@ -39,12 +39,9 @@ export class RolesServices {
     recibe como parametro el rol de tipo Rol para insertar
     adicionalemte, los permisos como un array por aparte
     */
-    crearRol(nuevo_rol) {
+    crearRol(nuevo_rol,arrModulo) {
         let json = JSON.stringify(nuevo_rol);
-        let permisos = {
-            "1": "PERM_USUARIOS",
-            "2": "PERM_ZONAS"
-        };
+        let permisos = "{"+(arrModulo)+"}";
         let params = "json=" + json + "&authorization=" + this.getToken() + "&permisos=" + permisos;
 
         return this._http.post(this.url + '/rol/new', params, { headers: this.headers }).pipe(map(res => res.json()));
