@@ -2,18 +2,33 @@
 export class Rol {
 
     //definicion explicita de los atributos
+    public pkidrol: number;
+    private codigorol: number;
+    public nombrerol: string;
+    private rolactivo: string;
+    private descripcionrol: string;
+    private creacionrol: Date;
+    private modificacionrol: Date;
+    private permiso: string;
     constructor(
-        public pkidrol: number,
-        private codigorol: number,
-        public nombrerol: string,
-        private rolactivo: boolean,
-        private descripcionrol: string,
-        private creacionrol: Date,
-        private modificacionrol: Date,
-        private permiso: string
+        pkidrol: number,
+        codigorol: number,
+        nombrerol: string,
+        rolactivo: string,
+        descripcionrol: string,
+        creacionrol: Date,
+        modificacionrol: Date,
+        permiso: string
 
     ) {
-
+        this.pkidrol = pkidrol;
+        this.codigorol = codigorol;
+        this.nombrerol = nombrerol;
+        this.rolactivo = rolactivo;
+        this.descripcionrol = descripcionrol;
+        this.creacionrol = creacionrol;
+        this.modificacionrol = modificacionrol;
+        this.permiso = permiso;
 
     }
     public getPkidrol(): number {
@@ -44,12 +59,12 @@ export class Rol {
     }
 
     public getRolactivo(): boolean {
-        return this.rolactivo;
+        return Boolean(this.rolactivo);
     }
 
     public setRolactivo(rolactivo: boolean
     ): void {
-        this.rolactivo = rolactivo;
+        this.rolactivo = String(rolactivo);
     }
 
     public getDescripcionRol(): string {

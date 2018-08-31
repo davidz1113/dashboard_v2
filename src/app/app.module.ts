@@ -1,5 +1,5 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
@@ -34,7 +34,12 @@ import { MaterialModules } from './material.modules';
 
 import "reflect-metadata";
 import "es6-shim";
+<<<<<<< HEAD
 
+=======
+import { GlobalErrorHandler } from './servicios/global_error_handler';
+import { ExcepcionService } from './servicios/excepcionServices.services';
+>>>>>>> nuevaRama
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -57,7 +62,14 @@ import "es6-shim";
     LoginComponent
    
   ],
-  providers: [],
+  providers: [
+    ExcepcionService,
+    {
+      provide: ErrorHandler, 
+      useClass: GlobalErrorHandler
+    }
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

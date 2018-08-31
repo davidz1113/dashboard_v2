@@ -43,6 +43,7 @@
     "popper.js": "1.14.3",
     "reflect-metadata": "^0.1.12",
     "rxjs": "5.5.10",
+    "stacktrace-js": "^2.0.0",
     "web-animations-js": "2.3.1",
     "zone.js": "0.8.4"
   },
@@ -56,6 +57,7 @@
     "@types/jasmine": "2.5.38",
     "@types/jquery": "1.10.31",
     "@types/node": "6.0.73",
+    "@types/stacktrace-js": "0.0.32",
     "codelyzer": "4.2.1",
     "jasmine-core": "3.1.0",
     "jasmine-spec-reporter": "4.2.1",
