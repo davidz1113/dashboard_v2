@@ -14,7 +14,7 @@ import { ExcepcionService } from '../../servicios/excepcionServices.services';
   selector: 'app-tabla-usuarios',
   templateUrl: './tabla-usuarios.component.html',
   styleUrls: ['./tabla-usuarios.component.scss'],
-  providers: [UsuarioServices,ExcepcionService]
+  providers: [UsuarioServices, ExcepcionService]
 })
 export class TablaUsuariosComponent implements OnInit {
   //Cabeceras de las columnas
@@ -49,6 +49,10 @@ export class TablaUsuariosComponent implements OnInit {
   //para recibir el mensaje del usuario agregado
   @Input() mensaje: string;
 
+
+  //para llamar el formulario de Roles;
+  @Output() llamarFormRoles = new EventEmitter();
+
   //clase dinamica pra carga de mensajes
   claseDinamic = "alert alert-success alert-with-icon";
   iconAlert = "done";
@@ -56,18 +60,26 @@ export class TablaUsuariosComponent implements OnInit {
   //boton desactivado en caso q no hayan usuarios o este caragndo
   botonBloqueo: boolean = true;
 
-  constructor(private _userService: UsuarioServices, public dialog: MatDialog, private injector: Injector, private _exceptionService:ExcepcionService) {
+
+  //variables para la excepcion
+  public location;
+  public url;
+
+  constructor(private _userService: UsuarioServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) {
+
 
   }
   closeDialog() {
     this.mensaje = '';
+
   }
 
 
+  //Metodo que consulta los usuarios y los envia a la tabla
   consultarUsuarios() {
     try {
+      //throw new Error('Im errorn');
 
-      throw new Error('Im errorn');
       this.respuesta = null;
 
       this._userService.consultarUsuarios().subscribe(
@@ -115,19 +127,18 @@ export class TablaUsuariosComponent implements OnInit {
       );
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      const location = this.injector.get(LocationStrategy);
-      const url = location instanceof PathLocationStrategy
-        ? location.path() : '';
-        
-        this._exceptionService.capturarExcepcion({ mensaje, url, stack: e.stack });
+      let funcion = "constultarUsuario()"
+
+      this.enviarExcepcion(mensaje, e, funcion);
       //console.log("error asdasd a:" + e.stack);
-
-
 
     }
   }
 
   ngAfterViewInit() {
+    this.location = this.injector.get(LocationStrategy);
+    this.url = location instanceof PathLocationStrategy
+      ? location.path() : '';
     //this.setFilterDataTable();
     if (this.mensaje != null) {
       //this.msg = this.mensaje;
@@ -149,13 +160,24 @@ export class TablaUsuariosComponent implements OnInit {
 
 
   setFilterDataTable() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
-      //console.log(this.filtroNombreCedula);
-      //console.log("holaaa");
-      return ((data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 || data.getIdentificacion().toString().indexOf(this.filtroNombreCedula) !== -1) && (data.getUsuarioActivo() == true || this.toggleActDesc == true));
-    };
+    try {
+
+
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
+        //console.log(this.filtroNombreCedula);
+        //console.log("holaaa");
+        return ((data.getNombreUsuario().toLowerCase().indexOf(this.filtroNombreCedula) !== -1 || data.getIdentificacion().toString().indexOf(this.filtroNombreCedula) !== -1) && (data.getUsuarioActivo() == true || this.toggleActDesc == true));
+      };
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "setFilterDataTable()"
+
+      this.enviarExcepcion(mensaje, e, funcion);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
   }
 
   clearInput() {
@@ -176,16 +198,25 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
   llamarDialog(idUser) {
-    console.log(this.usuarios[0].getIdentificacion());
-    let user: Usuario;
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].getIdentificacion() == idUser) {
-        user = this.usuarios[i];
+    try {
+      console.log(this.usuarios[0].getIdentificacion());
+      let user: Usuario;
+      for (let i = 0; i < this.usuarios.length; i++) {
+        if (this.usuarios[i].getIdentificacion() == idUser) {
+          user = this.usuarios[i];
+        }
       }
-    }
-    console.log(user.getNombreUsuario());
+      console.log(user.getNombreUsuario());
 
-    this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
+      this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "llamarDialog()"
+
+      this.enviarExcepcion(mensaje, e, funcion);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
 
   }
 
@@ -193,73 +224,97 @@ export class TablaUsuariosComponent implements OnInit {
 
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(nombreUser, idUser): void {
-    const dialogRef = this.dialog.open(DialogConfirmacionComponent, {
-      width: '250px',
-      data: { nombreUser: nombreUser, idUser: idUser }
-    });
+    try {
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.mensaje = result.respuesta;
-      if (result != null) {
-        console.log(result.status);
-        if (result.status == "error") {
-          this.mostrarMensaje(0);
-        } else if (result.status == "Success") {
-          this.mostrarMensaje(1)
-          this.toggleActDesc = false;
-          this.consultarUsuarios();
+      const dialogRef = this.dialog.open(DialogConfirmacionComponent, {
+        width: '250px',
+        data: { nombreUser: nombreUser, idUser: idUser }
+      });
 
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.mensaje = result.respuesta;
+        if (result != null) {
+          console.log(result.status);
+          if (result.status == "error") {
+            this.mostrarMensaje(0);
+          } else if (result.status == "Success") {
+            this.mostrarMensaje(1)
+            this.toggleActDesc = false;
+            this.consultarUsuarios();
+
+          }
         }
-      }
-    });
+      });
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "openDialog()"
+
+      this.enviarExcepcion(mensaje, e, funcion);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
   }
 
 
   cambiarEstado(usuario: Usuario) {
-    let active = usuario.getUsuarioActivo();
-    console.log("Active: " + active);
+    try {
 
-    this._userService.cambiarEstadoUsuario(usuario.getPkidusuario(), !active, "tusuario").subscribe(
-      response => {
-        this.respuesta = response;
-        if (this.respuesta.length <= 1) {
+
+
+      let active = usuario.getUsuarioActivo();
+      console.log("Active: " + active);
+
+      this._userService.cambiarEstadoUsuario(usuario.getPkidusuario(), !active, "tusuario").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado del usuario " + usuario.getNombreUsuario() + " : " + this.respuesta.msg;
+            //cambiamos el usuario de estado
+            this.toggleActDesc = false;
+            this.consultarUsuarios();
+            /*
+            this.usuarios.map((usu, i) => {
+              if (usu.getPkidusuario() == usuario.getPkidusuario()) {
+                console.log(usu.getPkidusuario()+"---"+usuario.getPkidusuario());
+                
+                console.log("Active2: "+active);
+                if(active==false){
+                  usu.setUsuarioActivo(false);
+                }else{
+                  usu.setUsuarioActivo(true);
+                }
+                console.log(usu.usuarioactivo);
+                
+                //this.consultarUsuarios();
+                return;
+                
+              }
+            });
+            */
+            this.mostrarMensaje(1);
+          }
+        },
+        error => {
           this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
-        } else {
-          this.mensaje = "El cambio de estado del usuario " + usuario.getNombreUsuario() + " : " + this.respuesta.msg;
-          //cambiamos el usuario de estado
-          this.toggleActDesc = false;
-          this.consultarUsuarios();
-          /*
-          this.usuarios.map((usu, i) => {
-            if (usu.getPkidusuario() == usuario.getPkidusuario()) {
-              console.log(usu.getPkidusuario()+"---"+usuario.getPkidusuario());
-              
-              console.log("Active2: "+active);
-              if(active==false){
-                usu.setUsuarioActivo(false);
-              }else{
-                usu.setUsuarioActivo(true);
-              }
-              console.log(usu.usuarioactivo);
-              
-              //this.consultarUsuarios();
-              return;
-              
-            }
-          });
-          */
-          this.mostrarMensaje(1);
         }
-      },
-      error => {
-        this.mensaje = 'Error en el servidor';
-        console.log('Error en el servidor');
-        this.mostrarMensaje(0);
-      }
-    );
+      );
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "CambiarEstado()"
+
+      this.enviarExcepcion(mensaje, e, funcion);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+
   }
 
   mostrarMensaje(codeError: number) {
@@ -271,6 +326,25 @@ export class TablaUsuariosComponent implements OnInit {
       this.iconAlert = "warning";
     }
   }
+
+
+  enviarExcepcion(mensaje, e, funcion) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: this.url, stack: e.stack, funcion: funcion }).subscribe(
+      response => {
+        if (this.respuesta.length <= 1) {
+          //this.mensaje = 'Error en el servidor';
+          console.log('Error en el servidor al enviar excepcion');
+        } else {
+          console.log('La excepcion se envio correctamente');
+        }
+      },
+      error => {
+        console.log('Error en el servidor al enviar excepcion');
+      }
+
+    );
+  }
+
 
 }
 

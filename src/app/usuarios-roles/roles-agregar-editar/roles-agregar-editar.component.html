@@ -1,0 +1,92 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="col-sm-8">
+      <!--inicio formulario de nuevo rol-->
+      <div class="card" *ngIf="nRol">
+        <div class="card-header card-header-danger ">
+          <h4 class="card-title text-center">Agregar un nuevo rol</h4>
+          <p class="card-category text-center">*Todos los campos son obligatorios</p>
+        </div>
+
+        <div class="card-body">
+          <!--Mensaje de confirmacion-->
+          <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
+            <i class="material-icons" data-notify="icon">warning</i>
+            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+              <i class="material-icons">close</i>
+            </button>
+            <span data-notify="message">
+              <b>Info:</b> {{msg}} </span>
+          </div>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoRol"></mat-progress-bar>
+
+          <!--Fin mensaje confirmacion-->
+        </div>
+
+
+        <form [formGroup]="nuevoRolForm" (ngSubmit)="nuevoRol()" >
+
+          <div class="form-group">
+            <div class="row">
+
+                <div class="col-sm-4 mx-auto ">
+                    <mat-form-field class="example-full-width">
+                      <input matInput type="number" placeholder="Digite codigo del rol" id="codigorol" name="codigorol" formControlName="codigorol">
+                      <mat-error *ngIf="nuevoRolForm.get('codigorol').hasError('required')">
+                        el codigo es <strong>obligatorio</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite nombre del rol" id="nombrerol" name="nombrerol" formControlName="nombrerol">
+                  <mat-error *ngIf="nuevoRolForm.get('nombrerol').hasError('required')">
+                    El nombre es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <div class="row">
+              
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite descripcion del rol" id="descripcionrol" name="descripcionrol" formControlName="descripcionrol">
+                  <mat-error *ngIf="nuevoRolForm.get('descripcionrol').hasError('required')">
+                    La descripcion es <strong>requerida</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-4 mx-auto mt-1">
+                <mat-slide-toggle (change)="activarDesactivarRol()" [checked]="active">Rol {{textActive}} </mat-slide-toggle>
+              </div>
+
+             
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoRolForm.valid">{{mensajeBoton}}
+              </button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormulario.emit({cancel:'1'});">Cancelar</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <!--
+                  <pre>Status del formulario: {{ nuevoRolForm.get('repetirContrasenia').hasError('') | json }}</pre>
+                  <pre>Status del formulario: {{ nuevoRolForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
+                  Fin formulario nuevo Rol
+                -->
+    </div>
+  </div>
+</div>

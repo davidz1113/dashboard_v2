@@ -16,10 +16,14 @@ import { Rol } from '../modelos/rol';
 
 export class UsuariosRolesComponent implements OnInit {
 
+  //variables para ocultar/mostrar las tablas/formularios de usuarios y roles
   ocultarTabla: boolean = true;
   ocultarAgreEdit: boolean = false;
+  ocultarTablaRoles: boolean = false;
+  ocultarAgreEditRoles: boolean = false;
 
-  usuario:Usuario;
+
+  usuario: Usuario;
 
 
   mensaje: string;
@@ -35,20 +39,26 @@ export class UsuariosRolesComponent implements OnInit {
 
   }
 
-  cambiarEstados(event){
+  //para cambiar entre el formulario de agregar usuario y el de la tabla de usuarios
+
+  cambiarEstados(event) {
     this.ocultarAgreEdit = !this.ocultarAgreEdit;
     this.ocultarTabla = !this.ocultarTabla;
-    
-    if(event!=null){
-      if(event.cancel=='1'){
-        this.usuario =null;
+
+    //si se le da cancelar recibe el parametro de 1 y, resetamos el usuario a null
+
+    if (event != null) {
+      if (event.cancel == '1') {
+        this.usuario = null;
       }
     }
 
 
   }
 
-  enviarUsuario(event){
+  //Metodo que envia el usuario para actualizarlo
+
+  enviarUsuario(event) {
     this.usuario = event.usuario;
     //console.log(this.usuario);
     this.cambiarEstados(null);
@@ -57,12 +67,28 @@ export class UsuariosRolesComponent implements OnInit {
 
 
 
-  ponerMensaje(event){
-    if(event!=null){
+  ponerMensaje(event) {
+    if (event != null) {
       this.mensaje = event.mensaje;
     }
   }
 
+
+  
+  //MEtodo que oculta la tabla de usuarios y muestra la de roles
+  cambiarRoles(event){
+    this.ocultarTabla = !this.ocultarTabla;
+    this.ocultarTablaRoles = !this.ocultarTablaRoles;
+  }
+
+
+  //MEtodo que llamar el formulario de agregar un rol y oculta la tabla e roles
+  llamarFormAgregarRol(event){
+    this.ocultarTablaRoles = !this.ocultarTablaRoles;
+    
+    this.ocultarAgreEditRoles = !this.ocultarAgreEditRoles;
+    console.log(this.ocultarAgreEditRoles);
+  }
 
 }
 

@@ -60,11 +60,22 @@
 
 
 
-            <div class="col-sm-4">
-              <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);" [disabled]="botonBloqueo">Nuevo
-                Usuario
-              </button>
+           
+            <div class="row">
+
+              <div class="col-sm-4 mx-auto">
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);" [disabled]="botonBloqueo">Nuevo
+                  Usuario
+                </button>
+              </div>
+              <div class="col-sm-4 mx-auto">
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormRoles.emit(null);" >Ver Roles
+                </button>
+                <!--[disabled]="botonBloqueo"-->
+              </div>
+
             </div>
+
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="identificacion">

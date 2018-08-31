@@ -56,8 +56,6 @@ import { ExcepcionService } from './servicios/excepcionServices.services';
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    
-    
    
   ],
   providers: [
