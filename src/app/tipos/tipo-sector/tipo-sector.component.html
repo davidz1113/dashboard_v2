@@ -4,8 +4,8 @@
         <div class="col-sm-12">
             <div class="card ">
               <div class="card-header card-header-danger">
-                <h4 class="card-title">Tabla de Roles</h4>
-                <p class="card-category">Registro de Roles</p>
+                <h4 class="card-title">Tabla de Tipo de Sectores</h4>
+                <p class="card-category">Registro de Tipo de Sectores</p>
               </div>
     
               <div class="card-body">
@@ -15,8 +15,8 @@
                   <!--Input filtro de un campo-->
                   <div class="col-sm-4">
                     <mat-form-field>
-                      <input matInput [(ngModel)]="filtroNombreRol" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de rol">
-                      <button mat-button *ngIf="filtroNombreRol" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                      <input matInput [(ngModel)]="filtroNombreTipoSector" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de tipo de rol">
+                      <button mat-button *ngIf="filtroNombreTipoSector" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
                         <mat-icon>close</mat-icon>
                       </button>
                     </mat-form-field>
@@ -24,7 +24,7 @@
                   <!--Fin filtro input -->
                   <!--Filtro boton  toggle inhabilidatos -->
                   <div class="col-sm-4">
-                    <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar roles desactivados</mat-slide-toggle>
+                    <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Tipo de Sectores desactivados</mat-slide-toggle>
                   </div>
                   <!--Fin Filtro boton toggle -->
                   <!--Fin Filtros-->
@@ -42,7 +42,7 @@
                   <span data-notify="message">
                     <b>Info:</b> {{mensaje}} </span>
                   <div class="col-sm-4">
-                    <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarRoles()" *ngIf="respuesta=='error'">Intentar
+                    <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarTipoSectores()" *ngIf="respuesta=='error'">Intentar
                       de nuevo
                     </button>
                   </div>
@@ -53,41 +53,48 @@
     
                 <!--Fin mensaje confirmacion-->
                 <div *ngIf="respuesta==null">
-                  Cargando Roles
+                  Cargando Tipo de Roles
                   <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
                 </div>
     
     
                 <div class="row">
     
-                  <div class="col-sm-4 mx-auto">
-                    <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarRol.emit(null);" [disabled]="botonBloqueo">Nuevo
-                      Rol
+                  <div class="col-sm-4 ">
+                    <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarTipoSector.emit(null);" [disabled]="botonBloqueo">Nuevo
+                      tipo de sector
                     </button>
                   </div>
-                  <div class="col-sm-4 mx-auto">
-                    <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormUsuarios.emit(null);" >Volver a Usuarios
-                    </button>
-                    <!--[disabled]="botonBloqueo"-->
-                  </div>
-    
                 </div>
+
+
+                <!--
+                  Formulario para agregar un tipo de sector nuevo
+                -->
+
+                <div>
+                  
+                </div>
+
+                <!--
+                  Fin formulario para agregar un tipo de sector
+                -->
     
                 <div class="table-responsive mat-elevation-z8">
                   <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
-                    <ng-container matColumnDef="nombrerol">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header> Rol </mat-header-cell>
-                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getRolactivo() }"> {{element.nombrerol}}
+                    <ng-container matColumnDef="nombretiposector">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre tipo de sector </mat-header-cell>
+                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getNombretiposector()}}
                       </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="descripcionrol">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</mat-header-cell>
-                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getRolactivo() }"> {{element.getDescripcionRol()}}
+                    <ng-container matColumnDef="descripciontiposector">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header>Descripción tipo de sector</mat-header-cell>
+                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getDescripciontiposector()}}
                       </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="rolactivo">
-                      <mat-header-cell *matHeaderCellDef mat-sort-header> Rol Activo/Desactivado </mat-header-cell>
-                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getRolactivo() }"> {{element.getRolactivo()?'Activo':'Desactivado'}}
+                    <ng-container matColumnDef="tiposectoractivo">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo sector Activo/Desactivado </mat-header-cell>
+                      <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getTiposectoractivo()?'Activo':'Desactivado'}}
                       </mat-cell>
                     </ng-container>
                     
@@ -95,16 +102,16 @@
                       <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                       <mat-cell *matCellDef="let element ; let i=index">
     
-                        <button mat-icon-button matTooltip="Editar Rol" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                        <button mat-icon-button matTooltip="Editar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
                           class="example-button" (click)="enviarRol.emit({rol:element})"> <i class="material-icons ">edit</i>
                         </button>
     
-                        <button mat-icon-button matTooltip="Eliminar Rol" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                        <button mat-icon-button matTooltip="Eliminar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
                           class="example-button" (click)="openDialog(element)">
                           <i class="material-icons ">delete</i>
                         </button>
     
-                        <button mat-icon-button matTooltip="Desactivar Rol" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                        <button mat-icon-button matTooltip="Desactivar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
                           class="example-button" (click)="cambiarEstadoRol(element)">
                           <i class="material-icons ">not_interested</i>
                         </button>

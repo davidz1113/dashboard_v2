@@ -35,6 +35,7 @@ import { MaterialModules } from './material.modules';
 import "reflect-metadata";
 import "es6-shim";
 import { ExcepcionService } from './servicios/excepcionServices.services';
+import { SectoresComponent } from './sectores/sectores.component';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -54,7 +55,8 @@ import { ExcepcionService } from './servicios/excepcionServices.services';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    LoginComponent
+    LoginComponent,
+    SectoresComponent
    
   ],
   providers: [

@@ -52,6 +52,11 @@ export class UsuariosRolesComponent implements OnInit {
     if (event != null) {
       if (event.cancel == '1') {
         this.usuario = null;
+        console.log("cancel");
+        //el mensaje pasa a null en caso que solo sea cancelar
+        if(event.msj!=null){
+          this.mensaje=null;
+        }
       }
     }
 
@@ -91,10 +96,14 @@ export class UsuariosRolesComponent implements OnInit {
     if (event != null) {
       if (event.cancel == '1') {
         this.rol = null;
+        console.log("cancel");
+        if(event.msj!=null){
+          this.mensaje2=null;
+        }
       }
     }
-    console.log(this.ocultarAgreEditRoles);
-    console.log(this.ocultarTablaRoles);
+    //console.log(this.ocultarAgreEditRoles);
+    //console.log(this.ocultarTablaRoles);
   }
 
   enviarRol(event){

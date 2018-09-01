@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { RolesServices } from '../../servicios/rolesServices.services';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Rol } from '../../modelos/rol';
@@ -10,7 +10,7 @@ import { forEach } from '@angular/router/src/utils/collection';
   selector: 'app-roles-agregar-editar',
   templateUrl: './roles-agregar-editar.component.html',
   styleUrls: ['./roles-agregar-editar.component.scss'],
-  providers: [RolesServices,ModuloServices]
+  providers: [RolesServices, ModuloServices]
 })
 export class RolesAgregarEditarComponent implements OnInit {
 
@@ -53,10 +53,10 @@ export class RolesAgregarEditarComponent implements OnInit {
   //variable de consulta de permisos
   permisos: Modulo[];
 
- 
+
 
   constructor(private nuevoForm: FormBuilder,
-    private _rolesServices: RolesServices,private _modulosServices: ModuloServices) { }
+    private _rolesServices: RolesServices, private _modulosServices: ModuloServices) { }
 
   ngOnInit() {
     //validamos el formulario
@@ -67,20 +67,20 @@ export class RolesAgregarEditarComponent implements OnInit {
 
   //metodo que consulta los permisos de la tabla modulo
   //para setearlos en el objeto de permisos
-  consultarPermisos(){
+  consultarPermisos() {
     this._modulosServices.consultarModulos().subscribe(
-      response=>{
+      response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
           this.msg = 'Error en el servidor al consultar los permisos';
           console.log('Error en el servidor al consultar los permisos');
         } else {
-          this.permisos =  plainToClass(Modulo, this.respuesta.modulo)//recupero los permisos
+          this.permisos = plainToClass(Modulo, this.respuesta.modulo)//recupero los permisos
           //console.log(this.permisos[1].getIcono().length);
         }
-        
+
       },
-      error=>{
+      error => {
         this.msg = 'Error en el servidor al consultar los permisos';
         console.log('Error en el servidor al consultar los permisos(tabla modulos)');
 
@@ -100,23 +100,20 @@ export class RolesAgregarEditarComponent implements OnInit {
     this.identidad.setRolactivo(this.active);
     let arrPermisos = this.nuevoRolForm.get('pkidmodulo').value;
     let arrModulo = [];
-    let stringMod='';
-    
-    arrPermisos.forEach(element => {
-    let rol= element.split('-');
-    let id = rol[0];
-    let nombre = rol[1];
-      
-    arrModulo.push('"'+id+'"'+':'+'"'+nombre+'"');
-   });
 
-   console.log(arrModulo);
-   
-   
+    arrPermisos.forEach(element => {
+      let rol = element.split('-');
+      let id = rol[0];
+      let nombre = rol[1];
+
+      arrModulo.push('"' + id + '"' + ':' + '"' + nombre + '"');
+    });
+
+    //console.log(arrModulo);
 
     if (this.rol == null) {//Si el rol de entrada por input es vacio significa q es un nuevo usuario
-      
-      this._rolesServices.crearRol(this.identidad,arrModulo).subscribe(
+
+      this._rolesServices.crearRol(this.identidad, arrModulo).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -141,12 +138,13 @@ export class RolesAgregarEditarComponent implements OnInit {
 
       );
 
-      
+
     } else {//si llega el rol por el parametro input es actualizar
-      
-      
+
+      console.log(this.valueSelect);
+
       this.identidad.setPkidrol(this.rol.getPkidrol());
-      this._rolesServices.actualizarRol(this.identidad).subscribe(
+      this._rolesServices.actualizarRol(this.identidad,arrModulo,this.valueSelect).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -161,7 +159,7 @@ export class RolesAgregarEditarComponent implements OnInit {
         },
         error => {
           this.msg = 'Error en el servidor';
-          console.log('Error en el servidor'+error);
+          console.log('Error en el servidor' + error);
 
         }
 
@@ -171,29 +169,52 @@ export class RolesAgregarEditarComponent implements OnInit {
 
   }
 
-
+  valueSelect = [];
   validarFormulario() {
+    let perm: any[];
+   
     if (this.rol != null) {//si llega por actualizar
       this.active = this.rol.getRolactivo();
       this.textActive = this.active ? "Activado" : "Desactivado";
       this.mensajeBoton = "Actualizar";
-      console.log(this.rol.getPermiso());
+      perm = (this.rol.getPermiso());
       //var PHPUnserialize = require('php-unserialize');
       //this.seleccionados = PHPUnserialize.unserialize(this.rol.getPermiso());
-      this.seleccionados = JSON.stringify(this.rol.getPermiso());
-      console.log(this.seleccionados);
+      //this.seleccionados = JSON.stringify(this.rol.getPermiso());
+      //convierte el parametro en array para poder acceder
+      var res = Object.keys(perm)
+        // iterate over them and generate the array
+        .map(function (k) {
+          // generate the array element 
+          return [+k, perm[k]];
+        }); 
+        //console.log(res.length);
+
+      for (let i = 0; i < res.length; i++) {
+        //console.log(res[i]);
+        let unir = '';
+        for (let j = 0; j < res[i].length; j++) {
+          //console.log(res[i][j]);
+          unir+=res[i][j]+"-";
+        }
+        this.valueSelect.push(unir.slice(0,-1));//cortamos el - final
+
+        
+      }
+      this.seleccionados=this.valueSelect;
+   
 
 
-    }else{
+    } else {
 
       this.mensajeBoton = "Guardar";
     }
 
     this.nuevoRolForm = this.nuevoForm.group({
-      codigorol: [this.rol!=null?this.rol.getCodigoRol():'', Validators.required],
-      nombrerol: [this.rol!=null?this.rol.getNombreRol():'', Validators.required],
-      descripcionrol: [this.rol!=null?this.rol.getDescripcionRol():'', Validators.required],
-      pkidmodulo: ['', Validators.required]
+      codigorol: [this.rol != null ? this.rol.getCodigoRol() : '', Validators.required],
+      nombrerol: [this.rol != null ? this.rol.getNombreRol() : '', Validators.required],
+      descripcionrol: [this.rol != null ? this.rol.getDescripcionRol() : '', Validators.required],
+      pkidmodulo: [this.rol != null ? this.valueSelect : '', Validators.required]
     });
 
   }
@@ -204,15 +225,15 @@ export class RolesAgregarEditarComponent implements OnInit {
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
 
-  
+
   closeDialog() {
     this.msg = '';
   }
 
   seleccionados;
-    //metodo que muestra los seleccionados
-  onChangePermisos(event){
-    this.seleccionados  = event.value;
+  //metodo que muestra los seleccionados
+  onChangePermisos(event) {
+    this.seleccionados = event.value;
     console.log(this.seleccionados);
   }
 }

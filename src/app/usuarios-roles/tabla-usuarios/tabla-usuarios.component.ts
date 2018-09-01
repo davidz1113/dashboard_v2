@@ -151,22 +151,11 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-   
-    //this.setFilterDataTable();
-    if (this.mensaje != null) {
-      //this.msg = this.mensaje;
-      //this.mostrarMensaje(1);
-
-    }
     this.consultarUsuarios();
   }
 
 
   ngOnInit() {
-    
-    
-      
-    //this.dataSource = new MatTableDataSource<Usuario>(this.usuarios);
   }
 
   //Método para aplicar el filtro en la tabla

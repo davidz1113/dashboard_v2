@@ -9,7 +9,7 @@ export class Rol {
     private descripcionrol: string;
     private creacionrol: Date;
     private modificacionrol: Date;
-    private permiso: string;
+    private permiso: any[];
     constructor(
         pkidrol: number,
         codigorol: number,
@@ -18,7 +18,7 @@ export class Rol {
         descripcionrol: string,
         creacionrol: Date,
         modificacionrol: Date,
-        permiso: string
+        permiso: any
 
     ) {
         this.pkidrol = pkidrol;
@@ -94,11 +94,11 @@ export class Rol {
         this.modificacionrol = modificacionrol;
     }
 
-    public getPermiso(): string {
+    public getPermiso(): any[] {
         return this.permiso;
     }
 
-    public setPermiso(permiso: string): void {
+    public setPermiso(permiso: any): void {
         this.permiso = permiso;
     }
 

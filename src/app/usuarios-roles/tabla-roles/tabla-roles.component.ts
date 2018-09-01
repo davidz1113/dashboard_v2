@@ -1,13 +1,17 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input, Injector } from '@angular/core';
 import { Rol } from '../../modelos/rol';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { RolesServices } from '../../servicios/rolesServices.services';
-import { plainToClass, serialize, deserialize } from "class-transformer";
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { plainToClass} from "class-transformer";
+import { ExcepcionService } from '../../servicios/excepcionServices.services';
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { DialogConfirmacionRol } from './dialogRol.confirm.component';
 @Component({
   selector: 'app-tabla-roles',
   templateUrl: './tabla-roles.component.html',
   styleUrls: ['./tabla-roles.component.scss'],
-  providers: [RolesServices]
+  providers: [RolesServices,ExcepcionService]
 })
 export class TablaRolesComponent implements OnInit {
   //Cabeceras de las columnas
@@ -43,8 +47,8 @@ export class TablaRolesComponent implements OnInit {
   @Input() mensaje: string;
 
   //clase dinamica pra carga de mensajes
-  claseDinamic = "alert alert-warning alert-with-icon";
-  iconAlert = "warning";
+  claseDinamic = "alert alert-success alert-with-icon";
+  iconAlert = "done";
 
 
   //boton desactivado en caso q no hayan roles o este caragndo
@@ -52,23 +56,13 @@ export class TablaRolesComponent implements OnInit {
 
 
 
-  constructor(private _rolService: RolesServices, public dialog: MatDialog) { }
+  constructor(private _rolService: RolesServices, public dialog: MatDialog,private injector: Injector, private _exceptionService: ExcepcionService) { }
 
   ngOnInit() {
-    this.consultarRoles();
   }
-
+  
   ngAfterViewInit() {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    //Si el mensaje de eliminar rol trae un mensaje
-    if (this.mensaje != null) {
-      //this.msg = this.mensaje;
-      this.claseDinamic = "alert alert-success alert-with-icon";
-      this.iconAlert = "done";
-
-    }
-    //this.setFilterDataTable();
+    this.consultarRoles();
   }
 
 
@@ -87,6 +81,7 @@ export class TablaRolesComponent implements OnInit {
   Metodo que consulta los roles de usuario y los asigna al dataSource para el ordenamiento, paginacion y demas
   */
   consultarRoles() {
+    try {
     this.respuesta = null;
     this._rolService.consultarTodosRoles().subscribe(
       response => {
@@ -94,6 +89,7 @@ export class TablaRolesComponent implements OnInit {
         if (this.respuesta.length <= 1) {
           this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor');
+          this.mostrarMensaje(0);
         } else {
 
           //console.log(ser);
@@ -117,13 +113,25 @@ export class TablaRolesComponent implements OnInit {
       error => {
         this.mensaje = 'Error en el servidor';
         this.respuesta = 'error';
+        this.mostrarMensaje(0);
         console.log('Error en el servidor: '+error);
       }
 
     );
+     } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "constultarRol()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
   }
 
   setFilterDataTable() {
+    try{
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.filterPredicate = (data: Rol, filter: string) => {
@@ -131,6 +139,18 @@ export class TablaRolesComponent implements OnInit {
       //console.log("holaaa");
       return ((data.getNombreRol().toLowerCase().indexOf(this.filtroNombreRol) !== -1 ) && (data.getRolactivo() == true || this.toggleActDesc == true));
     };
+  } catch (e) {
+    const mensaje = e.message ? e.message : e.toString();
+    let funcion = "setFilterDataTable()"
+
+    const location = this.injector.get(LocationStrategy);
+    const url = location instanceof PathLocationStrategy
+    ? location.path() : '';
+    this.enviarExcepcion(mensaje, e, funcion,url);
+    //console.log("error asdasd a:" + e.stack);
+
+  }
+
   }
 
 
@@ -140,4 +160,127 @@ export class TablaRolesComponent implements OnInit {
   }
 
   
+  //dialogo de confirmacion para eliminar o no el rol
+  openDialog(rol:Rol): void {
+    try {
+
+    let nombreRol = rol.getNombreRol();
+    let idRol = rol.getPkidrol();
+
+      const dialogRef = this.dialog.open(DialogConfirmacionRol, {
+        width: '250px',
+        data: { nombreRol: nombreRol, idRol: idRol }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.mensaje =  result.respuesta +" Nombre del Rol: "+nombreRol;
+        if (result != null) {
+          console.log(result.status);
+          if (result.status == "error") {
+            this.mostrarMensaje(0);
+          } else if (result.status == "Success") {
+            this.mostrarMensaje(1)
+            this.toggleActDesc = false;
+            this.consultarRoles();
+
+          }
+        }
+      });
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "openDialog()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
+      //console.log("error asdasd a:" + e.stack);
+    }
+  }
+
+
+  cambiarEstadoRol(rol: Rol) {
+    try {
+      let active = rol.getRolactivo();
+      console.log("Active: " + active);
+
+      this._rolService.cambiarEstadoRol(rol.getPkidrol(), !active, "trol").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado del rol " + rol.getNombreRol() + " : " + this.respuesta.msg;
+            //cambiamos eal rol de estado
+            this.toggleActDesc = false;
+            this.consultarRoles();
+          
+            this.mostrarMensaje(1);
+          }
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          console.log('Error en el servidor');
+          this.mostrarMensaje(0);
+        }
+      );
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "CambiarEstadoRol()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+
+  }
+
+  //Mostrar mensaje variable estilizado de error o de confirmacion 
+  mostrarMensaje(codeError: number) {
+    if (codeError == 1) {
+      this.claseDinamic = "alert alert-success alert-with-icon";
+      this.iconAlert = "done";
+    } else if (codeError == 0) {
+      this.claseDinamic = "alert alert-warning alert-with-icon";
+      this.iconAlert = "warning";
+    }
+  }
+
+
+   /*
+    MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
+  */
+ enviarExcepcion(mensaje, e, funcion,url) {
+  this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+    response => {
+      
+      if (response.length <= 1) {
+        console.log('Error en el servidor al enviar excepcion');
+      } else {
+        if(response.status=!"error"){
+          console.log('La excepcion se envio correctamente');
+        }
+      }
+    },
+    error => {
+      console.log('Error en el servidor al enviar excepcion');
+    }
+
+  );
+}
+
+}
+
+//interfaz para comunicarse con el dialogo
+export interface DialogDataRol {
+  nombreRol: string;
+  idRol: number;
+  respuesta: string;
 }
