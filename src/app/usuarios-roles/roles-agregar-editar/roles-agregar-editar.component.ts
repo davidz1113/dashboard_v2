@@ -114,7 +114,7 @@ export class RolesAgregarEditarComponent implements OnInit {
    
    
 
-    if (this.rol == null) {//Si el usuario de entrada por input es vacio significa q es un nuevo usuario
+    if (this.rol == null) {//Si el rol de entrada por input es vacio significa q es un nuevo usuario
       
       this._rolesServices.crearRol(this.identidad,arrModulo).subscribe(
         response => {
@@ -143,6 +143,8 @@ export class RolesAgregarEditarComponent implements OnInit {
 
       
     } else {//si llega el rol por el parametro input es actualizar
+      
+      
       this.identidad.setPkidrol(this.rol.getPkidrol());
       this._rolesServices.actualizarRol(this.identidad).subscribe(
         response => {
@@ -175,15 +177,22 @@ export class RolesAgregarEditarComponent implements OnInit {
       this.active = this.rol.getRolactivo();
       this.textActive = this.active ? "Activado" : "Desactivado";
       this.mensajeBoton = "Actualizar";
+      console.log(this.rol.getPermiso());
+      //var PHPUnserialize = require('php-unserialize');
+      //this.seleccionados = PHPUnserialize.unserialize(this.rol.getPermiso());
+      this.seleccionados = JSON.stringify(this.rol.getPermiso());
+      console.log(this.seleccionados);
+
+
     }else{
 
       this.mensajeBoton = "Guardar";
     }
 
     this.nuevoRolForm = this.nuevoForm.group({
-      codigorol: [/*this.rol!=null?this.rol.getCodigoRol():*/'', Validators.required],
-      nombrerol: [/*this.rol!=null?this.rol.getNombreRol():*/'', Validators.required],
-      descripcionrol: [/*this.rol!=null?this.rol.getDescripcionRol():*/'', Validators.required],
+      codigorol: [this.rol!=null?this.rol.getCodigoRol():'', Validators.required],
+      nombrerol: [this.rol!=null?this.rol.getNombreRol():'', Validators.required],
+      descripcionrol: [this.rol!=null?this.rol.getDescripcionRol():'', Validators.required],
       pkidmodulo: ['', Validators.required]
     });
 

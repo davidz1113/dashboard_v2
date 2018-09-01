@@ -178,8 +178,6 @@ export class TablaUsuariosComponent implements OnInit {
 
   setFilterDataTable() {
     try {
-
-
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (data: Usuario, filter: string) => {
@@ -205,31 +203,14 @@ export class TablaUsuariosComponent implements OnInit {
     this.aplicarFiltro();
   }
 
-
-  editarUsuario(idUser) {
-    let user: Usuario;
-    for (let i = 0; i < this.usuarios.length; i++) {
-      if (this.usuarios[i].getIdentificacion() == idUser) {
-        user = this.usuarios[i];
-      }
-    }
-    this.enviarUSuario.emit({ usuario: user });
-
-  }
+ 
 
   //LLama al dialogo de confirmacion para eliminar o no el usuario,
   //le enviamos el parametro del nombre de usuario y el id
-  llamarDialog(idUser) {
+  llamarDialog(user:Usuario) {
     try {
-      console.log(this.usuarios[0].getIdentificacion());
-      let user: Usuario;
-      for (let i = 0; i < this.usuarios.length; i++) {
-        if (this.usuarios[i].getIdentificacion() == idUser) {
-          user = this.usuarios[i];
-        }
-      }
+      
       console.log(user.getNombreUsuario());
-
       this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
@@ -258,7 +239,7 @@ export class TablaUsuariosComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje = result.respuesta;
+        this.mensaje =  result.respuesta +" Nombre del usuario: "+nombreUser;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
@@ -287,9 +268,6 @@ export class TablaUsuariosComponent implements OnInit {
 
   cambiarEstado(usuario: Usuario) {
     try {
-
-
-
       let active = usuario.getUsuarioActivo();
       console.log("Active: " + active);
 
@@ -305,25 +283,7 @@ export class TablaUsuariosComponent implements OnInit {
             //cambiamos el usuario de estado
             this.toggleActDesc = false;
             this.consultarUsuarios();
-            /*
-            this.usuarios.map((usu, i) => {
-              if (usu.getPkidusuario() == usuario.getPkidusuario()) {
-                console.log(usu.getPkidusuario()+"---"+usuario.getPkidusuario());
-                
-                console.log("Active2: "+active);
-                if(active==false){
-                  usu.setUsuarioActivo(false);
-                }else{
-                  usu.setUsuarioActivo(true);
-                }
-                console.log(usu.usuarioactivo);
-                
-                //this.consultarUsuarios();
-                return;
-                
-              }
-            });
-            */
+          
             this.mostrarMensaje(1);
           }
         },
@@ -348,6 +308,9 @@ export class TablaUsuariosComponent implements OnInit {
 
   }
 
+  /*
+    MEtodo que asigna de manera dinamica el estilo de agregado y alerta
+  */
   mostrarMensaje(codeError: number) {
     if (codeError == 1) {
       this.claseDinamic = "alert alert-success alert-with-icon";
@@ -358,13 +321,14 @@ export class TablaUsuariosComponent implements OnInit {
     }
   }
 
-
+  /*
+    MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
+  */
   enviarExcepcion(mensaje, e, funcion,url) {
     this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
       response => {
         
         if (response.length <= 1) {
-          //this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor al enviar excepcion');
         } else {
           if(response.status=!"error"){

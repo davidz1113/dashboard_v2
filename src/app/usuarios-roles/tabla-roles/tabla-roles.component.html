@@ -96,7 +96,7 @@
                       <mat-cell *matCellDef="let element ; let i=index">
     
                         <button mat-icon-button matTooltip="Editar Rol" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                          class="example-button" (click)="editarRol(element.getPkidrol())"> <i class="material-icons ">edit</i>
+                          class="example-button" (click)="enviarRol.emit({rol:element})"> <i class="material-icons ">edit</i>
                         </button>
     
                         <button mat-icon-button matTooltip="Eliminar Rol" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"

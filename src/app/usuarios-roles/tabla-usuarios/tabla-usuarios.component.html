@@ -104,11 +104,11 @@
                   <mat-cell *matCellDef="let element ; let i=index">
 
                     <button mat-icon-button matTooltip="Editar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="editarUsuario(element.getIdentificacion())"> <i class="material-icons ">edit</i>
+                      class="example-button" (click)="enviarUSuario.emit({ usuario: element });"> <i class="material-icons ">edit</i>
                     </button>
 
                     <button mat-icon-button matTooltip="Eliminar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarDialog(element.getIdentificacion())">
+                      class="example-button" (click)="llamarDialog(element)">
                       <i class="material-icons ">delete</i>
                     </button>
 

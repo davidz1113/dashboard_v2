@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angu
 import { Rol } from '../../modelos/rol';
 import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { RolesServices } from '../../servicios/rolesServices.services';
-import { plainToClass } from "class-transformer";
+import { plainToClass, serialize, deserialize } from "class-transformer";
 @Component({
   selector: 'app-tabla-roles',
   templateUrl: './tabla-roles.component.html',
@@ -96,11 +96,15 @@ export class TablaRolesComponent implements OnInit {
           console.log('Error en el servidor');
         } else {
 
+          //console.log(ser);
+          //let foo: Rol = Object.assign(Rol, JSON.parse(this.respuesta.rol));
+          //console.log(foo);
+          
           //seteamos el valor de los roles en el objeto Rol
           this.roles = plainToClass(Rol,this.respuesta.rol);
 
           console.log(this.respuesta.rol);
-          console.log(this.roles[0].getRolactivo());
+          //console.log(this.roles[0].getRolactivo());
           
 
           //asignacion de roles en el dataSource
@@ -134,4 +138,6 @@ export class TablaRolesComponent implements OnInit {
     this.filtroNombreRol = '';
     this.aplicarFiltro();
   }
+
+  
 }

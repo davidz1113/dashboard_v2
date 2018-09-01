@@ -21,12 +21,8 @@ export class DialogConfirmacionComponent implements DialogData {
     //variables de la interfaz
     nombreUser: string;
     idUser: number;
-    public respuesta ;
     //variable respuesta servidor
-
-  
-
-
+    public respuesta ;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData, private _userServices: UsuarioServices) {
@@ -50,8 +46,6 @@ export class DialogConfirmacionComponent implements DialogData {
                     console.log('Error en el servidor');
                 }else{
                     this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
-                    this.data['respuesta']= this.respuesta.msg;
-                    //console.log(this.respuesta);
                     
                 }
 
