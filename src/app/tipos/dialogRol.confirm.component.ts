@@ -1,5 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { RolesServices } from '../servicios/rolesServices.services';
+import { DialogDataRol } from '../usuarios-roles/tabla-roles/tabla-roles.component';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -40,6 +42,7 @@ export class DialogConfirmacionTipos implements DialogDataRol {
         this.dialogRef.close();
     }
 
+    /*
     //Metodo q elimina el rol desde la base de datos
     eliminarRol() {
         this._RolServices.eliminarRol(this.idRol).subscribe(
@@ -60,6 +63,6 @@ export class DialogConfirmacionTipos implements DialogDataRol {
             }
 
         );
-    }
+    }*/
 
 }
