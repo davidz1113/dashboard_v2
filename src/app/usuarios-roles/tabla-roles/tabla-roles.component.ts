@@ -113,7 +113,7 @@ export class TablaRolesComponent implements OnInit {
       error => {
         this.mensaje = 'Error en el servidor';
         this.respuesta = 'error';
-        console.log('Error en el servidor');
+        console.log('Error en el servidor: '+error);
       }
 
     );

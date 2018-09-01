@@ -44,11 +44,7 @@
               <span data-notify="message">
                 <b>Info:</b> {{mensaje}} </span>
                 <div class="col-sm-4">
-<<<<<<< HEAD
-                  <button mat-raised-button class="btn btn-outline-primary mb-3"  (click)="consultarUsuarios()"  *ngIf="respuesta=='error'" >Intentar de nuevo
-=======
                   <button mat-raised-button class="btn btn-outline-primary mb-3"  (click)="consultarUsuarios();mensaje=''"  *ngIf="respuesta=='error'" >Intentar nuevamente
->>>>>>> nuevaRama
                   </button>
                 </div>
             </div>
@@ -83,41 +79,24 @@
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="identificacion">
-<<<<<<< HEAD
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Identificacion </mat-header-cell>
-=======
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Identificación </mat-header-cell>
->>>>>>> nuevaRama
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getIdentificacion()}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="nombreusuario">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</mat-header-cell>
-<<<<<<< HEAD
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getNombreUsuario()}}
-                    </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="rol">
-=======
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getNombreUsuario()}} {{element.getApellido()}}
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="nombrerol">
->>>>>>> nuevaRama
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Rol </mat-header-cell>
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getRoles().nombrerol}}
                     </mat-cell>
                 </ng-container>
 
-<<<<<<< HEAD
-                <ng-container matColumnDef="activo/inactivo">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> activo/inactivo </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getUsuarioActivo() }"> {{element.getUsuarioActivo()?'Activo':'Desactivado'}}
-=======
                 <ng-container matColumnDef="usuarioactivo">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Usuario Activo/Desactivado</mat-header-cell>
                   <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.usuarioactivo }"> {{element.usuarioactivo?'Activo':'Desactivado'}}
->>>>>>> nuevaRama
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="actions">
@@ -133,11 +112,7 @@
                       <i class="material-icons ">delete</i>
                     </button>
 
-<<<<<<< HEAD
-                    <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-=======
                     <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="primary-tooltip" 
->>>>>>> nuevaRama
                       class="example-button" (click)="cambiarEstado(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>

@@ -22,15 +22,11 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
 import { MaterialModules } from '../../material.modules';
 import { UserAgregarEditarComponent } from '../../usuarios-roles/user-agregar-editar/user-agregar-editar.component';
 import { DialogConfirmacionComponent } from '../../usuarios-roles/tabla-usuarios/dialog.confirm.component';
-<<<<<<< HEAD
-import { PlazaMercadoComponent } from '../../plaza-mercado/plaza-mercado.component';
-=======
 import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.component';
 import { TablaPlazasMercadoComponent } from '../../plazas-mercado/tabla-plazas-mercado/tabla-plazas-mercado.component';
 import { PlazasAgregarEditarComponent } from '../../plazas-mercado/plazas-agregar-editar/plazas-agregar-editar.component';
 import { TablaRolesComponent } from '../../usuarios-roles/tabla-roles/tabla-roles.component';
 import { RolesAgregarEditarComponent } from '../../usuarios-roles/roles-agregar-editar/roles-agregar-editar.component';
->>>>>>> nuevaRama
 @NgModule({
   imports: [
     CommonModule,
@@ -55,15 +51,11 @@ import { RolesAgregarEditarComponent } from '../../usuarios-roles/roles-agregar-
     TablaUsuariosComponent,   
     UserAgregarEditarComponent,
     DialogConfirmacionComponent,
-<<<<<<< HEAD
-    PlazaMercadoComponent
-=======
     PlazasMercadoComponent,
     TablaPlazasMercadoComponent,
     PlazasAgregarEditarComponent,
     TablaRolesComponent,
     RolesAgregarEditarComponent
->>>>>>> nuevaRama
 
   ],
   entryComponents: [

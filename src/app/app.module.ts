@@ -34,12 +34,7 @@ import { MaterialModules } from './material.modules';
 
 import "reflect-metadata";
 import "es6-shim";
-<<<<<<< HEAD
-
-=======
-import { GlobalErrorHandler } from './servicios/global_error_handler';
 import { ExcepcionService } from './servicios/excepcionServices.services';
->>>>>>> nuevaRama
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -63,11 +58,7 @@ import { ExcepcionService } from './servicios/excepcionServices.services';
    
   ],
   providers: [
-    ExcepcionService,
-    {
-      provide: ErrorHandler, 
-      useClass: GlobalErrorHandler
-    }
+  
 
   ],
   bootstrap: [AppComponent]

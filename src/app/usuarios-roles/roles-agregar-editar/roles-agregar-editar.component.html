@@ -74,7 +74,7 @@
             <div class="row">
               <div class="col-sm-4 mx-auto mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione permisos" id="pkidmodulo" name="pkidmodulo" formControlName="pkidmodulo" multiple>
+                  <mat-select placeholder="Seleccione permisos" id="pkidmodulo" name="pkidmodulo" (change)="onChangePermisos($event)" formControlName="pkidmodulo" multiple >
                     <mat-option *ngFor="let permiso of permisos" [value]=" permiso.getPkidmodulo()+'-'+permiso.getNombrepermiso()">{{permiso.getNombremodulo()}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoRolForm.get('pkidmodulo').hasError('required')">Porfavor seleccione al menos un
@@ -83,7 +83,12 @@
               </div>
 
               <div class="col-sm-4 mx-auto mt-1">
-
+                  <p>
+                    Permisos Seleccionados:
+                  </p>
+                  <ul>
+                    <li *ngFor="let seleccionado of seleccionados">{{seleccionado}}</li>
+                  </ul>
               </div>
 
             </div>

@@ -36,11 +36,11 @@ export class RolesAgregarEditarComponent implements OnInit {
 
 
   //traemos el rol desde el componente tabla rol
-  //@Input() rol: Rol;
+  @Input() rol: Rol;
 
   //PAra alternar entre formularios Y ENVIAR MENSAJE
   @Output() llamarTablaRol = new EventEmitter;
-  //@Output() enviarMensaje = new EventEmitter();
+  @Output() enviarMensaje = new EventEmitter();
 
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
@@ -53,6 +53,7 @@ export class RolesAgregarEditarComponent implements OnInit {
   //variable de consulta de permisos
   permisos: Modulo[];
 
+ 
 
   constructor(private nuevoForm: FormBuilder,
     private _rolesServices: RolesServices,private _modulosServices: ModuloServices) { }
@@ -74,11 +75,8 @@ export class RolesAgregarEditarComponent implements OnInit {
           this.msg = 'Error en el servidor al consultar los permisos';
           console.log('Error en el servidor al consultar los permisos');
         } else {
-
-         
           this.permisos =  plainToClass(Modulo, this.respuesta.modulo)//recupero los permisos
-
-          console.log(this.permisos[1].getIcono().length);
+          //console.log(this.permisos[1].getIcono().length);
         }
         
       },
@@ -116,33 +114,7 @@ export class RolesAgregarEditarComponent implements OnInit {
    
    
 
-    //console.log(arrPermisos);
-    
-   /* let modulo={pkidmodulo:null,nombrepermiso:''};
-    let arrModulo = [];
-
-
-    for(let i = 0 ;i<this.permisos.length;i++){
-      for(let j = 0 ; j<arrPermisos.length;j++){
-        if(arrPermisos[j]==this.permisos[i].getPkidmodulo()){
-          modulo.pkidmodulo=arrPermisos[i];
-          modulo.nombrepermiso= this.permisos[i].getNombrepermiso();
-          arrModulo.push({modulo});
-          return;
-        }
-      }
-    }
-
-    this.permisos.map((perm,i)=>{
-      
-
-
-    });
-    */
-
-    //this.identidad.setPermiso(this.nuevoRolForm.get('pkidmodulo').value);
-
-   // if (this.rol == null) {//Si el usuario de entrada por input es vacio significa q es un nuevo usuario
+    if (this.rol == null) {//Si el usuario de entrada por input es vacio significa q es un nuevo usuario
       
       this._rolesServices.crearRol(this.identidad,arrModulo).subscribe(
         response => {
@@ -154,7 +126,7 @@ export class RolesAgregarEditarComponent implements OnInit {
             //this.msg = this.respuesta.msg;
             this.creandoRol = false;
             if (this.respuesta.status == "Exito") {
-              //this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
+              this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
               this.llamarTablaRol.emit({ cancel: '1' });
             } else {
               this.msg = this.respuesta.msg;
@@ -169,7 +141,7 @@ export class RolesAgregarEditarComponent implements OnInit {
 
       );
 
-      /*
+      
     } else {//si llega el rol por el parametro input es actualizar
       this.identidad.setPkidrol(this.rol.getPkidrol());
       this._rolesServices.actualizarRol(this.identidad).subscribe(
@@ -193,20 +165,20 @@ export class RolesAgregarEditarComponent implements OnInit {
 
       );
 
-    }*/
+    }
 
   }
 
 
   validarFormulario() {
-   /* if (this.rol != null) {//si llega por actualizar
+    if (this.rol != null) {//si llega por actualizar
       this.active = this.rol.getRolactivo();
       this.textActive = this.active ? "Activado" : "Desactivado";
       this.mensajeBoton = "Actualizar";
-    }else{*/
+    }else{
 
       this.mensajeBoton = "Guardar";
-    //}
+    }
 
     this.nuevoRolForm = this.nuevoForm.group({
       codigorol: [/*this.rol!=null?this.rol.getCodigoRol():*/'', Validators.required],
@@ -226,5 +198,12 @@ export class RolesAgregarEditarComponent implements OnInit {
   
   closeDialog() {
     this.msg = '';
+  }
+
+  seleccionados;
+    //metodo que muestra los seleccionados
+  onChangePermisos(event){
+    this.seleccionados  = event.value;
+    console.log(this.seleccionados);
   }
 }

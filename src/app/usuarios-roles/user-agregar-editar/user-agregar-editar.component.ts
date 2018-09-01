@@ -13,7 +13,7 @@ import { PathLocationStrategy, LocationStrategy } from '@angular/common';
   selector: 'app-user-agregar-editar',
   templateUrl: './user-agregar-editar.component.html',
   styleUrls: ['./user-agregar-editar.component.scss'],
-  providers: [UsuarioServices, RolesServices]
+  providers: [UsuarioServices, RolesServices,ExcepcionService]
 })
 export class UserAgregarEditarComponent implements OnInit {
 
@@ -64,9 +64,6 @@ export class UserAgregarEditarComponent implements OnInit {
   //progress de envio
   creandoUsuario = false;
 
-  //variables para la excepcion
-  public location;
-  public urlMethod;
 
 
   constructor(
@@ -84,9 +81,6 @@ export class UserAgregarEditarComponent implements OnInit {
 
 
   ngOnInit() {
-    this.location = this.injector.get(LocationStrategy);
-    this.url = location instanceof PathLocationStrategy
-      ? location.path() : '';
 
     this.consultarRoles();
 

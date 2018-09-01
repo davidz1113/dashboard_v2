@@ -14,7 +14,6 @@ export class UsuarioServices {
     constructor(private _http: Http) {
         this.url = GLOBAL.url;
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
-<<<<<<< HEAD
     }
 
     //Servicio para crear un usuario
@@ -32,28 +31,11 @@ export class UsuarioServices {
         uploadData.append('json', json);
         uploadData.append('authorization', this.getToken());
         console.log(uploadData);
-=======
-        //let headers = new Headers({'Content-Type': 'multipart/form-data'});
-    }
-
-    //Servicio para crear un usuario
-    crearUsuario(nuevo_usuario: Usuario, uploadData: FormData) {
-        let json = JSON.stringify(nuevo_usuario);
-        //let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
-
-        uploadData.append('json', json);
-        uploadData.append('authorization', this.getToken());
-
-        console.log(uploadData);
-        //console.log(JSON.stringify(this.getToken()));
-
->>>>>>> nuevaRama
         return this._http.post(this.url + '/user/new', uploadData)
             .pipe(map(res => res.json()));
     }
 
 
-<<<<<<< HEAD
     //Servicio para iniciar sesion
     //parametros de usuario
     /*
@@ -63,10 +45,6 @@ export class UsuarioServices {
         foto, usuario_editar,token
         va como FormData 
     */
-=======
-    
-
->>>>>>> nuevaRama
     actualizarUsuario(usuario_editar: Usuario, uploadData: FormData) {
         let json = JSON.stringify(usuario_editar);
         uploadData.append('json', json);
@@ -78,14 +56,11 @@ export class UsuarioServices {
 
 
     //metodo para eliminar usuario
-<<<<<<< HEAD
     //parametros de usuario
     /*
         pkidusuario:id del usuario
         authorization: token
     */
-=======
->>>>>>> nuevaRama
     eliminarUsuario(pkidusuario) {
         let user = { pkidusuario: pkidusuario };
         let json = JSON.stringify(user);
@@ -112,23 +87,17 @@ export class UsuarioServices {
 
 
     //metodo q consulta todos los usuarios de la base de datos
-<<<<<<< HEAD
     //paramtros de usuario
     /*
         authorization: token del usuario
     */
-=======
->>>>>>> nuevaRama
     consultarUsuarios() {
         let token = "authorization=" + this.getToken();
         return this._http.post(this.url + '/user/query', token, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
-<<<<<<< HEAD
-=======
 
 
->>>>>>> nuevaRama
     //
     //paramtros de usuario
     /*
@@ -136,16 +105,6 @@ export class UsuarioServices {
       active : valor de usuario activo/inactivo
       nombre_tabla: nombre de la tabla a eliminar
     */
-<<<<<<< HEAD
-    cambiarEstadoUsuario(pkidusuario:number,active:boolean,nombre_tabla:string) {
-        let enviarDatos = {pkid:pkidusuario,active:String(active),nombretabla:nombre_tabla};
-        let json = JSON.stringify(enviarDatos);
-        let params = "json="+json+"&authorization="+this.getToken();
-        return this._http.post(this.url+'/active/query',params,{headers:this.headers})
-        .pipe(map(res=>res.json()));
-
-        
-=======
     cambiarEstadoUsuario(pkidusuario: number, active: boolean, nombre_tabla: string) {
         let enviarDatos = { pkid: pkidusuario, active: String(active), nombretabla: nombre_tabla };
         let json = JSON.stringify(enviarDatos);
@@ -153,7 +112,6 @@ export class UsuarioServices {
         return this._http.post(this.url + '/active/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));
 
->>>>>>> nuevaRama
     }
 
 
