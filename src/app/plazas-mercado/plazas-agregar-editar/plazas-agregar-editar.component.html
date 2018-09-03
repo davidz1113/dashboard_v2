@@ -24,7 +24,7 @@
         </div>
 
 
-        <form [formGroup]="nuevoPlazaForm" (ngSubmit)="nuevoPlaza()">
+        <form [formGroup]="nuevoPlazaForm" (ngSubmit)="nuevaPlaza()">
 
           <div class="form-group">
             <div class="row">
@@ -59,6 +59,29 @@
             </div>
           </div>
 
+          <div class="form-group">
+            <div class="row">
+              <div class="col-sm-4 mx-auto mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione tipo de recaudo" id="pkidtiporecaudo" name="pkidtiporecaudo" (change)="onChangePermisos($event)" formControlName="pkidtiporecaudo" multiple >
+                    <mat-option *ngFor="let tiporecaudo of tiporecaudos" [value]=" tiporecaudo.pkidtiporecaudo+'-'+tiporecaudo.nombretiporecaudo">{{tiporecaudo.nombretiporecaudo}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoPlazaForm.get('pkidtiporecaudo').hasError('required')">Porfavor seleccione al menos un
+                    tipo de recaudo</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-4 mx-auto mt-1">
+                  <p>
+                    Tipo recaudo Seleccionados:
+                  </p>
+                  <ul>
+                    <li *ngFor="let seleccionado of seleccionados">{{seleccionado}}</li>
+                  </ul>
+              </div>
+
+            </div>
+          </div>
 
           <div class="form-group">
             <div class="row">

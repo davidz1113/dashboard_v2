@@ -1,3 +1,4 @@
+import { TipoRecaudo } from "./tipos/tiporecaudo";
 
 export class PlazaMercado {
 
@@ -7,10 +8,21 @@ export class PlazaMercado {
     private plazaactivo: boolean;
     private creacionplaza: Date;
     private modificacion: Date;
-
+    private tiporecaudo: TipoRecaudo[];
     constructor(){
         
     }
+
+	public getTiporecaudo(): TipoRecaudo[] {
+		return this.tiporecaudo;
+	}
+
+	public setTiporecaudo(tiporecaudo: TipoRecaudo[]): void {
+		this.tiporecaudo = tiporecaudo;
+	}
+
+
+    
 
     public getPkidplaza(): number {
         return this.pkidplaza;

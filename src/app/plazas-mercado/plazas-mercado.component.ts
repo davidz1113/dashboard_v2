@@ -44,10 +44,10 @@ export class PlazasMercadoComponent implements OnInit {
   claseDinamic = "alert alert-success alert-with-icon";
   iconAlert = "done";
 
-  //boton desactivado en caso q no hayan usuarios o este caragndo
+  //boton desactivado en caso q no hayan plazas o este caragndo
   botonBloqueo: boolean = true;
 
-  //para recibir el mensaje del usuario agregado
+  //para recibir el mensaje del plaza agregado
   @Input() mensaje: string;
 
 
@@ -69,7 +69,17 @@ export class PlazasMercadoComponent implements OnInit {
   }
 
   //alternar entre el formulario de agregar plaza y la tabla de plazas
-  ocultarTablaPlaza(){
+  ocultarTablaPlaza(event){
+    if (event != null) {
+      if (event.cancel == '1') {
+        this.plazaEdit = null;
+        console.log("cancel");
+        //el mensaje pasa a null en caso que solo sea cancelar
+        if(event.msj!=null){
+          this.mensaje=null;
+        }
+      }
+    }
     this.tablaplaza = !this.tablaplaza;
     this.formplaza = !this.formplaza;
   }
@@ -91,7 +101,7 @@ export class PlazasMercadoComponent implements OnInit {
             //cabeceras
             //this.cabecerasColumnas = this.respuesta.cabeceras;
             //this.cabecerasColumnas.push('actions');
-            //conversion del json de usuarios a la clase Usuarios 
+            //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
             this.plaza = plainToClass(PlazaMercado, this.respuesta.plazas);
 
@@ -167,30 +177,9 @@ export class PlazasMercadoComponent implements OnInit {
     console.log(element);
     
     this.plazaEdit = element;
-    this.ocultarTablaPlaza();
+    this.ocultarTablaPlaza(null);
   }
 
-  /*
-    MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
-  */
-  enviarExcepcion(mensaje, e, funcion, url) {
-    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
-      response => {
-
-        if (response.length <= 1) {
-          console.log('Error en el servidor al enviar excepcion');
-        } else {
-          if (response.status = !"error") {
-            console.log('La excepcion se envio correctamente');
-          }
-        }
-      },
-      error => {
-        console.log('Error en el servidor al enviar excepcion');
-      }
-
-    );
-  }
 
   /*
   MEtodo que asigna de manera dinamica el estilo de agregado y alerta
@@ -205,4 +194,70 @@ export class PlazasMercadoComponent implements OnInit {
     }
   }
 
+
+ 
+  cambiarEstado(plaza: PlazaMercado) {
+    try {
+      let active = plaza.getPlazaactivo();
+      console.log("Active: " + active);
+
+      this._plazaService.cambiarEstadoPlaza(plaza.getPkidplaza(), !active, "tplaza").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado del plaza " + plaza.getNombreplaza() + " : " + this.respuesta.msg;
+            //cambiamos el plaza de estado
+            this.toggleActDesc = false;
+            this.consultarPlazas();
+          
+            this.mostrarMensaje(1);
+          }
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          console.log('Error en el servidor');
+          this.mostrarMensaje(0);
+        }
+      );
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "CambiarEstado()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+
+  }
+
+  
+  /*
+    MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
+  */
+ enviarExcepcion(mensaje, e, funcion, url) {
+  this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+    response => {
+
+      if (response.length <= 1) {
+        console.log('Error en el servidor al enviar excepcion');
+      } else {
+        if (response.status = !"error") {
+          console.log('La excepcion se envio correctamente');
+        }
+      }
+    },
+    error => {
+      console.log('Error en el servidor al enviar excepcion');
+    }
+
+  );
+}
 }

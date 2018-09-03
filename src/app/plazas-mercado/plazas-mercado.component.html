@@ -1,6 +1,6 @@
-<div class="main-content"  *ngIf="tablaplaza" >
+<div class="main-content" *ngIf="tablaplaza">
   <div class="container-fluid">
-    
+
     <div class="row">
       <!--Tabla plazas-->
       <div class="col-sm-12">
@@ -116,4 +116,4 @@
     </div>
   </div>
 </div>
-<app-plazas-agregar-editar *ngIf="formplaza" (llamarPlaza)="ocultarTablaPlaza()" [plaza]="plazaEdit"></app-plazas-agregar-editar>
+<app-plazas-agregar-editar *ngIf="formplaza" (llamarPlaza)="ocultarTablaPlaza($event)" [plaza]="plazaEdit"></app-plazas-agregar-editar>

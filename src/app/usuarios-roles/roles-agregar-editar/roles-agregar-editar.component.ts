@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, Injector } from '@angular/core';
 import { RolesServices } from '../../servicios/rolesServices.services';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Rol } from '../../modelos/rol';
@@ -6,11 +6,13 @@ import { Modulo } from '../../modelos/modulo';
 import { ModuloServices } from '../../servicios/moduloServices.service';
 import { plainToClass } from "class-transformer";
 import { forEach } from '@angular/router/src/utils/collection';
+import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { ExcepcionService } from '../../servicios/excepcionServices.services';
 @Component({
   selector: 'app-roles-agregar-editar',
   templateUrl: './roles-agregar-editar.component.html',
   styleUrls: ['./roles-agregar-editar.component.scss'],
-  providers: [RolesServices, ModuloServices]
+  providers: [RolesServices, ModuloServices, ExcepcionService]
 })
 export class RolesAgregarEditarComponent implements OnInit {
 
@@ -56,7 +58,7 @@ export class RolesAgregarEditarComponent implements OnInit {
 
 
   constructor(private nuevoForm: FormBuilder,
-    private _rolesServices: RolesServices, private _modulosServices: ModuloServices) { }
+    private _rolesServices: RolesServices, private _modulosServices: ModuloServices, private _exceptionService: ExcepcionService, private injector: Injector) { }
 
   ngOnInit() {
     //validamos el formulario
@@ -68,157 +70,190 @@ export class RolesAgregarEditarComponent implements OnInit {
   //metodo que consulta los permisos de la tabla modulo
   //para setearlos en el objeto de permisos
   consultarPermisos() {
-    this._modulosServices.consultarModulos().subscribe(
-      response => {
-        this.respuesta = response;
-        if (this.respuesta.length <= 1) {
+    try {
+      this._modulosServices.consultarModulos().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.msg = 'Error en el servidor al consultar los permisos';
+            console.log('Error en el servidor al consultar los permisos');
+          } else {
+            this.permisos = plainToClass(Modulo, this.respuesta.modulo)//recupero los permisos
+            //console.log(this.permisos[1].getIcono().length);
+          }
+
+        },
+        error => {
           this.msg = 'Error en el servidor al consultar los permisos';
-          console.log('Error en el servidor al consultar los permisos');
-        } else {
-          this.permisos = plainToClass(Modulo, this.respuesta.modulo)//recupero los permisos
-          //console.log(this.permisos[1].getIcono().length);
+          console.log('Error en el servidor al consultar los permisos(tabla modulos)');
+
         }
 
-      },
-      error => {
-        this.msg = 'Error en el servidor al consultar los permisos';
-        console.log('Error en el servidor al consultar los permisos(tabla modulos)');
-
-      }
-
-    );
+      );
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "constultarPermisos()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+    }
   }
 
 
   //conecta a la api rest e inserta o actualiza  los campos del rol
   nuevoRol() {
-    this.creandoRol = true;
-    //seteamos en el objeto rol las variables del formulario
-    this.identidad.setCodigoRol(this.nuevoRolForm.get('codigorol').value);
-    this.identidad.setNombreRol(this.nuevoRolForm.get('nombrerol').value);
-    this.identidad.setDescripcionRol(this.nuevoRolForm.get('descripcionrol').value);
-    this.identidad.setRolactivo(this.active);
-    let arrPermisos = this.nuevoRolForm.get('pkidmodulo').value;
-    let arrModulo = [];
+    try {
 
-    arrPermisos.forEach(element => {
-      let rol = element.split('-');
-      let id = rol[0];
-      let nombre = rol[1];
 
-      arrModulo.push('"' + id + '"' + ':' + '"' + nombre + '"');
-    });
 
-    //console.log(arrModulo);
+      this.creandoRol = true;
+      //seteamos en el objeto rol las variables del formulario
+      this.identidad.setCodigoRol(this.nuevoRolForm.get('codigorol').value);
+      this.identidad.setNombreRol(this.nuevoRolForm.get('nombrerol').value);
+      this.identidad.setDescripcionRol(this.nuevoRolForm.get('descripcionrol').value);
+      this.identidad.setRolactivo(this.active);
+      let arrPermisos = this.nuevoRolForm.get('pkidmodulo').value;
+      let arrModulo = [];
 
-    if (this.rol == null) {//Si el rol de entrada por input es vacio significa q es un nuevo usuario
+      arrPermisos.forEach(element => {
+        let rol = element.split('-');
+        let id = rol[0];
+        let nombre = rol[1];
 
-      this._rolesServices.crearRol(this.identidad, arrModulo).subscribe(
-        response => {
-          this.respuesta = response;
-          if (this.respuesta.length <= 1) {
+        arrModulo.push('"' + id + '"' + ':' + '"' + nombre + '"');
+      });
+
+      console.log(arrModulo);
+
+      if (this.rol == null) {//Si el rol de entrada por input es vacio significa q es un nuevo usuario
+
+        this._rolesServices.crearRol(this.identidad, arrModulo).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandoRol = false;
+              if (this.respuesta.status == "Exito") {
+                this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
+                this.llamarTablaRol.emit({ cancel: '1' });
+              } else {
+                this.msg = this.respuesta.msg;
+              }
+
+            }
+          },
+          error => {
             this.msg = 'Error en el servidor';
             console.log('Error en el servidor');
-          } else {
-            //this.msg = this.respuesta.msg;
-            this.creandoRol = false;
-            if (this.respuesta.status == "Exito") {
+          }
+
+        );
+
+
+      } else {//si llega el rol por el parametro input es actualizar
+
+        console.log(this.valueSelect);
+
+        this.identidad.setPkidrol(this.rol.getPkidrol());
+        this._rolesServices.actualizarRol(this.identidad, arrModulo, this.valueSelect).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandoRol = false;
               this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
               this.llamarTablaRol.emit({ cancel: '1' });
-            } else {
-              this.msg = this.respuesta.msg;
             }
-
-          }
-        },
-        error => {
-          this.msg = 'Error en el servidor';
-          console.log('Error en el servidor');
-        }
-
-      );
-
-
-    } else {//si llega el rol por el parametro input es actualizar
-
-      console.log(this.valueSelect);
-
-      this.identidad.setPkidrol(this.rol.getPkidrol());
-      this._rolesServices.actualizarRol(this.identidad,arrModulo,this.valueSelect).subscribe(
-        response => {
-          this.respuesta = response;
-          if (this.respuesta.length <= 1) {
+          },
+          error => {
             this.msg = 'Error en el servidor';
-            console.log('Error en el servidor');
-          } else {
-            //this.msg = this.respuesta.msg;
-            this.creandoRol = false;
-            this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
-            this.llamarTablaRol.emit({ cancel: '1' });
+            console.log('Error en el servidor' + error);
+
           }
-        },
-        error => {
-          this.msg = 'Error en el servidor';
-          console.log('Error en el servidor' + error);
 
-        }
+        );
 
-      );
-
+      }
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "nuevoRol()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
     }
 
   }
 
-  valueSelect = [];
+  valueSelect = []; //valores seleccionados(tipos de recaudo)
   validarFormulario() {
-    let perm: any[];
-   
-    if (this.rol != null) {//si llega por actualizar
-      this.active = this.rol.getRolactivo();
-      this.textActive = this.active ? "Activado" : "Desactivado";
-      this.mensajeBoton = "Actualizar";
-      perm = (this.rol.getPermiso());
-      //var PHPUnserialize = require('php-unserialize');
-      //this.seleccionados = PHPUnserialize.unserialize(this.rol.getPermiso());
-      //this.seleccionados = JSON.stringify(this.rol.getPermiso());
-      //convierte el parametro en array para poder acceder
-      var res = Object.keys(perm)
-        // iterate over them and generate the array
-        .map(function (k) {
-          // generate the array element 
-          return [+k, perm[k]];
-        }); 
+    try {
+
+      let perm: any[];
+
+      if (this.rol != null) {//si llega por actualizar
+        this.active = this.rol.getRolactivo();
+        this.textActive = this.active ? "Activado" : "Desactivado";
+        this.mensajeBoton = "Actualizar";
+        perm = (this.rol.getPermiso());
+        //var PHPUnserialize = require('php-unserialize');
+        //this.seleccionados = PHPUnserialize.unserialize(this.rol.getPermiso());
+        //this.seleccionados = JSON.stringify(this.rol.getPermiso());
+        //convierte el parametro en array para poder acceder
+        var res = Object.keys(perm)
+          // iterate over them and generate the array
+          .map(function (k) {
+            // generate the array element 
+            return [+k, perm[k]];
+          });
         //console.log(res.length);
 
-      for (let i = 0; i < res.length; i++) {
-        //console.log(res[i]);
-        let unir = '';
-        for (let j = 0; j < res[i].length; j++) {
-          //console.log(res[i][j]);
-          unir+=res[i][j]+"-";
+        for (let i = 0; i < res.length; i++) {
+          //console.log(res[i]);
+          let unir = '';
+          for (let j = 0; j < res[i].length; j++) {
+            //console.log(res[i][j]);
+            unir += res[i][j] + "-";
+          }
+          this.valueSelect.push(unir.slice(0, -1));//cortamos el - final
         }
-        this.valueSelect.push(unir.slice(0,-1));//cortamos el - final
+        this.seleccionados = this.valueSelect;
 
-        
+
+
+      } else {
+
+        this.mensajeBoton = "Guardar";
       }
-      this.seleccionados=this.valueSelect;
-   
 
-
-    } else {
-
-      this.mensajeBoton = "Guardar";
+      this.nuevoRolForm = this.nuevoForm.group({
+        codigorol: [this.rol != null ? this.rol.getCodigoRol() : '', Validators.required],
+        nombrerol: [this.rol != null ? this.rol.getNombreRol() : '', Validators.required],
+        descripcionrol: [this.rol != null ? this.rol.getDescripcionRol() : '', Validators.required],
+        pkidmodulo: [this.rol != null ? this.valueSelect : '', Validators.required]
+      });
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "ValidarFormulario()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
     }
 
-    this.nuevoRolForm = this.nuevoForm.group({
-      codigorol: [this.rol != null ? this.rol.getCodigoRol() : '', Validators.required],
-      nombrerol: [this.rol != null ? this.rol.getNombreRol() : '', Validators.required],
-      descripcionrol: [this.rol != null ? this.rol.getDescripcionRol() : '', Validators.required],
-      pkidmodulo: [this.rol != null ? this.valueSelect : '', Validators.required]
-    });
+
 
   }
-
 
   activarDesactivarRol() {
     this.active = !this.active;
@@ -236,4 +271,30 @@ export class RolesAgregarEditarComponent implements OnInit {
     this.seleccionados = event.value;
     console.log(this.seleccionados);
   }
+
+
+  /*
+   MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
+ */
+  enviarExcepcion(mensaje, e, funcion, url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+      response => {
+
+        if (response.length <= 1) {
+          console.log('Error en el servidor al enviar excepcion');
+        } else {
+          if (response.status = !"error") {
+            console.log('La excepcion se envio correctamente');
+          }
+        }
+      },
+      error => {
+        console.log('Error en el servidor al enviar excepcion');
+      }
+
+    );
+  }
+
+ 
+
 }

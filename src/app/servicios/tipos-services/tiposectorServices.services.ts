@@ -32,6 +32,7 @@ export class TipoSectorServices {
      * @param active valor para cambiarle a la base de datos
      * @param nombre_tabla nombre de la tabla
      */
+    
     cambiarEstadoTipoSector(pkidtiporol: number, active: boolean, nombre_tabla: string) {
         let enviarDatos = { pkid: pkidtiporol, active: String(active), nombretabla: nombre_tabla };
         let json = JSON.stringify(enviarDatos);
