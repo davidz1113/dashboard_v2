@@ -23,7 +23,6 @@ import { MaterialModules } from '../../material.modules';
 import { UserAgregarEditarComponent } from '../../usuarios-roles/user-agregar-editar/user-agregar-editar.component';
 import { DialogConfirmacionComponent } from '../../usuarios-roles/tabla-usuarios/dialog.confirm.component';
 import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.component';
-import { TablaPlazasMercadoComponent } from '../../plazas-mercado/tabla-plazas-mercado/tabla-plazas-mercado.component';
 import { PlazasAgregarEditarComponent } from '../../plazas-mercado/plazas-agregar-editar/plazas-agregar-editar.component';
 import { TablaRolesComponent } from '../../usuarios-roles/tabla-roles/tabla-roles.component';
 import { RolesAgregarEditarComponent } from '../../usuarios-roles/roles-agregar-editar/roles-agregar-editar.component';
@@ -54,7 +53,6 @@ import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.compone
     UserAgregarEditarComponent,
     DialogConfirmacionComponent,
     PlazasMercadoComponent,
-    TablaPlazasMercadoComponent,
     PlazasAgregarEditarComponent,
     TablaRolesComponent,
     RolesAgregarEditarComponent,

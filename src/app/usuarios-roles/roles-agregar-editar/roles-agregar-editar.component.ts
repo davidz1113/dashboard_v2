@@ -39,7 +39,7 @@ export class RolesAgregarEditarComponent implements OnInit {
   @Input() rol: Rol;
 
   //PAra alternar entre formularios Y ENVIAR MENSAJE
-  @Output() llamarTablaRol = new EventEmitter;
+  @Output() llamarTablaRol = new EventEmitter();
   @Output() enviarMensaje = new EventEmitter();
 
   //mensaje del boton actulizar guardar

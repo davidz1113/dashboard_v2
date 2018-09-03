@@ -29,11 +29,11 @@ export class TablaUsuariosComponent implements OnInit {
 
 
   //datos a llenar mediante la consulta
-  //usuarios: Usuario[] = [];
+  usuarios: Usuario[] = [];
   rol: Rol[] = [];
   
   //usuarios de prueba para el data source
-  usuarios: Usuario[] =
+  /*usuarios: Usuario[] =
    [
      new Usuario(0,'4545454',87788787,'Andres','carvajal','false',new Date,new Date,''),
      new Usuario(0,'14545454',187788787,'Luis','carvajal','false',new Date,new Date,''),
@@ -42,7 +42,7 @@ export class TablaUsuariosComponent implements OnInit {
      new Usuario(0,'64545454',287788787,'lopez','carvajal','false',new Date,new Date,''),
   ]
   
-  ;
+  ;*/
 
 
 
@@ -112,8 +112,8 @@ export class TablaUsuariosComponent implements OnInit {
 
             //asignacion de los datos en el datasource para la tabla
             console.log(this.respuesta);
-            console.log(this.usuarios[0].getIdentificacion());
-            console.log(this.respuesta.users[0].roles);
+            //console.log(this.usuarios[0].getIdentificacion());
+            //console.log(this.respuesta.users[0].roles);
 
             for (let i = 0; i < this.usuarios.length; i++) {
               console.log(this.respuesta.users[i].roles);
