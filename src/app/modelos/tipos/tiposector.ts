@@ -53,9 +53,9 @@ export class TipoSector {
 		return Boolean(this.tiposectoractivo);
 	}
 
-	public setTiposectoractivo(tiposectoractivo: string
+	public setTiposectoractivo(tiposectoractivo: boolean
 	): void {
-		this.tiposectoractivo = tiposectoractivo;
+		this.tiposectoractivo = String(tiposectoractivo);
 	}
 
 	public getCreacionriposector(): Date {

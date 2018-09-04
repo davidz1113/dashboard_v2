@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { TipoSectorServices } from '../../servicios/tipos-services/tiposectorServices.services';
 import { ExcepcionService } from '../../servicios/excepcionServices.services';
 import { TipoSector } from '../../modelos/tipos/tiposector';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { plainToClass } from "class-transformer";
@@ -46,8 +47,29 @@ export class TipoSectorComponent implements OnInit {
   botonBloqueo: boolean = true;
 
 
+  /*-------------------------------------------------------------------------- */
+  //Variables para el formulario de agregar un nuevo tipo
+  mostrarFormTipo = false;
+  mostrarTabla = true;
 
-  constructor(private _tiposectorService: TipoSectorServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) { }
+  //formulario reactive
+  nuevoTipoForm: FormGroup;
+  //actvar Plaza, desactivar Plaza
+  active = false;
+  textActive = "Desactivado";
+  //mensaje del boton actulizar guardar
+  mensajeBoton: string;
+  tipo: TipoSector ;
+
+  //mensaje para mostrar en el formulario de agregar
+  msg:string = '';
+  //progreso de envio
+  creandotipo : boolean = false;
+  //variable que valida si esta por actualizar o guardar un nuevo
+  isUpdate = false;
+
+
+  constructor(private nuevoForm: FormBuilder, private _tiposectorService: TipoSectorServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) { }
 
   ngOnInit() {
   }
@@ -72,7 +94,7 @@ export class TipoSectorComponent implements OnInit {
   /*
     Metodo que consulta los roles de usuario y los asigna al dataSource para el ordenamiento, paginacion y demas
     */
-   consultarTipoDeSectores() {
+  consultarTipoDeSectores() {
     try {
       this.respuesta = null;
       this._tiposectorService.consultarTodosTiposSector().subscribe(
@@ -124,25 +146,25 @@ export class TipoSectorComponent implements OnInit {
 
 
   setFilterDataTable() {
-    try{
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-    this.dataSource.filterPredicate = (data: TipoSector, filter: string) => {
-      //console.log(this.filtroNombreCedula);
-      //console.log("holaaa");
-      return ((data.getNombretiposector().toLowerCase().indexOf(this.filtroNombreTipoSector) !== -1 ) && (data.getTiposectoractivo() == true || this.toggleActDesc == true));
-    };
-  } catch (e) {
-    const mensaje = e.message ? e.message : e.toString();
-    let funcion = "setFilterDataTable()"
+    try {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = (data: TipoSector, filter: string) => {
+        //console.log(this.filtroNombreCedula);
+        //console.log("holaaa");
+        return ((data.getNombretiposector().toLowerCase().indexOf(this.filtroNombreTipoSector) !== -1) && (data.getTiposectoractivo() == true || this.toggleActDesc == true));
+      };
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "setFilterDataTable()"
 
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy
-    ? location.path() : '';
-    this.enviarExcepcion(mensaje, e, funcion,url);
-    //console.log("error asdasd a:" + e.stack);
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
 
-  }
+    }
 
   }
 
@@ -171,7 +193,7 @@ export class TipoSectorComponent implements OnInit {
             //cambiamos eal rol de estado
             this.toggleActDesc = false;
             this.consultarTipoDeSectores();
-          
+
             this.mostrarMensaje(1);
           }
         },
@@ -188,8 +210,8 @@ export class TipoSectorComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -197,11 +219,11 @@ export class TipoSectorComponent implements OnInit {
   }
 
   //dialogo de confirmacion para eliminar o no el usuario
-  openDialog(tiposector:TipoSector): void {
+  openDialog(tiposector: TipoSector): void {
     try {
 
-    let nombretiposector = tiposector.getNombretiposector();
-    let idtiposector = tiposector.getPkidtiposector();
+      let nombretiposector = tiposector.getNombretiposector();
+      let idtiposector = tiposector.getPkidtiposector();
 
       const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
         width: '250px',
@@ -210,7 +232,7 @@ export class TipoSectorComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje =  result.respuesta +" Nombre del tipo sector: "+nombretiposector;
+        this.mensaje = result.respuesta + " Nombre del tipo sector: " + nombretiposector;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
@@ -229,26 +251,148 @@ export class TipoSectorComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
   }
 
   /**
-   * 
-   * metodo que llamar el formulario de editar o agregar dependiendo 
+  * Metodos para agregar un nuevo tipo o editar un tipo 
    */
-  editarAgregarTipo(element){
-    if(element==null){//entra por agregar un nuevo tipo de sector
 
-    }else{
+  //llamamos al fomrulario para agregar un nuevo tipo y inicializamos las validaciones del formulario
+  llamarFormularioAgregarTipo(element) {
+      try {
+
+      this.mostrarFormTipo = !this.mostrarFormTipo;
+      this.mostrarTabla = !this.mostrarTabla;
+
+      this.tipo = element!=null ? element : null;
+      this.isUpdate = element!=null ? true:false;
+
+      //validamos el formulario solo en caso que este este visible
+      if (this.mostrarFormTipo) {
+        this.nuevoTipoForm = this.nuevoForm.group({
+          codigotiposector: [this.tipo != null ? this.tipo.getCodigotiposector() : '', Validators.required],
+          nombretiposector: [this.tipo != null ? this.tipo.getNombretiposector() : '', Validators.required],
+          descripciontiposector: [this.tipo != null ? this.tipo.getDescripciontiposector() : '', Validators.required]
+        });
+      }
+      this.active = this.tipo != null ? this.tipo.getTiposectoractivo():false;
+
+      //si el tipo es nullo, significa que entra por un nuevo objeto
+      this.mensajeBoton = this.tipo == null ? "Guardar" : "Actualizar";
+
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "LlamarFormularioAgregarTipo()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+  }
+
+  //activar o desctivar el boton y mostrar visualmente
+  activarDesactivartipo() {
+    this.active = !this.active;
+    this.textActive = this.active ? "Activado" : "Desactivado";
+  }
+
+
+
+
+  /**
+   * 
+   * metodo que agrega el tipo de sector o edita un tipo de sector 
+   */
+  editarAgregarTipo() {
+
+    //this.tipo = ;
+    this.creandotipo=true;
+    if(this.tipo==null)this.tipo= new TipoSector();
+    this.tipo.setCodigotiposector(this.nuevoTipoForm.get('codigotiposector').value);
+    this.tipo.setNombretiposector(this.nuevoTipoForm.get('nombretiposector').value);
+    this.tipo.setTiposectoractivo(this.active);
+    this.tipo.setDescripciontiposector(this.nuevoTipoForm.get('descripciontiposector').value)
+
+    if (!this.isUpdate) {//entra por agregar un nuevo tipo de sector
+      this.closeDialog2();
+      this._tiposectorService.crearTipoSector(this.tipo).subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //this.msg = this.respuesta.msg;
+            this.creandotipo = false;
+            if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los tipos de sector
+              this.mensaje = this.respuesta.msg;
+              this.mostrarMensaje(1);
+              this.mostrarFormTipo = !this.mostrarFormTipo;
+              this.mostrarTabla = !this.mostrarTabla;
+              this.active=false;
+              this.consultarTipoDeSectores();
+            } else {
+              this.msg = this.respuesta.msg;
+            }
+
+          }
+        },
+        error => {
+          this.msg = 'Error en el servidor';
+            console.log('Error en el servidor'+ error);
+        }
+      );
+
+
+    } else {//actualizamos el tipo de sector
+      this.closeDialog2();
+      this._tiposectorService.actualizarTipoSector(this.tipo).subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //this.msg = this.respuesta.msg;
+            this.creandotipo = false;
+            if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los tipos de sector
+              this.mensaje = this.respuesta.msg;
+              this.mostrarMensaje(1);
+              this.mostrarFormTipo = !this.mostrarFormTipo;
+              this.mostrarTabla = !this.mostrarTabla;
+              this.active=false;
+              this.consultarTipoDeSectores();
+            } else {
+              this.msg = this.respuesta.msg;
+            }
+
+          }
+        },
+        error => {
+          this.msg = 'Error en el servidor';
+            console.log('Error en el servidor'+ error);
+        }
+      );
+     
+
       
     }
 
   }
 
+
+  closeDialog2(){
+    this.msg='';
+  }
 
   //Mostrar mensaje variable estilizado de error o de confirmacion 
   mostrarMensaje(codeError: number) {

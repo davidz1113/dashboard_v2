@@ -71,6 +71,19 @@ export class TipoSectorServices {
     }
 
 
+    /**
+     * MEtodo que actualiza el tipo de sector con el id del tipo de sector
+     */
+    actualizarTipoSector(sector_actualizar){
+        let json = JSON.stringify(sector_actualizar);
+        let params = "json="+json+"&authorization="+this.getToken();
+        console.log(params);
+        
+
+        return this._http.post(this.url + '/tiposector/edit', params, { headers: this.headers })
+        .pipe(map(res => res.json()));
+
+    }
 
     //obtener de manera global los datos del token
     getToken() {

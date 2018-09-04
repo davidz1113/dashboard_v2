@@ -76,7 +76,10 @@ export class PlazasMercadoComponent implements OnInit {
         this.plazaEdit = null;
         console.log("cancel");
         //el mensaje pasa a null en caso que solo sea cancelar
-        if(event.msj!=null){
+        if(event.mensaje!=null){
+          this.mensaje=event.mensaje;
+          this.consultarPlazas();
+        }else{
           this.mensaje=null;
         }
       }

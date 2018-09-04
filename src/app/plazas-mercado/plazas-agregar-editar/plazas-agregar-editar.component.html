@@ -18,7 +18,7 @@
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
           </div>
-          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoPlaza"></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoplaza"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->
         </div>
@@ -31,8 +31,8 @@
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite nombre de la plaza" id="codigoplaza" name="codigoplaza" formControlName="codigoplaza">
-                  <mat-error *ngIf="nuevoPlazaForm.get('nombreplaza').hasError('required')">
+                  <input matInput type="number" placeholder="Digite codigo de la plaza" id="codigoplaza" name="codigoplaza" formControlName="codigoplaza">
+                  <mat-error *ngIf="nuevoPlazaForm.get('codigoplaza').hasError('required')">
                     el codigo es <strong>obligatorio</strong>
                   </mat-error>
                 </mat-form-field>
@@ -42,7 +42,7 @@
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
                   <input matInput type="text" placeholder="Digite nombre de la plaza" id="nombreplaza" name="nombreplaza" formControlName="nombreplaza">
-                  <mat-error *ngIf="nuevoPlazaForm.get('codigoplaza').hasError('required')">
+                  <mat-error *ngIf="nuevoPlazaForm.get('nombreplaza').hasError('required')">
                     El nombre es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
@@ -64,7 +64,7 @@
               <div class="col-sm-4 mx-auto mt-1">
                 <mat-form-field>
                   <mat-select placeholder="Seleccione tipo de recaudo" id="pkidtiporecaudo" name="pkidtiporecaudo" (change)="onChangePermisos($event)" formControlName="pkidtiporecaudo" multiple >
-                    <mat-option *ngFor="let tiporecaudo of tiporecaudos" [value]=" tiporecaudo.pkidtiporecaudo+'-'+tiporecaudo.nombretiporecaudo">{{tiporecaudo.nombretiporecaudo}}</mat-option>
+                    <mat-option *ngFor="let tiporecaudo of tiporecaudos" [value]=" tiporecaudo.pkidtiporecaudo">{{tiporecaudo.nombretiporecaudo}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoPlazaForm.get('pkidtiporecaudo').hasError('required')">Porfavor seleccione al menos un
                     tipo de recaudo</mat-error>

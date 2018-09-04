@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   ngOnInit(): void {
     //redirigir si el usuario esta loggeado
-    //this._userService.redirigirSiEstaIdentificado(this._router);
+    this._userService.redirigirSiEstaIdentificado(this._router);
   }
   constructor(private _userService: UsuarioServices,private _router: Router,) {
 

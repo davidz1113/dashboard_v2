@@ -69,6 +69,38 @@ export class PlazaServices {
     }
 
 
+
+
+    /**
+     * Metodo que sirve para actualizar una plaza
+     */
+    actualizarPlaza(plaza_editar, arrTipoReca, tipoRecaAntiguos) {
+
+
+        let newArrTipo = [];
+        for (let i = 0; i < tipoRecaAntiguos.length; i++) {
+            let id = i;
+            let idtipo = tipoRecaAntiguos[i];
+            newArrTipo.push('"' + id + '"' + ':' + '"' + idtipo + '"');
+        }
+
+        let tiposAntiguos = "{" + (newArrTipo) + "}";
+
+
+
+        let json = JSON.stringify(plaza_editar);
+        let tipos = "{" + (arrTipoReca) + "}";
+        console.log("nuevosTipos");
+        console.log(arrTipoReca);
+        console.log("viejos");
+        console.log(tiposAntiguos);
+
+        let params = "json=" + json + "&authorization=" + this.getToken() + "&tiporecaudoantiguos=" + tiposAntiguos + "&tiporecaudonuevos=" + tipos;
+
+        return this._http.post(this.url + '/plaza/edit', params, { headers: this.headers }).pipe(map(res => res.json()));
+    }
+
+
     //obtener de manera global los datos del token
     getToken() {
         let token = JSON.parse(localStorage.getItem('token'));

@@ -17,11 +17,11 @@ export const ROUTES: RouteInfo[] = [
     { path: '/plazas-mercado', title: 'Plazas de mercado', icon: 'account_balance', class: '', valor:2 },
     { path: '/tipos/tipo-sector', title: 'Tipos de sectores', icon: 'account_balance', class: '', valor:3 },
     { path: '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '' , valor:4},
-    { path: '/table-list', title: 'Sectores', icon: 'content_paste', class: '' , valor:123},
-    { path: '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor:123 },
-    { path: '/icons', title: 'Reportes', icon: 'bubble_chart', class: '' , valor:123},
-    { path: '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor:123 },
-    { path: '/tareas', title: 'Tareas', icon: 'assignment', class: '' , valor:123},
+    { path: '/table-list', title: 'Sectores', icon: 'content_paste', class: '' , valor:5},
+    { path: '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor:6 },
+    { path: '/icons', title: 'Reportes', icon: 'bubble_chart', class: '' , valor:7},
+    { path: '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor:8 },
+    { path: '/tareas', title: 'Tareas', icon: 'assignment', class: '' , valor:9},
 ];
 
 @Component({
@@ -32,7 +32,7 @@ export const ROUTES: RouteInfo[] = [
 export class SidebarComponent implements OnInit {
     menuItems: any[];
     public identity;
-    urlimagen: string = '../assets/img/empleado.png';
+    urlimagen: string = '../SistemaRecaudoFrontEnd1/assets/img/empleado.png';
     nombreUsuario: string;
     
     modulos : Modulo[];
@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
         this.identity = this.getIdentity();
         if(this.identity.rutaimagen != null){
             let imagen: string = this.identity.rutaimagen;
-            this.urlimagen = "http://192.168.1.21/SistemaRecaudoBackend/" + (imagen.substring(3));
+            this.urlimagen = "http://contalentosas.com/SistemaRecaudoBackend/" + (imagen.substring(3));
         }
         
         
@@ -61,7 +61,7 @@ export class SidebarComponent implements OnInit {
 
 
     mostrarMenus(){
-        /*this.modulos = plainToClass(Modulo,this.identity.modulos);
+        this.modulos = plainToClass(Modulo,this.identity.modulos);
         let nuevosRoutes:RouteInfo[] = [];
         this.modulos.map((modulo)=>{
             ROUTES.map((route)=>{
@@ -72,9 +72,9 @@ export class SidebarComponent implements OnInit {
 
             })
             
-        });*/
+        });
 
-        this.menuItems = ROUTES.filter(menuItem => menuItem);
+        this.menuItems = nuevosRoutes.filter(menuItem => menuItem);
 
     }
 

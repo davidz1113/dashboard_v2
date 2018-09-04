@@ -42,7 +42,6 @@ export class PlazasAgregarEditarComponent implements OnInit {
 
   //enviar mensaje y alternar entre formualrios
   @Output() llamarPlaza = new EventEmitter();
-  @Output() enviarMensaje = new EventEmitter();
 
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
@@ -74,19 +73,17 @@ export class PlazasAgregarEditarComponent implements OnInit {
       this.identidad.setNombreplaza(this.nuevoPlazaForm.get('nombreplaza').value);
       this.identidad.setPlazaactivo(this.active);
       let arrTipoReca = this.nuevoPlazaForm.get('pkidtiporecaudo').value;
+      //console.log(arrTipoReca);
       let newArrTipo = [];
-
-      arrTipoReca.forEach(element => {
-        let rol = element.split('-');
-        let id = rol[0];
-        let nombre = rol[1];
-
-        newArrTipo.push('"' + id + '"' + ':' + '"' + nombre + '"');
-      });
-
+      for(let i=0; i<arrTipoReca.length;i++){
+        let id=i;
+        let idtipo= arrTipoReca[i];
+        newArrTipo.push('"' + id + '"' + ':' + '"' + idtipo + '"');
+      }
+     
       console.log(newArrTipo);
-
-      if (this.plaza == null) {//significa que esta entrando por un nuevo usuario
+      
+      if (this.plaza == null) {//significa que esta entrando por un nueva plaza
         this._plazaServices.crearPlaza(this.identidad, newArrTipo).subscribe(
           response => {
             this.respuesta = response;
@@ -106,14 +103,31 @@ export class PlazasAgregarEditarComponent implements OnInit {
           },
           error => {
             this.msg = 'Error en el servidor';
-            console.log('Error en el servidor');
+            console.log('Error en el servidor'+ error);
           }
-
 
         );
 
 
       } else {//es en caso que entra por actualizar
+        this.identidad.setPkidplaza(this.plaza.getPkidplaza());
+        this._plazaServices.actualizarPlaza(this.identidad,newArrTipo,this.valueSelect).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandoplaza = false;
+              if (this.respuesta.status == "Exito") {
+                this.llamarPlaza.emit({  cancel: '1' ,mensaje: this.respuesta.msg });
+              }else{
+                this.msg = this.respuesta.msg;
+              }
+            }
+          },
+        );
 
       }
     } catch (e) {
@@ -131,35 +145,22 @@ export class PlazasAgregarEditarComponent implements OnInit {
   valueSelect = [];
   validarFormulario() {
     try {
-      let tiporReca: any[];
-
+      let tiporReca: TipoRecaudo[];
+      this.valueSelect = [];
+      this.seleccionados = [];
       if (this.plaza != null) {//si llega por actualizar
         this.active = this.plaza.getPlazaactivo();
         this.textActive = this.active ? "Activado" : "Desactivado";
         this.mensajeBoton = "Actualizar";
         //convierte el parametro en array para poder acceder
         tiporReca = (this.plaza.getTiporecaudo());
-
-        var res = Object.keys(tiporReca)
-          // iterate over them and generate the array
-          .map(function (k) {
-            // generate the array element 
-            return [+k, tiporReca[k]];
-          });
-        //console.log(res.length);
-
-        for (let i = 0; i < res.length; i++) {
-          //console.log(res[i]);
-          let unir = '';
-          for (let j = 0; j < res[i].length; j++) {
-            //console.log(res[i][j]);
-            unir += res[i][j] + "-";
-          }
-          this.valueSelect.push(unir.slice(0, -1));//cortamos el - final
-
-
-        }
-        this.seleccionados = this.valueSelect;
+       
+        tiporReca.map((tipo)=>{
+          this.seleccionados.push(tipo.nombretiporecaudo);
+          this.valueSelect.push(tipo.pkidtiporecaudo);
+        });
+        console.log(tiporReca);
+        
 
       } else {
 
@@ -227,11 +228,20 @@ export class PlazasAgregarEditarComponent implements OnInit {
   }
 
 
-  seleccionados;
   //metodo que muestra los seleccionados
+  seleccionados: string[]=[];
   onChangePermisos(event) {
-    this.seleccionados = event.value;
-    console.log(this.seleccionados);
+    this.seleccionados = [];
+    let tiposSelected = event.value;
+    this.tiporecaudos.map((tipo)=>{
+      tiposSelected.map((selec)=>{
+        if(selec==tipo.getPkidtiporecaudo()){
+          this.seleccionados.push(tipo.getNombretiporecaudo());
+        }
+      });
+    });
+    //this.seleccionados = event.value;
+    //console.log(this.seleccionados);
   }
 
   /*

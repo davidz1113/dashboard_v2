@@ -13,7 +13,7 @@ import { PathLocationStrategy, LocationStrategy } from '@angular/common';
   selector: 'app-user-agregar-editar',
   templateUrl: './user-agregar-editar.component.html',
   styleUrls: ['./user-agregar-editar.component.scss'],
-  providers: [UsuarioServices, RolesServices,ExcepcionService]
+  providers: [UsuarioServices, RolesServices, ExcepcionService]
 })
 export class UserAgregarEditarComponent implements OnInit {
 
@@ -135,8 +135,8 @@ export class UserAgregarEditarComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -149,7 +149,7 @@ export class UserAgregarEditarComponent implements OnInit {
   nuevoUsuario() {
     try {
 
-
+      this.msg='';
       this.creandoUsuario = true;
       //seteamos en el objeto usuario las variables del formulario
       this.identidad.setNombreUsuario(this.nuevoUsuarioForm.get('nombreUsuario').value);
@@ -166,7 +166,7 @@ export class UserAgregarEditarComponent implements OnInit {
         uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
         console.log(this.selectedFile.size);
       }
-      if (this.usuario == null) {
+      if (this.usuario == null) {//es un usuario nuevo
 
         this._usuarioService.crearUsuario(this.identidad, uploadData).subscribe(
           response => {
@@ -187,12 +187,13 @@ export class UserAgregarEditarComponent implements OnInit {
             }
           },
           error => {
+            this.creandoUsuario = false;
             this.msg = 'Error en el servidor';
             console.log('Error en el servidor');
           }
 
         );
-      } else {//{Actualzia
+      } else {//{Actualziar usuario
         this.identidad.setPkidusuario(this.usuario.getPkidusuario());
         this._usuarioService.actualizarUsuario(this.identidad, uploadData).subscribe(
           response => {
@@ -203,11 +204,17 @@ export class UserAgregarEditarComponent implements OnInit {
             } else {
               //this.msg = this.respuesta.msg;
               this.creandoUsuario = false;
-              this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
-              this.llamarFormulario.emit({ cancel: '1' });
+              if (this.respuesta.status != "error") {
+                this.enviarMensaje.emit({ mensaje: this.respuesta.msg });
+                this.llamarFormulario.emit({ cancel: '1' });
+              }else{
+                this.msg = this.respuesta.msg;
+
+              }
             }
           },
           error => {
+            this.creandoUsuario = false;
             this.msg = 'Error en el servidor';
             console.log('Error en el servidor');
 
@@ -221,8 +228,8 @@ export class UserAgregarEditarComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -239,7 +246,7 @@ export class UserAgregarEditarComponent implements OnInit {
         //this.url = this.url.substring(2);
         if (this.usuario.getRutaimagen() != null) {
 
-          this.url = "http://192.168.1.21/SistemaRecaudoBackend/" + (this.usuario.getRutaimagen().substring(3));
+          this.url = "http://contalentosas.com/SistemaRecaudoBackend/" + (this.usuario.getRutaimagen().substring(3));
         }
         console.log("url: " + this.url.toString());
         this.active = this.usuario.getUsuarioActivo();
@@ -279,8 +286,8 @@ export class UserAgregarEditarComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -315,8 +322,8 @@ export class UserAgregarEditarComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
@@ -348,15 +355,15 @@ export class UserAgregarEditarComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
   }
 
 
-  enviarExcepcion(mensaje, e, funcion,url) {
+  enviarExcepcion(mensaje, e, funcion, url) {
     this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
       response => {
         if (this.respuesta.length <= 1) {

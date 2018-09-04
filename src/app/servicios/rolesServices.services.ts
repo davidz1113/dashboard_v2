@@ -71,7 +71,9 @@ export class RolesServices {
     //metodo para actualizar un rol
     //parametros de usuario
     /*
-        rol_editar: objeto de tipo Rol
+        rol_editar: objeto de tipo Rol,
+        arrModulo: los permisos nuevos
+        permisosAntiguos: permisos antiguos
     */
     actualizarRol(rol_editar,arrModulo,permisosAntiguos) {
         

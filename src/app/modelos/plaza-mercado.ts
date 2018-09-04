@@ -5,7 +5,7 @@ export class PlazaMercado {
     private pkidplaza: number;
     private codigoplaza: string;
     private nombreplaza: string;
-    private plazaactivo: boolean;
+    private plazaactivo: string;
     private creacionplaza: Date;
     private modificacion: Date;
     private tiporecaudo: TipoRecaudo[];
@@ -52,12 +52,12 @@ export class PlazaMercado {
     }
 
     public getPlazaactivo(): boolean {
-        return this.plazaactivo;
+        return Boolean(this.plazaactivo);
     }
 
     public setPlazaactivo(plazaactivo: boolean
     ): void {
-        this.plazaactivo = plazaactivo;
+        this.plazaactivo = String(plazaactivo);
     }
 
     public getCreacionplaza(): Date {
