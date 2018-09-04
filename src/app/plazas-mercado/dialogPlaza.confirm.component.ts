@@ -1,7 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RolesServices } from '../servicios/rolesServices.services';
-import { DialogDataRol } from '../usuarios-roles/tabla-roles/tabla-roles.component';
+import { DialogData } from '../servicios/globales';
+import { PlazaServices } from '../servicios/plazaServices.services';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -9,32 +10,33 @@ import { DialogDataRol } from '../usuarios-roles/tabla-roles/tabla-roles.compone
 @Component({
     selector: 'app-dialog-interface',
     template: `
-    <h1 mat-dialog-title>¿Esta seguro de que eliminara el Rol {{nombreRol}} ?</h1>
+    <h1 mat-dialog-title>¿Esta seguro de que eliminara la plaza {{nombre}} ?</h1>
     <div mat-dialog-actions>
      <button mat-button (click)="onNoClick()">Cancelar</button>
-    <button mat-button cdkFocusInitial  (click)="eliminarRol()">Eliminar</button>
+    <button mat-button cdkFocusInitial  (click)="eliminarPlaza()">Eliminar</button>
     </div>
         
     `,
-    //providers: [RolesServices]
+    providers: [PlazaServices]
 
 })
 
 /**
  * Clase que se encargara de gestionar los mensaje para la eliminacion de cualquier tipo
  */
-export class DialogConfirmacionTipos implements DialogDataRol {
+export class DialogConfirmacionPlaza implements DialogData {
+    nombre: string;
+    id: number;
     //variables de la interfaz
-    nombreRol: string;
-    idRol: number;
+  
     //variable respuesta servidor
     public respuesta ;
 
-    constructor(public dialogRef: MatDialogRef<DialogConfirmacionTipos>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogDataRol, private _RolServices: RolesServices) {
+    constructor(public dialogRef: MatDialogRef<DialogConfirmacionPlaza>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _plazaServices: PlazaServices) {
 
-        this.nombreRol = data['nombreRol'];
-        this.idRol = data['idRol'];
+        this.nombre = data['nombre'];
+        this.id = data['id'];
 
     }
 
@@ -42,10 +44,10 @@ export class DialogConfirmacionTipos implements DialogDataRol {
         this.dialogRef.close();
     }
 
-    /*
+    
     //Metodo q elimina el rol desde la base de datos
-    eliminarRol() {
-        this._RolServices.eliminarRol(this.idRol).subscribe(
+    eliminarPlaza() {
+        this._plazaServices.eliminarPlaza(this.id).subscribe(
             respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {
@@ -63,6 +65,6 @@ export class DialogConfirmacionTipos implements DialogDataRol {
             }
 
         );
-    }*/
+    }
 
 }

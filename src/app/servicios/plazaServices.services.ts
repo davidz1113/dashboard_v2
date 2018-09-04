@@ -39,21 +39,34 @@ export class PlazaServices {
     }
 
 
-        /*
-    Metodo que crea un rol 
-    recibe como parametro el rol de tipo Rol para insertar
-    adicionalemte, los permisos como un array por aparte
-    */
-   crearPlaza(nuevo_plaza,arrTipoReca) {
-    let json = JSON.stringify(nuevo_plaza);
-    let tipoRecaudo = "{"+(arrTipoReca)+"}";
-    let params = "json=" + json + "&authorization=" + this.getToken()+"&tiporecaudo="+tipoRecaudo;
+    /*
+        Metodo que crea un rol 
+        recibe como parametro el rol de tipo Rol para insertar
+        adicionalemte, los permisos como un array por aparte
+*/
+    crearPlaza(nuevo_plaza, arrTipoReca) {
+        let json = JSON.stringify(nuevo_plaza);
+        let tipoRecaudo = "{" + (arrTipoReca) + "}";
+        let params = "json=" + json + "&authorization=" + this.getToken() + "&tiporecaudo=" + tipoRecaudo;
 
-    return this._http.post(this.url + '/plaza/new', params, { headers: this.headers }).pipe(map(res => res.json()));
+        return this._http.post(this.url + '/plaza/new', params, { headers: this.headers }).pipe(map(res => res.json()));
 
-}
+    }
 
 
+    /**
+       * Eliminar la plaza por pkidPlaza
+       */
+
+    eliminarPlaza(pkidPlaza) {
+        let plaza = { pkidplaza: pkidPlaza };
+        let json = JSON.stringify(plaza);
+        let params = "json=" + json + "&authorization=" + this.getToken();
+        console.log(params);
+        //console.log(JSON.stringify(this.getToken()));
+
+        return this._http.post(this.url + '/plaza/remove', params, { headers: this.headers }).pipe(map(res => res.json()));
+    }
 
 
     //obtener de manera global los datos del token

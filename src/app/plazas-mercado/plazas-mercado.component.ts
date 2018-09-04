@@ -6,6 +6,7 @@ import { PlazaMercado } from '../modelos/plaza-mercado';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { plainToClass } from "class-transformer";
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { DialogConfirmacionPlaza } from './dialogPlaza.confirm.component';
 
 
 @Component({
@@ -194,6 +195,47 @@ export class PlazasMercadoComponent implements OnInit {
     }
   }
 
+    //dialogo de confirmacion para eliminar o no el Plaza
+  openDialog(plaza:PlazaMercado){
+    try{
+
+      
+    let nombrePlaza = plaza.getNombreplaza();
+    let idPlaza = plaza.getPkidplaza();
+
+      const dialogRef = this.dialog.open(DialogConfirmacionPlaza, {
+        width: '250px',
+        data: { nombre: nombrePlaza, id: idPlaza }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.mensaje =  result.respuesta +" Nombre de la Plaza: "+nombrePlaza;
+        if (result != null) {
+          console.log(result.status);
+          if (result.status == "error") {
+            this.mostrarMensaje(0);
+          } else if (result.status == "Success") {
+            this.mostrarMensaje(1)
+            this.toggleActDesc = false;
+            this.consultarPlazas();
+
+          }
+        }
+      });
+
+
+    }catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "openDialog()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+      ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion,url);
+      //console.log("error asdasd a:" + e.stack);
+    }
+  }
 
  
   cambiarEstado(plaza: PlazaMercado) {

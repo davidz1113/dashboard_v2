@@ -61,7 +61,7 @@ export class SidebarComponent implements OnInit {
 
 
     mostrarMenus(){
-        this.modulos = plainToClass(Modulo,this.identity.modulos);
+        /*this.modulos = plainToClass(Modulo,this.identity.modulos);
         let nuevosRoutes:RouteInfo[] = [];
         this.modulos.map((modulo)=>{
             ROUTES.map((route)=>{
@@ -72,9 +72,9 @@ export class SidebarComponent implements OnInit {
 
             })
             
-        });
+        });*/
 
-        this.menuItems = nuevosRoutes.filter(menuItem => menuItem);
+        this.menuItems = ROUTES.filter(menuItem => menuItem);
 
     }
 

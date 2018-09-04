@@ -210,7 +210,7 @@
                       <mat-cell *matCellDef="let element ; let i=index">
     
                         <button mat-icon-button matTooltip="Editar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                          class="example-button" (click)="enviarRol.emit({rol:element})"> <i class="material-icons ">edit</i>
+                          class="example-button" (click)="editarAgregarTipo(element)"> <i class="material-icons ">edit</i>
                         </button>
     
                         <button mat-icon-button matTooltip="Eliminar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
@@ -219,7 +219,7 @@
                         </button>
     
                         <button mat-icon-button matTooltip="Desactivar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                          class="example-button" (click)="cambiarEstadoRol(element)">
+                          class="example-button" (click)="cambiarEstadoTipo(element)">
                           <i class="material-icons ">not_interested</i>
                         </button>
     

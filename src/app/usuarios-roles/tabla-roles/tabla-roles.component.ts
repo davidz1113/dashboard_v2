@@ -169,7 +169,7 @@ export class TablaRolesComponent implements OnInit {
 
       const dialogRef = this.dialog.open(DialogConfirmacionRol, {
         width: '250px',
-        data: { nombreRol: nombreRol, idRol: idRol }
+        data: { nombre: nombreRol, id: idRol }
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -278,9 +278,3 @@ export class TablaRolesComponent implements OnInit {
 
 }
 
-//interfaz para comunicarse con el dialogo
-export interface DialogDataRol {
-  nombreRol: string;
-  idRol: number;
-  respuesta: string;
-}

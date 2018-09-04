@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { RolesServices } from '../../servicios/rolesServices.services';
-import { DialogDataRol } from './tabla-roles.component';
+import { DialogData } from '../../servicios/globales';
 
 
 @Component({
     selector: 'app-dialog-interface',
     template: `
-    <h1 mat-dialog-title>¿Esta seguro de que eliminara el Rol {{nombreRol}} ?</h1>
+    <h1 mat-dialog-title>¿Esta seguro de que eliminara el Rol {{nombre}} ?</h1>
     <div mat-dialog-actions>
      <button mat-button (click)="onNoClick()">Cancelar</button>
     <button mat-button cdkFocusInitial  (click)="eliminarRol()">Eliminar</button>
@@ -17,18 +17,19 @@ import { DialogDataRol } from './tabla-roles.component';
     providers: [RolesServices]
 
 })
-export class DialogConfirmacionRol implements DialogDataRol {
+export class DialogConfirmacionRol implements DialogData {
+    nombre: string;
+    id: number;
     //variables de la interfaz
-    nombreRol: string;
-    idRol: number;
+   
     //variable respuesta servidor
     public respuesta ;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionRol>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogDataRol, private _RolServices: RolesServices) {
+        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _RolServices: RolesServices) {
 
-        this.nombreRol = data['nombreRol'];
-        this.idRol = data['idRol'];
+        this.nombre = data['nombre'];
+        this.id = data['id'];
 
     }
 
@@ -38,7 +39,7 @@ export class DialogConfirmacionRol implements DialogDataRol {
 
     //Metodo q elimina el rol desde la base de datos
     eliminarRol() {
-        this._RolServices.eliminarRol(this.idRol).subscribe(
+        this._RolServices.eliminarRol(this.id).subscribe(
             respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {

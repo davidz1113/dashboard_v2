@@ -6,7 +6,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { plainToClass } from "class-transformer";
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
-import { DialogConfirmacionTipos } from '../dialogRol.confirm.component';
+import { DialogConfirmacionTipos } from '../dialogTipo.confirm.component';
 
 @Component({
   selector: 'app-tipo-sector',
@@ -154,12 +154,12 @@ export class TipoSectorComponent implements OnInit {
 
 
 
-  cambiarEstadoRol(tiposector: TipoSector) {
+  cambiarEstadoTipo(tiposector: TipoSector) {
     try {
       let active = tiposector.getTiposectoractivo();
       console.log("Active: " + active);
 
-      this._tiposectorService.cambiarEstadoTipoSector(tiposector.getPkidtiposector(), !active, "trol").subscribe(
+      this._tiposectorService.cambiarEstadoTipoSector(tiposector.getPkidtiposector(), !active, "ttiposector").subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -167,7 +167,7 @@ export class TipoSectorComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            this.mensaje = "El cambio de estado del rol " + tiposector.getNombretiposector() + " : " + this.respuesta.msg;
+            this.mensaje = "El cambio de estado del tipo sector " + tiposector.getNombretiposector() + " : " + this.respuesta.msg;
             //cambiamos eal rol de estado
             this.toggleActDesc = false;
             this.consultarTipoDeSectores();
@@ -205,12 +205,12 @@ export class TipoSectorComponent implements OnInit {
 
       const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
         width: '250px',
-        data: { nombreRol: nombretiposector, idtipoSector: idtiposector }
+        data: { nombre: nombretiposector, id: idtiposector, tipoIdentifi: 1 }
       });
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje =  result.respuesta +" Nombre del Rol: "+nombretiposector;
+        this.mensaje =  result.respuesta +" Nombre del tipo sector: "+nombretiposector;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
@@ -234,6 +234,19 @@ export class TipoSectorComponent implements OnInit {
       //console.log("error asdasd a:" + e.stack);
 
     }
+  }
+
+  /**
+   * 
+   * metodo que llamar el formulario de editar o agregar dependiendo 
+   */
+  editarAgregarTipo(element){
+    if(element==null){//entra por agregar un nuevo tipo de sector
+
+    }else{
+      
+    }
+
   }
 
 

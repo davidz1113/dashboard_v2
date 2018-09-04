@@ -15,12 +15,12 @@ export class TipoSectorServices {
     }
 
 
-     //metodo q consulta todos los tipos de sectores de la base de datos
+    //metodo q consulta todos los tipos de sectores de la base de datos
     //paramtros de envio
     /*
         authorization: token del usuario
     */
-    consultarTodosTiposSector(){
+    consultarTodosTiposSector() {
         let token = "authorization=" + this.getToken();
         return this._http.post(this.url + '/tiposector/query', token, { headers: this.headers })
             .pipe(map(res => res.json()));
@@ -32,12 +32,41 @@ export class TipoSectorServices {
      * @param active valor para cambiarle a la base de datos
      * @param nombre_tabla nombre de la tabla
      */
-    
-    cambiarEstadoTipoSector(pkidtiporol: number, active: boolean, nombre_tabla: string) {
-        let enviarDatos = { pkid: pkidtiporol, active: String(active), nombretabla: nombre_tabla };
+
+    cambiarEstadoTipoSector(pkidtipo: number, active: boolean, nombre_tabla: string) {
+        let enviarDatos = { pkid: pkidtipo, active: String(active), nombretabla: nombre_tabla };
         let json = JSON.stringify(enviarDatos);
         let params = "json=" + json + "&authorization=" + this.getToken();
         return this._http.post(this.url + '/active/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
+
+    /*
+       Metodo que crea un tipoSector 
+       recibe como parametro el rol de tipo Rol para insertar
+       adicionalemte, los permisos como un array por aparte
+*/
+    crearTipoSector(nuevo_sector) {
+        let json = JSON.stringify(nuevo_sector);
+        let params = "json=" + json + "&authorization=" + this.getToken();
+
+        return this._http.post(this.url + '/tiposector/new', params, { headers: this.headers }).pipe(map(res => res.json()));
+
+    }
+
+
+    /**
+       * Eliminar la tiposector por pkidtiposector
+       */
+
+    eliminartiposector(pkidtiposector) {
+        let tiposector = { pkidtiposector: pkidtiposector };
+        let json = JSON.stringify(tiposector);
+        let params = "json=" + json + "&authorization=" + this.getToken();
+        console.log(params);
+        //console.log(JSON.stringify(this.getToken()));
+
+        return this._http.post(this.url + '/tiposector/remove', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
 

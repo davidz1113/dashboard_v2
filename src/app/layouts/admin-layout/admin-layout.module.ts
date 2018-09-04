@@ -28,6 +28,8 @@ import { TablaRolesComponent } from '../../usuarios-roles/tabla-roles/tabla-role
 import { RolesAgregarEditarComponent } from '../../usuarios-roles/roles-agregar-editar/roles-agregar-editar.component';
 import { DialogConfirmacionRol } from '../../usuarios-roles/tabla-roles/dialogRol.confirm.component';
 import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.component';
+import { DialogConfirmacionPlaza } from '../../plazas-mercado/dialogPlaza.confirm.component';
+import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -57,12 +59,17 @@ import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.compone
     TablaRolesComponent,
     RolesAgregarEditarComponent,
     DialogConfirmacionRol,
-    TipoSectorComponent
+    TipoSectorComponent,
+    DialogConfirmacionPlaza,
+    DialogConfirmacionTipos
+
 
   ],
   entryComponents: [
     DialogConfirmacionComponent,
-    DialogConfirmacionRol
+    DialogConfirmacionRol,
+    DialogConfirmacionPlaza,
+    DialogConfirmacionTipos
   ],
 })
 
