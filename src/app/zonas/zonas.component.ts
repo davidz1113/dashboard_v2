@@ -215,9 +215,6 @@ export class ZonasComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            //cabeceras
-            //this.cabecerasColumnas = this.respuesta.cabeceras;
-            //this.cabecerasColumnas.push('actions');
             //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
             this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
@@ -304,9 +301,11 @@ export class ZonasComponent implements OnInit {
   }
 
   //dialogo de confirmacion para eliminar o no el usuario
-  openDialog(zona: Zona): void {
+  openDialog(zonas): void {
     try {
-
+      let zona: Zona =new Zona();
+    zona.setPkidzona(zonas.pkidzona);
+    zona.setNombrezona(zonas.nombrezona);
       let nombrezona = zona.getNombrezona();
       let idzona = zona.getPkidzona();
 
@@ -357,11 +356,18 @@ export class ZonasComponent implements OnInit {
       this.zona2 = element != null ? element : null;
       this.isUpdate = element != null ? true : false;
 
+      //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
+      
+      //this.consultarUsuariosRecaudo();
+      //this.consultarPlazasMercado()
+
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormZona) {
         this.nuevoZonaForm = this.nuevoForm.group({
           codigozona: [this.zona2 != null ? this.zona2.getCodigozona() : '', Validators.required],
           nombrezona: [this.zona2 != null ? this.zona2.getNombrezona() : '', Validators.required],
+          pkidplaza :  [this.zona2 != null ? this.zona2.getPlaza().getPkidplaza() : '', Validators.required],
+          pkidusuario: [this.zona2 != null ? this.zona2.getUsuario().getPkidusuario() : '', Validators.required],
         });
       }
       this.active = this.zona2 != null ? this.zona2.getZonaactivo() : false;

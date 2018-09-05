@@ -197,32 +197,49 @@
                 <mat-slide-toggle (change)="activarDesactivarzona()" [checked]="active">zona {{textActive}} </mat-slide-toggle>
               </div>
 
-              <div class="col-sm-4">
+              <div class="col-sm-4 mx-auto  mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione plaza" [(ngModel)]="plazaselect" (change)="aplicarFiltro()" formControlName="nombrezona">
+                  <mat-select placeholder="Seleccione plaza"  id="pkidplaza" name="pkidplaza"  formControlName="pkidplaza">
                     <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
+                      <mat-error *ngIf="nuevoZonaForm.get('pkidplaza').hasError('required')">
+                          la plaza es <strong>obligatoria</strong>
+                        </mat-error>
                 </mat-form-field>
               </div>
             </div>
-            </div>
-
-            <div class="form-group">
-              <div class="row">
-
-                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoZonaForm.valid">{{mensajeBoton}}
-                </button>
-                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarZona(null)">Cancelar</button>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class=" mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione Usuario recaudador" id="pkidusuario" name="pkidusuario"  formControlName="pkidusuario">
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                  </mat-select>
+                      <mat-error *ngIf="nuevoZonaForm.get('pkidusuario').hasError('required')">
+                          el usuario es <strong>obligatorio</strong>
+                        </mat-error>
+                </mat-form-field>
               </div>
             </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoZonaForm.valid">{{mensajeBoton}}
+              </button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarZona(null)">Cancelar</button>
+            </div>
+          </div>
 
         </form>
-        </div>
-        <!--
+      </div>
+      <!--
                     <pre>Status del formulario: {{ nuevoZonaForm.get('repetirContrasenia').hasError('') | json }}</pre>
                     <pre>Status del formulario: {{ nuevoZonaForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
                     Fin formulario nuevo zona
                   -->
-      </div>
     </div>
   </div>
+</div>

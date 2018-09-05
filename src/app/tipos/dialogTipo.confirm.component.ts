@@ -10,7 +10,7 @@ import { TipoSectorServices } from '../servicios/tipos-services/tiposectorServic
 @Component({
     selector: 'app-dialog-interface',
     template: `
-    <h1 mat-dialog-title>¿Esta seguro de que eliminara el Rol {{nombre}} ?</h1>
+    <h1 mat-dialog-title>¿Esta seguro de que eliminara  {{nombre}} ?</h1>
     <div mat-dialog-actions>
      <button mat-button (click)="onNoClick()">Cancelar</button>
     <button mat-button cdkFocusInitial  (click)="eliminarTipo()">Eliminar</button>
