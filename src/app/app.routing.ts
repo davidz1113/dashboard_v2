@@ -5,13 +5,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component'
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { GLOBAL } from './servicios/globales';
 
 const routes: Routes = [
 
 
   { path: '', pathMatch: 'full', component: LoginComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'login/:id', component: LoginComponent },
+  { path: ''+GLOBAL.urlBase+'/login', component: LoginComponent },
+  { path: ''+GLOBAL.urlBase+'/login/:id', component: LoginComponent },
   {
     path: '',
     component: AdminLayoutComponent,

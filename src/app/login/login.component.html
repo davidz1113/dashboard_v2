@@ -9,8 +9,8 @@
         </div>
         <div class="card-body" >
             <!--Mensaje de confirmacion-->
-            <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
-                <i class="material-icons" data-notify="icon">warning</i>
+            <div [class]="claseDinamic" data-notify="container" *ngIf="msg">
+                <i class="material-icons" data-notify="icon">{{iconAlert}}</i>
                 <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
                   <i class="material-icons">close</i>
                 </button>
@@ -38,7 +38,7 @@
                   </mat-error>
                 </mat-form-field>
               </div>
-              <button mat-button class="btn btn-outline-danger col-sm-8 mx-auto mt-3" type="submit" [disabled]="!identificacionForm.valid">Iniciar sessón</button>
+              <button mat-button class="btn btn-outline-danger col-sm-8 mx-auto mt-3" type="submit" [disabled]="!identificacionForm.valid || this.identity!=null ">Iniciar sessón</button>
             </div>
           </form>
         </div>

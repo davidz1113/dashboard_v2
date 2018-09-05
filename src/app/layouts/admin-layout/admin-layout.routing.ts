@@ -12,6 +12,7 @@ import { TareasComponent } from '../../tareas/tareas.component'
 import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.component';
 import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.component';
 import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.component';
+import { GLOBAL } from '../../servicios/globales';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -57,16 +58,16 @@ export const AdminLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: 'dashboard', component: DashboardComponent },
-    { path: 'usuarios-roles', component: UsuariosRolesComponent },
-    { path: 'plazas-mercado', component: PlazasMercadoComponent },
-    { path: 'tipos/tipo-sector', component: TipoSectorComponent },
-    { path: 'user-profile', component: UserProfileComponent },
-    { path: 'table-list', component: TableListComponent },
-    { path: 'typography', component: TypographyComponent },
-    { path: 'icons', component: IconsComponent },
-    { path: 'maps', component: MapsComponent },
-    { path: 'notificacion', component: NotificationsComponent },
-    { path: 'upgrade', component: UpgradeComponent },
-    { path: 'tareas', component: TareasComponent },
+    { path: GLOBAL.urlBase+'/dashboard', component: DashboardComponent },
+    { path: GLOBAL.urlBase+'/usuarios-roles', component: UsuariosRolesComponent },
+    { path: GLOBAL.urlBase+'/plazas-mercado', component: PlazasMercadoComponent },
+    { path: GLOBAL.urlBase+'/tipos/tipo-sector', component: TipoSectorComponent },
+    { path: GLOBAL.urlBase+'/user-profile', component: UserProfileComponent },
+    { path: GLOBAL.urlBase+'/table-list', component: TableListComponent },
+    { path: GLOBAL.urlBase+'/typography', component: TypographyComponent },
+    { path: GLOBAL.urlBase+'/icons', component: IconsComponent },
+    { path: GLOBAL.urlBase+'/maps', component: MapsComponent },
+    { path: GLOBAL.urlBase+'/notificacion', component: NotificationsComponent },
+    { path: GLOBAL.urlBase+'/upgrade', component: UpgradeComponent },
+    { path: GLOBAL.urlBase+'/tareas', component: TareasComponent },
 ];

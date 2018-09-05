@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { ROUTES } from '../sidebar/sidebar.component';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { GLOBAL } from '../../servicios/globales';
 
 @Component({
   selector: 'app-navbar',
@@ -14,10 +15,13 @@ export class NavbarComponent implements OnInit {
       mobile_menu_visible: any = 0;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    logOut2: any; 
 
     constructor(location: Location,  private element: ElementRef, private router: Router, private _route:ActivatedRoute) {
       this.location = location;
           this.sidebarVisible = false;
+
+          this.logOut2 = ['/'+GLOBAL.urlBase+'/login',1];
     }
 
     ngOnInit(){
@@ -132,7 +136,7 @@ export class NavbarComponent implements OnInit {
                 localStorage.removeItem('identity');
                 localStorage.removeItem('token');
                 
-                window.location.href = '/login';
+                window.location.href = '/'+GLOBAL.urlBase+'/login';
             }
         });
     }

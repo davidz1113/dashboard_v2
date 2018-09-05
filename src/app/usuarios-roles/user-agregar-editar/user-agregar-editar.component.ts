@@ -9,6 +9,7 @@ import { RolesServices } from '../../servicios/rolesServices.services';
 import { plainToClass } from "class-transformer";
 import { ExcepcionService } from '../../servicios/excepcionServices.services';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { GLOBAL } from '../../servicios/globales';
 @Component({
   selector: 'app-user-agregar-editar',
   templateUrl: './user-agregar-editar.component.html',
@@ -246,7 +247,7 @@ export class UserAgregarEditarComponent implements OnInit {
         //this.url = this.url.substring(2);
         if (this.usuario.getRutaimagen() != null) {
 
-          this.url = "http://contalentosas.com/SistemaRecaudoBackend/" + (this.usuario.getRutaimagen().substring(3));
+          this.url = GLOBAL.urlImagen + (this.usuario.getRutaimagen().substring(3));
         }
         console.log("url: " + this.url.toString());
         this.active = this.usuario.getUsuarioActivo();
@@ -299,7 +300,7 @@ export class UserAgregarEditarComponent implements OnInit {
   }
 
   //url de la imagen por defecto si no tiene ninguna imagen
-  url: any = '../assets/img/empleado.png';
+  url: any = '../'+GLOBAL.urlBase+'/assets/img/empleado.png';
 
   //variable de tipo file para recibirla por el input
   selectedFile: File = null;

@@ -147,11 +147,11 @@ export class UsuarioServices {
     redirigirSiEstaIdentificado(_router: Router) {
         let identity = this.getIdentity();
         if (identity != null && identity.sub) {
-            _router.navigate(["/dashboard"]);
+            _router.navigate([GLOBAL.urlBase+"/dashboard"]);
             console.log("redirijir");
 
         } else {
-            _router.navigate(["/"]);
+            _router.navigate([GLOBAL.urlBase+"/login"]);
         }
     }
 
