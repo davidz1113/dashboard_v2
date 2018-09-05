@@ -17,6 +17,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/'+GLOBAL.urlBase+'/usuarios-roles', title: 'Usuarios y Roles', icon: 'person', class: '' , valor:1},
     { path: '/'+GLOBAL.urlBase+'/plazas-mercado', title: 'Plazas de mercado', icon: 'account_balance', class: '', valor:2 },
     { path: '/'+GLOBAL.urlBase+'/tipos/tipo-sector', title: 'Tipos de sectores', icon: 'account_balance', class: '', valor:3 },
+    { path: '/'+GLOBAL.urlBase+'/zonas', title: 'Zonas', icon: 'account_balance', class: '', valor:4 },
     { path: '/'+GLOBAL.urlBase+'/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '' , valor:4},
     { path: '/'+GLOBAL.urlBase+'/table-list', title: 'Sectores', icon: 'content_paste', class: '' , valor:5},
     { path: '/'+GLOBAL.urlBase+'/typography', title: 'Recaudo', icon: 'library_books', class: '', valor:6 },

@@ -4,7 +4,7 @@ export class PlazaMercado {
 
     private pkidplaza: number;
     private codigoplaza: string;
-    private nombreplaza: string;
+    public nombreplaza: string;
     private plazaactivo: string;
     private creacionplaza: Date;
     private modificacion: Date;

@@ -30,6 +30,7 @@ import { DialogConfirmacionRol } from '../../usuarios-roles/tabla-roles/dialogRo
 import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.component';
 import { DialogConfirmacionPlaza } from '../../plazas-mercado/dialogPlaza.confirm.component';
 import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.component';
+import { ZonasComponent } from '../../zonas/zonas.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -61,7 +62,8 @@ import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.componen
     DialogConfirmacionRol,
     TipoSectorComponent,
     DialogConfirmacionPlaza,
-    DialogConfirmacionTipos
+    DialogConfirmacionTipos,
+    ZonasComponent
 
 
   ],

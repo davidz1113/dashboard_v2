@@ -195,6 +195,8 @@ export class UserAgregarEditarComponent implements OnInit {
 
         );
       } else {//{Actualziar usuario
+        console.log(this.usuario.getPkidusuario());
+        
         this.identidad.setPkidusuario(this.usuario.getPkidusuario());
         this._usuarioService.actualizarUsuario(this.identidad, uploadData).subscribe(
           response => {

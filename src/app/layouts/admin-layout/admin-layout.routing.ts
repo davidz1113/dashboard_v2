@@ -13,6 +13,7 @@ import { UsuariosRolesComponent } from '../../usuarios-roles/usuarios-roles.comp
 import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.component';
 import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.component';
 import { GLOBAL } from '../../servicios/globales';
+import { ZonasComponent } from '../../zonas/zonas.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -62,6 +63,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase+'/usuarios-roles', component: UsuariosRolesComponent },
     { path: GLOBAL.urlBase+'/plazas-mercado', component: PlazasMercadoComponent },
     { path: GLOBAL.urlBase+'/tipos/tipo-sector', component: TipoSectorComponent },
+    { path: GLOBAL.urlBase+'/zonas', component: ZonasComponent },
     { path: GLOBAL.urlBase+'/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase+'/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase+'/typography', component: TypographyComponent },

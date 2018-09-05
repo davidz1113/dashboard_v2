@@ -7,7 +7,7 @@ export class Usuario {
     private idusuario: number;
     private codigousuario: string;
     private identificacion: number;
-    private nombreusuario: string;
+    public nombreusuario: string;
     private apellido: string;
     public usuarioactivo: string;
     private creacionusuario: Date;

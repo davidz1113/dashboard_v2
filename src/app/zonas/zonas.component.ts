@@ -1,36 +1,38 @@
 import { Component, OnInit, ViewChild, Injector } from '@angular/core';
-import { TipoSectorServices } from '../../servicios/tipos-services/tiposectorServices.services';
-import { ExcepcionService } from '../../servicios/excepcionServices.services';
-import { TipoSector } from '../../modelos/tipos/tiposector';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { plainToClass } from "class-transformer";
+import { ExcepcionService } from '../servicios/excepcionServices.services';
+import { ZonasServices } from '../servicios/zonaServices.services';
+import { Zona } from '../modelos/zona';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
-import { DialogConfirmacionTipos } from '../dialogTipo.confirm.component';
-
+import { DialogConfirmacionTipos } from '../tipos/dialogTipo.confirm.component';
+import { PlazaMercado } from '../modelos/plaza-mercado';
+import { Usuario } from '../modelos/usuario';
+import { PlazaServices } from '../servicios/plazaServices.services';
 @Component({
-  selector: 'app-tipo-sector',
-  templateUrl: './tipo-sector.component.html',
-  styleUrls: ['./tipo-sector.component.scss'],
-  providers: [TipoSectorServices, ExcepcionService]
+  selector: 'app-zonas',
+  templateUrl: './zonas.component.html',
+  styleUrls: ['./zonas.component.scss'],
+  providers: [ExcepcionService, ZonasServices, PlazaServices]
+
 })
-export class TipoSectorComponent implements OnInit {
-
-  cabecerasColumnas: string[] = ['nombretiposector', 'descripciontiposector', 'tiposectoractivo', 'actions'];
-
-  //variable de entrada de texto del imput buscar(nombre tipo sector)
-  filtroNombreTipoSector: string = '';
+export class ZonasComponent implements OnInit {
+ 
+  cabecerasColumnas =['nombrezona', 'nombreplaza', 'nombreusuario','zonaactivo', 'actions'];
+  //variable de entrada de texto del imput buscar(nombre zona )
+  filtroNombreZona: string = '';
   //varible de mostrar desctivados
   toggleActDesc: boolean = false;
 
 
 
   //variable roles para llenar de la consulta
-  tiposector: TipoSector[] = [];
+  zona: Zona[] = [];
 
   //Variables de paginacion y ordenamiento
-  dataSource: MatTableDataSource<TipoSector>;
+  dataSource: MatTableDataSource<ZonaInterface>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   //respuesta del servidor
@@ -47,43 +49,52 @@ export class TipoSectorComponent implements OnInit {
   //boton desactivado en caso q no hayan roles o este caragndo
   botonBloqueo: boolean = true;
 
+  plazaselect : string = '' ;
 
   /*-------------------------------------------------------------------------- */
-  //Variables para el formulario de agregar un nuevo tipo
-  mostrarFormTipo = false;
+  //Variables para el formulario de agregar un nuevo zona
+  mostrarFormZona = false;
   mostrarTabla = true;
 
   //formulario reactive
-  nuevoTipoForm: FormGroup;
+  nuevoZonaForm: FormGroup;
   //actvar Plaza, desactivar Plaza
   active = false;
   textActive = "Desactivado";
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
-  tipo: TipoSector;
+  zona2: Zona;
 
   //mensaje para mostrar en el formulario de agregar
   msg: string = '';
   //progreso de envio
-  creandotipo: boolean = false;
+  creandozona: boolean = false;
   //variable que valida si esta por actualizar o guardar un nuevo
   isUpdate = false;
 
+  //variable zona interface
+  zonainter: ZonaInterface[] = [];
 
-  constructor(private nuevoForm: FormBuilder, private _tiposectorService: TipoSectorServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) { }
+  //variable para retornar las plazas de mercado
+  plazasmercado : PlazaMercado[] = [];
+
+  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService,private _plazaService: PlazaServices) { }
 
   ngOnInit() {
   }
-
-
+  
+  
   ngAfterViewInit() {
-    this.consultarTipoDeSectores();
+    this.consultarPlazasMercado();
+    this.consultarZonaDeSectores();
   }
 
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    this.dataSource.filter = this.filtroNombreTipoSector + (!this.toggleActDesc);
+    console.log(this.plazaselect);
+    
+    this.dataSource.filter = this.filtroNombreZona + (!this.toggleActDesc) + this.plazaselect;
   }
 
 
@@ -95,10 +106,11 @@ export class TipoSectorComponent implements OnInit {
   /*
     Metodo que consulta los roles de usuario y los asigna al dataSource para el ordenamiento, paginacion y demas
     */
-  consultarTipoDeSectores() {
+  consultarZonaDeSectores() {
+    this.zonainter= [];
     try {
       this.respuesta = null;
-      this._tiposectorService.consultarTodosTiposSector().subscribe(
+      this._zonaService.consultarTodosZonas().subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -107,22 +119,43 @@ export class TipoSectorComponent implements OnInit {
             this.mostrarMensaje(0);
           } else {
 
-            //console.log(ser);
-            //let foo: Rol = Object.assign(Rol, JSON.parse(this.respuesta.rol));
-            //console.log(foo);
-
+           
             //seteamos el valor de los roles en el objeto Rol
-            this.tiposector = plainToClass(TipoSector, this.respuesta.tiposector);
-
-            console.log(this.respuesta.tiposector);
+            this.zona = plainToClass(Zona, this.respuesta.zonas);
+            this.zona.map((z)=>{
+              z.plaza=plainToClass(PlazaMercado,z.getPlaza());
+              z.usuario= plainToClass(Usuario,z.getUsuario());
+            }
+          
+          );
+            //console.log(this.zona[0].getPlaza().getNombreplaza());
             //console.log(this.roles[0].getRolactivo());
 
+            //asignacion de zonas en el dataSource
+            
+            //setear en una interfaz para el correcto ordenamiento en la tabla
+            //puesto que daba problemas al acceder desde el objeto Zona a las propiedades de los sub objetos
+            //contenidos en el y no ordenaba
+            this.zona.map((z)=>{
+              let zi: ZonaInterface = {
+               pkidzona:null,nombrezona:'',nombreplaza:'',nombreusuario:'',zonaactivo:false, fkidplaza:null,fkidusuario:null
+              };
+              zi.pkidzona = z.getPkidzona();
+              zi.nombrezona = z.getNombrezona();
+              zi.nombreplaza = z.getPlaza().getNombreplaza();
+              zi.nombreusuario = z.getUsuario().nombreusuario;
+              zi.zonaactivo = z.getZonaactivo();
+              zi.fkidusuario = z.getUsuario().getPkidusuario();
+              zi.fkidplaza = z.getPlaza().getPkidplaza();
+              this.zonainter.push(zi)
+            }
+            );
 
-            //asignacion de roles en el dataSource
-            this.dataSource = new MatTableDataSource<TipoSector>(this.tiposector);
+            this.dataSource = new MatTableDataSource<any>(this.zonainter);
+
             this.botonBloqueo = false;
             this.aplicarFiltro();
-            this.setFilterDataTable();
+            this.setFilterDataTable(null);
           }
         },
         error => {
@@ -135,7 +168,7 @@ export class TipoSectorComponent implements OnInit {
       );
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "consultarTipoDeSectores()"
+      let funcion = "consultarZonaDeSectores()"
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
@@ -146,14 +179,14 @@ export class TipoSectorComponent implements OnInit {
   }
 
 
-  setFilterDataTable() {
+  setFilterDataTable(event) {
     try {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = (data: TipoSector, filter: string) => {
+      this.dataSource.filterPredicate = (data: ZonaInterface, filter: string) => {
         //console.log(this.filtroNombreCedula);
         //console.log("holaaa");
-        return ((data.getNombretiposector().toLowerCase().indexOf(this.filtroNombreTipoSector) !== -1) && (data.getTiposectoractivo() == true || this.toggleActDesc == true));
+        return ((data.nombrezona.toLowerCase().indexOf(this.filtroNombreZona) !== -1) && (data.zonaactivo == true || this.toggleActDesc == true) && (data.nombreplaza.toLowerCase().indexOf(this.plazaselect) !== -1));
       };
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
@@ -170,19 +203,11 @@ export class TipoSectorComponent implements OnInit {
   }
 
 
-  clearInput() {
-    this.filtroNombreTipoSector = '';
-    this.aplicarFiltro();
-  }
+  consultarPlazasMercado(){
+    try{
+      this.respuesta = null;
 
-
-
-  cambiarEstadoTipo(tiposector: TipoSector) {
-    try {
-      let active = tiposector.getTiposectoractivo();
-      console.log("Active: " + active);
-
-      this._tiposectorService.cambiarEstadoTipoSector(tiposector.getPkidtiposector(), !active, "ttiposector").subscribe(
+      this._plazaService.consultarTodasPlazas().subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -190,10 +215,69 @@ export class TipoSectorComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            this.mensaje = "El cambio de estado del tipo sector " + tiposector.getNombretiposector() + " : " + this.respuesta.msg;
+            //cabeceras
+            //this.cabecerasColumnas = this.respuesta.cabeceras;
+            //this.cabecerasColumnas.push('actions');
+            //conversion del json de plazas a la clase plazas 
+            //guardamos el objeto en la variable
+            this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
+
+            //asignacion de los datos en el datasource para la tabla
+         
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor');
+        }
+
+      );
+     } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "consultarPlazasMercado()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+  }
+
+
+  clearInput() {
+    this.filtroNombreZona = '';
+    this.aplicarFiltro();
+  }
+
+
+
+  cambiarEstadoZona(zonas) {
+    console.log(zonas);
+    
+    let zona: Zona =new Zona();
+    zona.setPkidzona(zonas.pkidzona);
+    zona.setNombrezona(zonas.nombrezona);
+    try {
+      let active =zonas.zonaactivo;
+      console.log("Active: " + active);
+
+      this._zonaService.cambiarEstadoZona(zona.getPkidzona(), !active, "tzona").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado Zona  " + zona.getNombrezona() + " : " + this.respuesta.msg;
             //cambiamos eal rol de estado
             this.toggleActDesc = false;
-            this.consultarTipoDeSectores();
+            this.consultarZonaDeSectores();
 
             this.mostrarMensaje(1);
           }
@@ -220,20 +304,20 @@ export class TipoSectorComponent implements OnInit {
   }
 
   //dialogo de confirmacion para eliminar o no el usuario
-  openDialog(tiposector: TipoSector): void {
+  openDialog(zona: Zona): void {
     try {
 
-      let nombretiposector = tiposector.getNombretiposector();
-      let idtiposector = tiposector.getPkidtiposector();
+      let nombrezona = zona.getNombrezona();
+      let idzona = zona.getPkidzona();
 
       const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
         width: '250px',
-        data: { nombre: nombretiposector, id: idtiposector, tipoIdentifi: 1 }
+        data: { nombre: nombrezona, id: idzona, zonaIdentifi: 2 }
       });
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje = result.respuesta + " Nombre del tipo sector: " + nombretiposector;
+        this.mensaje = result.respuesta + " Nombre Zona : " + nombrezona;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
@@ -241,7 +325,7 @@ export class TipoSectorComponent implements OnInit {
           } else if (result.status == "Success") {
             this.mostrarMensaje(1)
             this.toggleActDesc = false;
-            this.consultarTipoDeSectores();
+            this.consultarZonaDeSectores();
 
           }
         }
@@ -260,36 +344,35 @@ export class TipoSectorComponent implements OnInit {
   }
 
   /**
-  * Metodos para agregar un nuevo tipo o editar un tipo 
+  * Metodos para agregar un nuevo zona o editar un zona 
    */
 
-  //llamamos al fomrulario para agregar un nuevo tipo y inicializamos las validaciones del formulario
-  llamarFormularioAgregarTipo(element) {
+  //llamamos al fomrulario para agregar un nuevo zona y inicializamos las validaciones del formulario
+  llamarFormularioAgregarZona(element) {
     try {
 
-      this.mostrarFormTipo = !this.mostrarFormTipo;
+      this.mostrarFormZona = !this.mostrarFormZona;
       this.mostrarTabla = !this.mostrarTabla;
 
-      this.tipo = element != null ? element : null;
+      this.zona2 = element != null ? element : null;
       this.isUpdate = element != null ? true : false;
 
       //validamos el formulario solo en caso que este este visible
-      if (this.mostrarFormTipo) {
-        this.nuevoTipoForm = this.nuevoForm.group({
-          codigotiposector: [this.tipo != null ? this.tipo.getCodigotiposector() : '', Validators.required],
-          nombretiposector: [this.tipo != null ? this.tipo.getNombretiposector() : '', Validators.required],
-          descripciontiposector: [this.tipo != null ? this.tipo.getDescripciontiposector() : '', Validators.required]
+      if (this.mostrarFormZona) {
+        this.nuevoZonaForm = this.nuevoForm.group({
+          codigozona: [this.zona2 != null ? this.zona2.getCodigozona() : '', Validators.required],
+          nombrezona: [this.zona2 != null ? this.zona2.getNombrezona() : '', Validators.required],
         });
       }
-      this.active = this.tipo != null ? this.tipo.getTiposectoractivo() : false;
+      this.active = this.zona2 != null ? this.zona2.getZonaactivo() : false;
 
-      //si el tipo es nullo, significa que entra por un nuevo objeto
-      this.mensajeBoton = this.tipo == null ? "Guardar" : "Actualizar";
+      //si el zona es nullo, significa que entra por un nuevo objeto
+      this.mensajeBoton = this.zona2 == null ? "Guardar" : "Actualizar";
 
 
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "LlamarFormularioAgregarTipo()"
+      let funcion = "LlamarFormularioAgregarZona()"
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
@@ -301,7 +384,7 @@ export class TipoSectorComponent implements OnInit {
   }
 
   //activar o desctivar el boton y mostrar visualmente
-  activarDesactivartipo() {
+  activarDesactivarzona() {
     this.active = !this.active;
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
@@ -311,23 +394,22 @@ export class TipoSectorComponent implements OnInit {
 
   /**
    * 
-   * metodo que agrega el tipo de sector o edita un tipo de sector 
+   * metodo que agrega el zona de  o edita un zona de  
    */
-  editarAgregarTipo() {
+  editarAgregarZona() {
     try {
 
 
-      //this.tipo = ;
-      this.creandotipo = true;
-      if (this.tipo == null) this.tipo = new TipoSector();
-      this.tipo.setCodigotiposector(this.nuevoTipoForm.get('codigotiposector').value);
-      this.tipo.setNombretiposector(this.nuevoTipoForm.get('nombretiposector').value);
-      this.tipo.setTiposectoractivo(this.active);
-      this.tipo.setDescripciontiposector(this.nuevoTipoForm.get('descripciontiposector').value)
+      //this.zona = ;
+      this.creandozona = true;
+      if (this.zona2 == null) this.zona2 = new Zona();
+      this.zona2.setCodigozona(this.nuevoZonaForm.get('codigozona').value);
+      this.zona2.setNombrezona(this.nuevoZonaForm.get('nombrezona').value);
+      this.zona2.setZonaactivo(this.active);
 
-      if (!this.isUpdate) {//entra por agregar un nuevo tipo de sector
+      if (!this.isUpdate) {//entra por agregar un nuevo zona de 
         this.closeDialog2();
-        this._tiposectorService.crearTipoSector(this.tipo).subscribe(
+        this._zonaService.crearZona(this.zona2).subscribe(
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
@@ -335,14 +417,14 @@ export class TipoSectorComponent implements OnInit {
               console.log('Error en el servidor');
             } else {
               //this.msg = this.respuesta.msg;
-              this.creandotipo = false;
-              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los tipos de sector
+              this.creandozona = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
                 this.mensaje = this.respuesta.msg;
                 this.mostrarMensaje(1);
-                this.mostrarFormTipo = !this.mostrarFormTipo;
+                this.mostrarFormZona = !this.mostrarFormZona;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
-                this.consultarTipoDeSectores();
+                this.consultarZonaDeSectores();
               } else {
                 this.msg = this.respuesta.msg;
               }
@@ -356,9 +438,9 @@ export class TipoSectorComponent implements OnInit {
         );
 
 
-      } else {//actualizamos el tipo de sector
+      } else {//actualizamos el zona de 
         this.closeDialog2();
-        this._tiposectorService.actualizarTipoSector(this.tipo).subscribe(
+        this._zonaService.actualizarZona(this.zona2).subscribe(
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
@@ -366,14 +448,14 @@ export class TipoSectorComponent implements OnInit {
               console.log('Error en el servidor');
             } else {
               //this.msg = this.respuesta.msg;
-              this.creandotipo = false;
-              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los tipos de sector
+              this.creandozona = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
                 this.mensaje = this.respuesta.msg;
                 this.mostrarMensaje(1);
-                this.mostrarFormTipo = !this.mostrarFormTipo;
+                this.mostrarFormZona = !this.mostrarFormZona;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
-                this.consultarTipoDeSectores();
+                this.consultarZonaDeSectores();
               } else {
                 this.msg = this.respuesta.msg;
               }
@@ -389,10 +471,9 @@ export class TipoSectorComponent implements OnInit {
 
 
       }
-
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "agregarEditarTipo()"
+      let funcion = "agregarEditarZona()"
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
@@ -400,6 +481,7 @@ export class TipoSectorComponent implements OnInit {
       //console.log("error asdasd a:" + e.stack);
 
     }
+
   }
 
 
@@ -441,4 +523,19 @@ export class TipoSectorComponent implements OnInit {
     );
   }
 
+
+  
+
+
+
+}
+
+interface ZonaInterface{
+  pkidzona: number;
+  nombrezona: string;
+  nombreplaza : string;
+  nombreusuario : string;
+  zonaactivo : boolean;
+  fkidplaza: number;
+  fkidusuario: number;
 }
