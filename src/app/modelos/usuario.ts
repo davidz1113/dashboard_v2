@@ -17,31 +17,14 @@ export class Usuario {
     private rutaimagen: string;
     private fkidrol: number;
 
-	
+
 
 
     constructor(
-        idUsuario: number,
-        codigoUsuario: string,
-        identificacion: number,
-        nombreUsuario: string,
-        apellido: string,
-        usuarioActivo: string,
-        creacionUsuario: Date,
-        modificacionUsuario: Date,
-        contrasenia: string
+
 
     ) {
-        this.idusuario = idUsuario;
-        this.codigousuario = codigoUsuario;
-        this.identificacion = identificacion;
-        this.nombreusuario = nombreUsuario,
-        this.apellido = apellido;
-        this.usuarioactivo = usuarioActivo;
-        this.creacionusuario = creacionUsuario;
-        this.modificacionusuario = modificacionUsuario;
-       
-        this.contrasenia = contrasenia;
+
     }
     //Metodos getter and setters
 
@@ -117,7 +100,7 @@ export class Usuario {
         this.modificacionusuario = modificacionUsuario;
     }
 
-  
+
     public getContrasenia(): string {
         return this.contrasenia;
     }
@@ -127,37 +110,37 @@ export class Usuario {
     }
 
 
-	public getRutaimagen(): string {
-		return this.rutaimagen;
-	}
+    public getRutaimagen(): string {
+        return this.rutaimagen;
+    }
 
-	public setRutaimagen(rutaimagen: string): void {
-		this.rutaimagen = rutaimagen;
-	}
-    
+    public setRutaimagen(rutaimagen: string): void {
+        this.rutaimagen = rutaimagen;
+    }
+
 
     public getRoles(): Rol {
-		return this.roles;
-	}
+        return this.roles;
+    }
 
-	public setRoles(roles: Rol): void {
-		this.roles = roles;
-	}
+    public setRoles(roles: Rol): void {
+        this.roles = roles;
+    }
 
 
     public getFkidrol(): number {
-		return this.fkidrol;
-	}
-
-	public setFkidrol(fkidrol: number): void {
-		this.fkidrol = fkidrol;
+        return this.fkidrol;
     }
-    
-    public getPkidusuario(): number {
-		return this.pkidusuario;
-	}
 
-	public setPkidusuario(pkidusuario: number): void {
-		this.pkidusuario = pkidusuario;
-	}
+    public setFkidrol(fkidrol: number): void {
+        this.fkidrol = fkidrol;
+    }
+
+    public getPkidusuario(): number {
+        return this.pkidusuario;
+    }
+
+    public setPkidusuario(pkidusuario: number): void {
+        this.pkidusuario = pkidusuario;
+    }
 }

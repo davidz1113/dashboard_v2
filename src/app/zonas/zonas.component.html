@@ -200,7 +200,7 @@
               <div class="col-sm-4 mx-auto  mt-1">
                 <mat-form-field>
                   <mat-select placeholder="Seleccione plaza"  id="pkidplaza" name="pkidplaza"  formControlName="pkidplaza">
-                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of selectplazas">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                       <mat-error *ngIf="nuevoZonaForm.get('pkidplaza').hasError('required')">
                           la plaza es <strong>obligatoria</strong>
@@ -214,7 +214,7 @@
               <div class=" mx-auto  mt-1">
                 <mat-form-field>
                   <mat-select placeholder="Seleccione Usuario recaudador" id="pkidusuario" name="pkidusuario"  formControlName="pkidusuario">
-                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of selectusuarios">{{usuario.nombreusuario}}</mat-option>
                   </mat-select>
                       <mat-error *ngIf="nuevoZonaForm.get('pkidusuario').hasError('required')">
                           el usuario es <strong>obligatorio</strong>

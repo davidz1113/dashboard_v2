@@ -31,7 +31,6 @@ export class ZonasServices {
     /*
     Metodo que crea un zona 
     recibe como parametro el zona de tipo Zona para insertar
-    adicionalemte, los permisos como un array por aparte
     */
     crearZona(nuevo_zona) {
         let json = JSON.stringify(nuevo_zona);
@@ -84,6 +83,26 @@ export class ZonasServices {
         let json = JSON.stringify(enviarDatos);
         let params = "json=" + json + "&authorization=" + this.getToken();
         return this._http.post(this.url + '/active/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
+
+
+    /**
+     * Metodo que consultar todos los usuarios que sean de tipo recaudador
+     */
+    consultarUsuariosRecaudadores(){
+        let params = "authorization="+this.getToken();
+        return this._http.post(this.url + '/user/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
+
+
+    /**
+     * metodo que consulta las plazas no asignadas
+     */
+    consultarPlazasNoAsignadas(){
+        let params = "authorization="+this.getToken();
+        return this._http.post(this.url + '/plaza/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
 

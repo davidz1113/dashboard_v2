@@ -19,8 +19,8 @@ import { PlazaServices } from '../servicios/plazaServices.services';
 
 })
 export class ZonasComponent implements OnInit {
- 
-  cabecerasColumnas =['nombrezona', 'nombreplaza', 'nombreusuario','zonaactivo', 'actions'];
+
+  cabecerasColumnas = ['nombrezona', 'nombreplaza', 'nombreusuario', 'zonaactivo', 'actions'];
   //variable de entrada de texto del imput buscar(nombre zona )
   filtroNombreZona: string = '';
   //varible de mostrar desctivados
@@ -45,11 +45,17 @@ export class ZonasComponent implements OnInit {
   //mensaje de respuesta
   public mensaje: string;
 
+  //variable zona interface
+  zonainter: ZonaInterface[] = [];
+
+  //variable para retornar las plazas de mercado
+  plazasmercado: PlazaMercado[] = [];
 
   //boton desactivado en caso q no hayan roles o este caragndo
   botonBloqueo: boolean = true;
 
-  plazaselect : string = '' ;
+  //variable asignada al selector de busqeuda por plaza
+  plazaselect: string = '';
 
   /*-------------------------------------------------------------------------- */
   //Variables para el formulario de agregar un nuevo zona
@@ -63,7 +69,7 @@ export class ZonasComponent implements OnInit {
   textActive = "Desactivado";
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
-  zona2: Zona;
+  zona2: ZonaInterface;
 
   //mensaje para mostrar en el formulario de agregar
   msg: string = '';
@@ -72,19 +78,21 @@ export class ZonasComponent implements OnInit {
   //variable que valida si esta por actualizar o guardar un nuevo
   isUpdate = false;
 
-  //variable zona interface
-  zonainter: ZonaInterface[] = [];
+  //variables select de plazas no asignadas y usuarioos de tipo recaudador
+  selectusuarios: any[] = [];
+  selectplazas: any[] = [];
 
-  //variable para retornar las plazas de mercado
-  plazasmercado : PlazaMercado[] = [];
 
-  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService,private _plazaService: PlazaServices) { }
+
+  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _plazaService: PlazaServices) { }
 
   ngOnInit() {
   }
-  
-  
+
+
   ngAfterViewInit() {
+
+
     this.consultarPlazasMercado();
     this.consultarZonaDeSectores();
   }
@@ -93,7 +101,7 @@ export class ZonasComponent implements OnInit {
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
     console.log(this.plazaselect);
-    
+
     this.dataSource.filter = this.filtroNombreZona + (!this.toggleActDesc) + this.plazaselect;
   }
 
@@ -107,7 +115,7 @@ export class ZonasComponent implements OnInit {
     Metodo que consulta los roles de usuario y los asigna al dataSource para el ordenamiento, paginacion y demas
     */
   consultarZonaDeSectores() {
-    this.zonainter= [];
+    this.zonainter = [];
     try {
       this.respuesta = null;
       this._zonaService.consultarTodosZonas().subscribe(
@@ -119,28 +127,27 @@ export class ZonasComponent implements OnInit {
             this.mostrarMensaje(0);
           } else {
 
-           
-            //seteamos el valor de los roles en el objeto Rol
-            this.zona = plainToClass(Zona, this.respuesta.zonas);
-            this.zona.map((z)=>{
-              z.plaza=plainToClass(PlazaMercado,z.getPlaza());
-              z.usuario= plainToClass(Usuario,z.getUsuario());
-            }
-          
-          );
-            //console.log(this.zona[0].getPlaza().getNombreplaza());
-            //console.log(this.roles[0].getRolactivo());
-
-            //asignacion de zonas en el dataSource
+            console.log(this.respuesta.zonas);
             
+            //seteamos el valor de los zonas en el objeto zona
+            this.zona = plainToClass(Zona, this.respuesta.zonas);
+            this.zona.map((z) => {
+              z.plaza = plainToClass(PlazaMercado, z.getPlaza());
+              z.usuario = plainToClass(Usuario, z.getUsuario());
+            }
+
+            );
+            //asignacion de zonas en el dataSource
+
             //setear en una interfaz para el correcto ordenamiento en la tabla
             //puesto que daba problemas al acceder desde el objeto Zona a las propiedades de los sub objetos
             //contenidos en el y no ordenaba
-            this.zona.map((z)=>{
+            this.zona.map((z) => {
               let zi: ZonaInterface = {
-               pkidzona:null,nombrezona:'',nombreplaza:'',nombreusuario:'',zonaactivo:false, fkidplaza:null,fkidusuario:null
+                pkidzona: null,codigozona:'', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
               };
               zi.pkidzona = z.getPkidzona();
+              zi.codigozona = z.getCodigozona();
               zi.nombrezona = z.getNombrezona();
               zi.nombreplaza = z.getPlaza().getNombreplaza();
               zi.nombreusuario = z.getUsuario().nombreusuario;
@@ -155,7 +162,7 @@ export class ZonasComponent implements OnInit {
 
             this.botonBloqueo = false;
             this.aplicarFiltro();
-            this.setFilterDataTable(null);
+            this.setFilterDataTable();
           }
         },
         error => {
@@ -173,19 +180,17 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
   }
 
 
-  setFilterDataTable(event) {
+  setFilterDataTable() {
     try {
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (data: ZonaInterface, filter: string) => {
-        //console.log(this.filtroNombreCedula);
-        //console.log("holaaa");
+
         return ((data.nombrezona.toLowerCase().indexOf(this.filtroNombreZona) !== -1) && (data.zonaactivo == true || this.toggleActDesc == true) && (data.nombreplaza.toLowerCase().indexOf(this.plazaselect) !== -1));
       };
     } catch (e) {
@@ -196,15 +201,14 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
 
   }
 
 
-  consultarPlazasMercado(){
-    try{
+  consultarPlazasMercado() {
+    try {
       this.respuesta = null;
 
       this._plazaService.consultarTodasPlazas().subscribe(
@@ -218,9 +222,6 @@ export class ZonasComponent implements OnInit {
             //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
             this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
-
-            //asignacion de los datos en el datasource para la tabla
-         
           }
 
         },
@@ -232,7 +233,7 @@ export class ZonasComponent implements OnInit {
         }
 
       );
-     } catch (e) {
+    } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "consultarPlazasMercado()"
 
@@ -240,7 +241,6 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
   }
@@ -252,15 +252,18 @@ export class ZonasComponent implements OnInit {
   }
 
 
-
+  /**
+   * 
+   * Metodo que cambia el estado de la zona de la base de datos
+   */
   cambiarEstadoZona(zonas) {
     console.log(zonas);
-    
-    let zona: Zona =new Zona();
+
+    let zona: Zona = new Zona();
     zona.setPkidzona(zonas.pkidzona);
     zona.setNombrezona(zonas.nombrezona);
     try {
-      let active =zonas.zonaactivo;
+      let active = zonas.zonaactivo;
       console.log("Active: " + active);
 
       this._zonaService.cambiarEstadoZona(zona.getPkidzona(), !active, "tzona").subscribe(
@@ -294,7 +297,6 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
 
@@ -303,11 +305,8 @@ export class ZonasComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(zonas): void {
     try {
-      let zona: Zona =new Zona();
-    zona.setPkidzona(zonas.pkidzona);
-    zona.setNombrezona(zonas.nombrezona);
-      let nombrezona = zona.getNombrezona();
-      let idzona = zona.getPkidzona();
+      let nombrezona = zonas.pkidzona
+      let idzona = zonas.nombrezona;
 
       const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
         width: '250px',
@@ -337,7 +336,6 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
   }
@@ -347,30 +345,37 @@ export class ZonasComponent implements OnInit {
    */
 
   //llamamos al fomrulario para agregar un nuevo zona y inicializamos las validaciones del formulario
-  llamarFormularioAgregarZona(element) {
+  llamarFormularioAgregarZona(element:ZonaInterface) {
     try {
+      console.log(element);
 
       this.mostrarFormZona = !this.mostrarFormZona;
       this.mostrarTabla = !this.mostrarTabla;
+      //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
+      if(element!=null){
+        this.zona2 = element;
+       
 
-      this.zona2 = element != null ? element : null;
+      }
       this.isUpdate = element != null ? true : false;
 
       //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
-      
-      //this.consultarUsuariosRecaudo();
-      //this.consultarPlazasMercado()
 
+      
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormZona) {
+       this.consultarUsuariosRecaudo();
+       this.consultarPlazasMercadoNoAsignadas();
+
+        
         this.nuevoZonaForm = this.nuevoForm.group({
-          codigozona: [this.zona2 != null ? this.zona2.getCodigozona() : '', Validators.required],
-          nombrezona: [this.zona2 != null ? this.zona2.getNombrezona() : '', Validators.required],
-          pkidplaza :  [this.zona2 != null ? this.zona2.getPlaza().getPkidplaza() : '', Validators.required],
-          pkidusuario: [this.zona2 != null ? this.zona2.getUsuario().getPkidusuario() : '', Validators.required],
+          codigozona: [this.zona2 != null ? this.zona2.codigozona : '', Validators.required],
+          nombrezona: [this.zona2 != null ? this.zona2.nombrezona : '', Validators.required],
+          pkidplaza: [this.zona2 != null ? this.zona2.fkidplaza : '', Validators.required],
+          pkidusuario: [this.zona2 != null ? this.zona2.fkidusuario : '', Validators.required],
         });
       }
-      this.active = this.zona2 != null ? this.zona2.getZonaactivo() : false;
+      this.active = this.zona2 != null ? this.zona2.zonaactivo: false;
 
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.zona2 == null ? "Guardar" : "Actualizar";
@@ -384,7 +389,6 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
   }
@@ -396,6 +400,82 @@ export class ZonasComponent implements OnInit {
   }
 
 
+  //metodo q conslta todos los usuarios de tipo recaudo para setearlosen el select de usuarios
+  consultarUsuariosRecaudo() {
+    try {
+      this.respuesta = null;
+      this._zonaService.consultarUsuariosRecaudadores().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.selectusuarios = this.respuesta.users;
+            console.log(response.users);
+            
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor: al consultar usuarios';
+          this.respuesta = 'error';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor' + error);
+
+        }
+      );
+
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "ConsultarUsuariosRecaudo()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+  /**
+   * Metodo que consulta todas las plazas no asignadas a ninguna zona y las setea select plazas
+   */
+  consultarPlazasMercadoNoAsignadas(){
+    try{
+      this.respuesta = null;
+      this._zonaService.consultarPlazasNoAsignadas().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.selectplazas = this.respuesta.plazas;
+            console.log(response.plazas);
+            
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor al consultar usuarios';
+          this.respuesta = 'error';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor' + error);
+
+        }
+      );
+    }catch(e){
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "ConsultarUsuariosRecaudo()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+    }
+  }
 
 
   /**
@@ -408,13 +488,20 @@ export class ZonasComponent implements OnInit {
 
       //this.zona = ;
       this.creandozona = true;
-      if (this.zona2 == null) this.zona2 = new Zona();
-      this.zona2.setCodigozona(this.nuevoZonaForm.get('codigozona').value);
-      this.zona2.setNombrezona(this.nuevoZonaForm.get('nombrezona').value);
-      this.zona2.setZonaactivo(this.active);
+      if (this.zona2 == null){
+        this.zona2 = {
+          pkidzona: null,codigozona:'', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
+        };
+        
+      } 
+      this.zona2.codigozona=(this.nuevoZonaForm.get('codigozona').value);
+      this.zona2.nombreplaza=(this.nuevoZonaForm.get('nombrezona').value);
+      this.zona2.fkidplaza=(this.nuevoZonaForm.get('pkidplaza').value);
+      this.zona2.fkidusuario=(this.nuevoZonaForm.get('pkidusuario').value);
+      this.zona2.zonaactivo=(this.active);
 
+      this.closeDialog2();
       if (!this.isUpdate) {//entra por agregar un nuevo zona de 
-        this.closeDialog2();
         this._zonaService.crearZona(this.zona2).subscribe(
           response => {
             this.respuesta = response;
@@ -443,9 +530,7 @@ export class ZonasComponent implements OnInit {
           }
         );
 
-
       } else {//actualizamos el zona de 
-        this.closeDialog2();
         this._zonaService.actualizarZona(this.zona2).subscribe(
           response => {
             this.respuesta = response;
@@ -484,7 +569,6 @@ export class ZonasComponent implements OnInit {
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
       this.enviarExcepcion(mensaje, e, funcion, url);
-      //console.log("error asdasd a:" + e.stack);
 
     }
 
@@ -530,18 +614,19 @@ export class ZonasComponent implements OnInit {
   }
 
 
-  
+
 
 
 
 }
 
-interface ZonaInterface{
+interface ZonaInterface {
   pkidzona: number;
+  codigozona: string;
   nombrezona: string;
-  nombreplaza : string;
-  nombreusuario : string;
-  zonaactivo : boolean;
+  nombreplaza: string;
+  nombreusuario: string;
+  zonaactivo: boolean;
   fkidplaza: number;
   fkidusuario: number;
 }

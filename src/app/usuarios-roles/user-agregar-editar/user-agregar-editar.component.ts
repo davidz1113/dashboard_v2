@@ -87,7 +87,7 @@ export class UserAgregarEditarComponent implements OnInit {
 
     //validamos el formulario
     this.validarFormulario();
-    this.identidad = new Usuario(0, '', 0, '', '', "true", new Date, new Date, '');
+    this.identidad = new Usuario();
     //console.log(this.identidad);
     this.onChanges();
   }
