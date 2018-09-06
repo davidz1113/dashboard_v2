@@ -290,7 +290,7 @@ export class ZonasComponent implements OnInit {
 
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "CambiarEstadoRol()"
+      let funcion = "cambiarEstadoZona()"
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy

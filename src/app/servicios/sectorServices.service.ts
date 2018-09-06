@@ -57,10 +57,10 @@ export class SectoresServices {
      //metodo para actualizar un sector
     //parametros de usuario
     /*
-        sector_editar: objeto de tipo Zona,
+        sector_editar: objeto de tipo Sector,
        
     */
-    actualizarZona(sector_editar) {
+    actualizarSector(sector_editar) {
         let json = JSON.stringify(sector_editar);
         let params = "json=" + json + "&authorization=" + this.getToken();
         return this._http.post(this.url + '/sector/edit', params, { headers: this.headers }).pipe(map(res => res.json()));
@@ -73,7 +73,7 @@ export class SectoresServices {
      * @param active valor para cmbiar el estado
      * @param nombre_tabla nombre de la tabla a modificar
      */
-    cambiarEstadoZona(pkidsector: number, active: boolean, nombre_tabla: string) {
+    cambiarEstadoSector(pkidsector: number, active: boolean, nombre_tabla: string) {
         let enviarDatos = { pkid: pkidsector, active: String(active), nombretabla: nombre_tabla };
         let json = JSON.stringify(enviarDatos);
         let params = "json=" + json + "&authorization=" + this.getToken();

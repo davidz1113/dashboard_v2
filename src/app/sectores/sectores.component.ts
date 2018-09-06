@@ -9,13 +9,16 @@ import { DialogConfirmacionTipos } from '../tipos/dialogTipo.confirm.component';
 import { PlazaMercado } from '../modelos/plaza-mercado';
 import { SectoresServices } from '../servicios/sectorServices.service';
 import { ZonasServices } from '../servicios/zonaServices.services';
+import { Zona } from '../modelos/zona';
+import { TipoSectorServices } from '../servicios/tipos-services/tiposectorServices.services';
+import { TipoSector } from '../modelos/tipos/tiposector';
 
 
 @Component({
   selector: 'app-sectores',
   templateUrl: './sectores.component.html',
   styleUrls: ['./sectores.component.scss'],
-  providers: [ExcepcionService,  SectoresServices , ZonasServices ]
+  providers: [ExcepcionService, SectoresServices, ZonasServices,TipoSectorServices]
 
 })
 export class SectoresComponent implements OnInit {
@@ -45,6 +48,7 @@ export class SectoresComponent implements OnInit {
 
   //variable para retornar las plazas de mercado
   plazasmercado: PlazaMercado[] = [];
+  zonas: Zona[] = [];
 
   //boton desactivado en caso q no hayan roles o este caragndo
   botonBloqueo: boolean = true;
@@ -53,7 +57,7 @@ export class SectoresComponent implements OnInit {
   plazaselect: string = '';
   zonaselect: string = '';
 
-  
+
   /*-------------------------------------------------------------------------- */
   //Variables para el formulario de agregar un nuevo sector
   mostrarFormSector = false;
@@ -66,6 +70,7 @@ export class SectoresComponent implements OnInit {
   textActive = "Desactivado";
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
+  //variable sector en caso que sea editar
   sectoredit: SectorInterface;
 
   //mensaje para mostrar en el formulario de agregar
@@ -76,28 +81,28 @@ export class SectoresComponent implements OnInit {
   isUpdate = false;
 
   //variables de seleccion para los select de plazas y zonas
-  selectplazas: any[] = [];
-  selectzonas: any[] = [];
+  //selectplazas: any[] = [];
+  //selectzonas: any[] = [];
 
-  
-  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, private _sectorService: SectoresServices, public dialog: MatDialog, private _exceptionService: ExcepcionService,private injector: Injector) { }
+
+  constructor(private nuevoForm: FormBuilder, private _tiposectorService: TipoSectorServices,private _zonaService: ZonasServices, private _sectorService: SectoresServices, public dialog: MatDialog, private _exceptionService: ExcepcionService, private injector: Injector) { }
   ngOnInit() {
 
 
   }
 
-  
+
   ngAfterViewInit() {
 
 
     this.consultarPlazasMercado();
-   this.consultarSectores();
+    this.consultarSectores();
   }
 
   /*
     Metodo que consulta las zonas y los asigna al dataSource para el ordenamiento, paginacion y demas
     */
-   consultarSectores() {
+  consultarSectores() {
     this.sector = [];
     try {
       this.respuesta = null;
@@ -111,9 +116,9 @@ export class SectoresComponent implements OnInit {
           } else {
 
             console.log(this.respuesta.sector);
-            
+
             //seteamos el valor de los sectore en el objeto sector
-            this.sector =this.respuesta.sector;
+            this.sector = this.respuesta.sector;
             this.dataSource = new MatTableDataSource<any>(this.sector);
 
             this.botonBloqueo = false;
@@ -187,44 +192,97 @@ export class SectoresComponent implements OnInit {
 
 
   //metodo que recibe desde plaza seleccionada el id de la plaza y la envia en una consulta para buscar por nombre de la zona
-  buscarZonaPorPlaza(){
-   let pkidplaza = this.plazaselect; //capturar el id de la plaza para enviarla a la consulta de zonas
-   try {
-    this.respuesta = null;
+  buscarZonaPorPlaza() {
+    try {
+      if (this.plazaselect != '') {
 
-    this._zonaService.consultarZonasPorPlaza(pkidplaza).subscribe(
-      response => {
-        this.respuesta = response;
-        if (this.respuesta.length <= 1) {
+        let pkidplaza = this.plazaselect; //capturar el id de la plaza para enviarla a la consulta de zonas
+        this.respuesta = null;
+
+        this._zonaService.consultarZonasPorPlaza(pkidplaza).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.mensaje = 'Error en el servidor';
+              console.log('Error en el servidor');
+              this.mostrarMensaje(0);
+            } else {
+              this.zonas = this.respuesta.zonas;
+            }
+
+          },
+          error => {
+            this.mensaje = 'Error en el servidor';
+            this.respuesta = 'error';
+            this.mostrarMensaje(0);
+            console.log('Error en el servidor');
+          }
+
+        );
+      } else {//en caso que sean todos, reseteamos las variables
+        this.zonaselect = '';
+        this.zonas = [];
+        this.aplicarFiltro();
+      }
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "buscarZonaPorPlaza()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+
+  }
+
+  /**
+  * 
+  * Metodo que cambia el estado de la sector de la base de datos
+  */
+  cambiarEstadoSector(sector) {
+
+    try {
+      let active = sector.sectoractivo;
+      console.log("Active: " + active);
+
+      this._sectorService.cambiarEstadoSector(sector.pkidsector, !active, "tsector").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado del Sector " + sector.nombresector + " : " + this.respuesta.msg;
+            //cambiamos eal rol de estado
+            this.toggleActDesc = false;
+            this.consultarSectores();
+
+            this.mostrarMensaje(1);
+          }
+        },
+        error => {
           this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
-        } else {
-          this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
-
         }
+      );
 
-      },
-      error => {
-        this.mensaje = 'Error en el servidor';
-        this.respuesta = 'error';
-        this.mostrarMensaje(0);
-        console.log('Error en el servidor');
-      }
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "cambiarEstadoSector()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
 
-    );
-  } catch (e) {
-    const mensaje = e.message ? e.message : e.toString();
-    let funcion = "buscarZonaPorPlaza()"
-
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-    this.enviarExcepcion(mensaje, e, funcion, url);
+    }
 
   }
-    
-  }
+
 
   setFilterDataTable() {
     try {
@@ -247,6 +305,263 @@ export class SectoresComponent implements OnInit {
 
   }
 
+  //limpiar los campos de filtro 
+  clearInput() {
+    this.filtroNombreSector = '';
+    this.aplicarFiltro();
+  }
+
+  //cerrar el dialogo de la vista tabla
+  closeDialog() {
+    this.mensaje = '';
+  }
+
+
+
+  /**
+* Metodos para agregar un nuevo sector o editar 
+ */
+
+  //llamamos al fomrulario para agregar nuevo sector y inicializamos las validaciones del formulario
+  llamarFormularioAgregarSector(element: SectorInterface) {
+    try {
+      console.log(element);
+
+      this.mostrarFormSector = !this.mostrarFormSector;
+      this.mostrarTabla = !this.mostrarTabla;
+      //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
+      this.sectoredit = element != null ? element : null;
+      this.isUpdate = element != null ? true : false;
+
+      //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
+
+
+      //validamos el formulario solo en caso que este este visible
+      if (this.mostrarFormSector) {
+        //this.consultarUsuariosRecaudo();
+        //this.consultarPlazasMercadoNoAsignadas();
+        this.consultarTiposDeSector();
+        if(this.sectoredit!=null){
+          this.buscarZonaPorPlazaForm(this.sectoredit.fkidplaza);
+        }
+
+        this.nuevoSectorForm = this.nuevoForm.group({
+          codigosector: [this.sectoredit != null ? this.sectoredit.codigosector : '', Validators.required],
+          nombresector: [this.sectoredit != null ? this.sectoredit.nombresector : '', Validators.required],
+          pkidplaza: [this.sectoredit != null ? this.sectoredit.fkidplaza : ''],
+          pkidzona: [this.sectoredit != null ? this.sectoredit.fkidzona : '', Validators.required],
+          pkidtiposector: [this.sectoredit != null ? this.sectoredit.fkidtiposector : '', Validators.required]
+        });
+
+      }
+      this.active = this.sectoredit != null ? this.sectoredit.sectoractivo : false;
+      this.textActive = this.active ? "Activado" : "Desactivado";
+      //si el zona es nullo, significa que entra por un nuevo objeto
+      this.mensajeBoton = this.sectoredit == null ? "Guardar" : "Actualizar";
+
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "LlamarFormularioAgregarZona()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+  editarAgregarSector(){
+    try {
+      this.creandosector = true;
+      if (this.sectoredit == null){
+        this.sectoredit = {
+          pkidsector: null,codigosector:'', nombresector: '', nombrezona: '', nombretiposector: '', sectoractivo: false, fkidzona: null, fkidtiposector: null,fkidplaza:null
+        };
+        
+      } 
+
+      this.sectoredit.codigosector=(this.nuevoSectorForm.get('codigosector').value);
+      this.sectoredit.nombresector=(this.nuevoSectorForm.get('nombresector').value);
+      this.sectoredit.fkidzona=(this.nuevoSectorForm.get('pkidzona').value);
+      this.sectoredit.fkidtiposector=(this.nuevoSectorForm.get('pkidtiposector').value);
+      this.sectoredit.sectoractivo=(this.active);
+
+      this.closeDialog2();
+      if (!this.isUpdate) {//entra por agregar un nuevo zona de 
+        this._sectorService.crearSector(this.sectoredit).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandosector = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
+                this.mensaje = this.respuesta.msg;
+                this.mostrarMensaje(1);
+                this.mostrarFormSector = !this.mostrarFormSector;
+                this.mostrarTabla = !this.mostrarTabla;
+                this.active = false;
+                this.toggleActDesc = false;
+                this.consultarSectores();
+                this.consultarPlazasMercado();
+              } else {
+                this.msg = this.respuesta.msg;
+              }
+
+            }
+          },
+          error => {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor' + error);
+          }
+        );
+
+      } else {//actualizamos el zona de 
+        this._sectorService.actualizarSector(this.sectoredit).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandosector = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
+                this.mensaje = this.respuesta.msg;
+                this.mostrarMensaje(1);
+                this.mostrarFormSector = !this.mostrarFormSector;
+                this.mostrarTabla = !this.mostrarTabla;
+                this.active = false;
+                this.toggleActDesc = false;
+                this.consultarSectores();
+                this.consultarPlazasMercado();
+              } else {
+                this.msg = this.respuesta.msg;
+              }
+
+            }
+          },
+          error => {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor' + error);
+          }
+        );
+
+
+
+      }
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "editarAgregarSector()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+
+  //variable para setear el selector de zonas en el formulario con respecto al pkid de la plaza
+  zonasform: Zona[] = [];
+  //metodo que busca las zonas y las setea en el select zonas de plazas
+  buscarZonaPorPlazaForm(event){
+    try {
+      
+        let pkidplaza =event.value!=null? event.value: event;//capturar el value (pkidplaza) cuando cambie el select me lleve el zonasForm para el select de zonas
+        this.respuesta = null;
+
+        this._zonaService.consultarZonasPorPlaza(pkidplaza).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.mensaje = 'Error en el servidor';
+              console.log('Error en el servidor');
+              this.mostrarMensaje(0);
+            } else {
+              this.zonasform = this.respuesta.zonas;
+            }
+
+          },
+          error => {
+            this.mensaje = 'Error en el servidor';
+            this.respuesta = 'error';
+            this.mostrarMensaje(0);
+            console.log('Error en el servidor');
+          }
+
+        );
+     
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "buscarZonaPorPlaza()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+    
+  }
+
+
+
+  
+
+
+  tiposectores : TipoSector[] = [];
+ /*
+    Metodo que consulta los tipos de sector para el select
+    */
+   consultarTiposDeSector() {
+    try {
+      this.respuesta = null;
+      this._tiposectorService.consultarTodosTiposSector().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //seteamos el valor de los roles en el objeto tipo sector
+            this.tiposectores = plainToClass(TipoSector, this.respuesta.tiposector);
+          }
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error';
+          console.log('Error en el servidor: ' + error);
+        }
+
+      );
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "consultarTiposDeSector()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+  }
+
+
+//activar o desctivar el boton y mostrar visualmente
+  activarDesactivarsector(){
+    this.active = !this.active;
+    this.textActive = this.active ? "Activado" : "Desactivado";
+  }
+
+
   //Mostrar mensaje variable estilizado de error o de confirmacion 
   mostrarMensaje(codeError: number) {
     if (codeError == 1) {
@@ -258,28 +573,33 @@ export class SectoresComponent implements OnInit {
     }
   }
 
+  closeDialog2() {
+    this.msg = '';
+  }
+
+
 
   /*
    MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
  */
-enviarExcepcion(mensaje, e, funcion, url) {
-  this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
-    response => {
+  enviarExcepcion(mensaje, e, funcion, url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+      response => {
 
-      if (response.length <= 1) {
-        console.log('Error en el servidor al enviar excepcion');
-      } else {
-        if (response.status = !"error") {
-          console.log('La excepcion se envio correctamente');
+        if (response.length <= 1) {
+          console.log('Error en el servidor al enviar excepcion');
+        } else {
+          if (response.status = !"error") {
+            console.log('La excepcion se envio correctamente');
+          }
         }
+      },
+      error => {
+        console.log('Error en el servidor al enviar excepcion');
       }
-    },
-    error => {
-      console.log('Error en el servidor al enviar excepcion');
-    }
 
-  );
-}
+    );
+  }
 
 
 
@@ -289,9 +609,10 @@ interface SectorInterface {
   pkidsector: number;
   codigosector: string;
   nombresector: string;
-  nombreplaza: string;
-  nombrezona: string;
   sectoractivo: boolean;
-  fkidplaza: number;
   fkidzona: number;
+  nombrezona: string;
+  fkidtiposector: number;
+  nombretiposector: string;
+  fkidplaza: number;
 }

@@ -114,7 +114,6 @@ export class UsuarioServices {
 
     }
 
-
     //Obtener de manera globar los datos del usuario
     getIdentity() {
         let identity = JSON.parse(localStorage.getItem('identity'));

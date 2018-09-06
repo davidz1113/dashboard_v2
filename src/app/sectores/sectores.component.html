@@ -21,7 +21,7 @@
                   </button>
                 </mat-form-field>
               </div>
-             
+
               <!--Fin filtro input -->
               <!--Filtro boton  toggle inhabilidatos -->
               <div class="col-sm-4">
@@ -34,24 +34,24 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-4">
-                    <mat-form-field>
-                      <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="buscarZonaPorPlaza()">
-                        <mat-option value=''> Todos </mat-option>
-                        <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
-                      </mat-select>
-                    </mat-form-field>
-                   
-                  </div>
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="buscarZonaPorPlaza()">
+                    <mat-option value=''> Todos </mat-option>
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
 
-                  <div class="col-sm-4">
-                      <mat-form-field>
-                        <mat-select placeholder="Seleccione zona" [(ngModel)]="zonaselect" (change)="aplicarFiltro()" >
-                          <mat-option [value]='zona.nombreplaza' *ngFor="let zona of zonas">{{zona.nombrezona}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                      <p>Buscando por:  {{zonaselect}} </p>
-                    </div>
+              </div>
+
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione zona" [(ngModel)]="zonaselect" (change)="aplicarFiltro()">
+                    <mat-option [value]='zona.nombrezona' *ngFor="let zona of zonas">{{zona.nombrezona}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <p>Buscando por: {{zonaselect}} </p>
+              </div>
 
             </div>
 
@@ -158,7 +158,7 @@
       <!--inicio formulario de nuevo sector -->
       <div class="card">
         <div class="card-header card-header-danger ">
-          <h4 class="card-title text-center">Agregar una nueva sector </h4>
+          <h4 class="card-title text-center">Agregar una nuevo sector </h4>
           <p class="card-category text-center">*Todos los campos son obligatorios</p>
         </div>
 
@@ -171,6 +171,13 @@
             </button>
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
+          </div>
+          <div class="alert alert-info alert-with-icon" data-notify="container">
+            <i class="material-icons" data-notify="icon">help_outline</i>
+            <span data-notify="message">
+              <b> Info -</b>
+              Para crear un sector debe crear con anterioridad plazas de mercado y tipos de sector
+            </span>
           </div>
           <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandosector"></mat-progress-bar>
 
@@ -212,30 +219,51 @@
                 <mat-slide-toggle (change)="activarDesactivarsector()" [checked]="active">sector {{textActive}} </mat-slide-toggle>
               </div>
 
+
               <div class="col-sm-4 mx-auto  mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione plaza"  id="pkidplaza" name="pkidplaza"  formControlName="pkidplaza">
-                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of selectplazas">{{plaza.nombreplaza}}</mat-option>
+                  <mat-select placeholder="Seleccione tipo de sector" id="pkidtiposector" name="pkidtiposector" formControlName="pkidtiposector">
+                    <mat-option [value]='tiposect.pkidtiposector' *ngFor="let tiposect of tiposectores">{{tiposect.nombretiposector}}</mat-option>
                   </mat-select>
-                      <mat-error *ngIf="nuevoSectorForm.get('pkidplaza').hasError('required')">
-                          la plaza es <strong>obligatoria</strong>
-                        </mat-error>
+                  <mat-error *ngIf="nuevoSectorForm.get('pkidtiposector').hasError('required')">
+                    El tipo de sector es <strong>requerido</strong>
+                  </mat-error>
                 </mat-form-field>
               </div>
+
+
             </div>
           </div>
           <div class="form-group">
-            <div class="row">
-              <div class=" mx-auto  mt-1">
+            <div class="row mb-3">
+
+
+              <div class="col-sm-4 mx-auto  mt-1 ">
+                
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione Usuario recaudador" id="pkidusuario" name="pkidusuario"  formControlName="pkidusuario">
-                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of selectusuarios">{{usuario.nombreusuario}} {{usuario.apellido}} </mat-option>
+                  <mat-select placeholder="Seleccione plaza"  (change)="buscarZonaPorPlazaForm($event)"  formControlName="pkidplaza" >
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
-                      <mat-error *ngIf="nuevoSectorForm.get('pkidusuario').hasError('required')">
-                          el usuario es <strong>obligatorio</strong>
-                        </mat-error>
+                  <mat-hint>Seleccione una plaza para buscar las zonas asignadas</mat-hint>
                 </mat-form-field>
               </div>
+
+              <div class=" mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona">
+                    <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoSectorForm.get('pkidzona').hasError('required')">
+                    la zona es <strong>obligatoria</strong>
+                  </mat-error>
+                  <mat-error *ngIf="nuevoSectorForm.get('pkidplaza').value=='' ">
+                    debe seleccionar una <strong>plaza</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+
             </div>
           </div>
 

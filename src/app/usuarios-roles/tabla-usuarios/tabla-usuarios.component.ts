@@ -333,6 +333,7 @@ export class TablaUsuariosComponent implements OnInit {
   }
 
 
+
 }
 
 //interfaz para comunicarse con el dialogo
