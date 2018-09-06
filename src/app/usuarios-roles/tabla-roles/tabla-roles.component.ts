@@ -179,7 +179,7 @@ export class TablaRolesComponent implements OnInit {
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
-          } else if (result.status == "Success") {
+          } else if (result.status == "Exito") {
             this.mostrarMensaje(1)
             this.toggleActDesc = false;
             this.consultarRoles();

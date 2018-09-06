@@ -1,3 +1,260 @@
-<p>
-  sectores works!
-</p>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row" *ngIf="mostrarTabla">
+      <div class="col-sm-12">
+        <div class="card ">
+          <div class="card-header card-header-danger">
+            <h4 class="card-title">Tabla de Sectores</h4>
+            <p class="card-category">Registro de Sectores</p>
+          </div>
+
+          <div class="card-body">
+            <!--Filtros  -->
+            <div class="row">
+
+              <!--Input filtro de un campo-->
+              <div class="col-sm-4">
+                <mat-form-field>
+                  <input matInput [(ngModel)]="filtroNombreSector" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de sector">
+                  <button mat-button *ngIf="filtroNombreSector" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+              </div>
+             
+              <!--Fin filtro input -->
+              <!--Filtro boton  toggle inhabilidatos -->
+              <div class="col-sm-4">
+                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Sectores desactivados</mat-slide-toggle>
+              </div>
+              <!--Fin Filtro boton toggle -->
+              <!--Fin Filtros-->
+
+
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <mat-form-field>
+                      <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="buscarZonaPorPlaza()">
+                        <mat-option value=''> Todos </mat-option>
+                        <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                   
+                  </div>
+
+                  <div class="col-sm-4">
+                      <mat-form-field>
+                        <mat-select placeholder="Seleccione zona" [(ngModel)]="zonaselect" (change)="aplicarFiltro()" >
+                          <mat-option [value]='zona.nombreplaza' *ngFor="let zona of zonas">{{zona.nombrezona}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                      <p>Buscando por:  {{zonaselect}} </p>
+                    </div>
+
+            </div>
+
+
+            <!--Mensaje de confirmacion-->
+            <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">
+              <i class="material-icons" data-notify="icon">{{iconAlert}}</i>
+              <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                <i class="material-icons">close</i>
+              </button>
+              <span data-notify="message">
+                <b>Info:</b> {{mensaje}} </span>
+              <div class="col-sm-4">
+                <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarSectores()" *ngIf="respuesta=='error'">Intentar
+                  de nuevo
+                </button>
+              </div>
+            </div>
+            <!--
+                <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
+              -->
+
+            <!--Fin mensaje confirmacion-->
+            <div *ngIf="respuesta==null">
+              Cargando Sectores
+              <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
+            </div>
+
+
+            <div class="row">
+
+              <div class="col-sm-4 ">
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarSector()" [disabled]="botonBloqueo">Nueva
+                  Sector
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive mat-elevation-z8">
+              <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
+                <ng-container matColumnDef="nombresector">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombresector}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="nombrezona">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Zona </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombrezona}}
+                  </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="nombretiposector">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Sector </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombretiposector}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="sectoractivo">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Sector Activo/Desactivado </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.sectoractivo?'Activo':'Desactivado'}}
+                  </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
+                  <mat-cell *matCellDef="let element ; let i=index">
+
+                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="llamarFormularioAgregarSector(element)"> <i class="material-icons ">edit</i>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="openDialog(element)">
+                      <i class="material-icons ">delete</i>
+                    </button>
+
+                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="cambiarEstadoSector(element)">
+                      <i class="material-icons ">not_interested</i>
+                    </button>
+
+
+                  </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="cabecerasColumnas"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: cabecerasColumnas;"></mat-row>
+              </mat-table>
+              <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10, 20]" [showFirstLastButtons]="true">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!--Fin Tabla empelados-->
+
+    </div>
+    <!--------------------------------------------------------------------------------------------------------->
+    <!--
+      formulario para agregar o actualizar una tabla TIPO
+      -->
+
+    <div class="col-sm-8" *ngIf="mostrarFormSector">
+      <!--inicio formulario de nuevo sector -->
+      <div class="card">
+        <div class="card-header card-header-danger ">
+          <h4 class="card-title text-center">Agregar una nueva sector </h4>
+          <p class="card-category text-center">*Todos los campos son obligatorios</p>
+        </div>
+
+        <div class="card-body">
+          <!--Mensaje de confirmacion-->
+          <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
+            <i class="material-icons" data-notify="icon">warning</i>
+            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog2()">
+              <i class="material-icons">close</i>
+            </button>
+            <span data-notify="message">
+              <b>Info:</b> {{msg}} </span>
+          </div>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandosector"></mat-progress-bar>
+
+          <!--Fin mensaje confirmacion-->
+        </div>
+
+
+        <form [formGroup]="nuevoSectorForm" (ngSubmit)="editarAgregarSector()">
+
+          <div class="form-group">
+            <div class="row">
+
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="number" placeholder="Digite codigo de el sector " id="codigosector" name="codigosector" formControlName="codigosector">
+                  <mat-error *ngIf="nuevoSectorForm.get('codigosector').hasError('required')">
+                    el codigo es <strong>obligatorio</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite nombre de el sector " id="nombresector" name="nombresector" formControlName="nombresector">
+                  <mat-error *ngIf="nuevoSectorForm.get('nombresector').hasError('required')">
+                    El nombre es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+
+              <div class="col-sm-4 mx-auto mt-1">
+                <mat-slide-toggle (change)="activarDesactivarsector()" [checked]="active">sector {{textActive}} </mat-slide-toggle>
+              </div>
+
+              <div class="col-sm-4 mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione plaza"  id="pkidplaza" name="pkidplaza"  formControlName="pkidplaza">
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of selectplazas">{{plaza.nombreplaza}}</mat-option>
+                  </mat-select>
+                      <mat-error *ngIf="nuevoSectorForm.get('pkidplaza').hasError('required')">
+                          la plaza es <strong>obligatoria</strong>
+                        </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="row">
+              <div class=" mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione Usuario recaudador" id="pkidusuario" name="pkidusuario"  formControlName="pkidusuario">
+                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of selectusuarios">{{usuario.nombreusuario}} {{usuario.apellido}} </mat-option>
+                  </mat-select>
+                      <mat-error *ngIf="nuevoSectorForm.get('pkidusuario').hasError('required')">
+                          el usuario es <strong>obligatorio</strong>
+                        </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="row">
+
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoSectorForm.valid">{{mensajeBoton}}
+              </button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarSector(null)">Cancelar</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+      <!--
+                    <pre>Status del formulario: {{ nuevoSectorForm.get('repetirContrasenia').hasError('') | json }}</pre>
+                    <pre>Status del formulario: {{ nuevoSectorForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
+                    Fin formulario nuevo sector
+                  -->
+    </div>
+  </div>
+</div>

@@ -28,7 +28,7 @@
                     <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <p>seleccionada {{plazaselect}} </p>
+                <p>Buscando por: {{plazaselect}} </p>
               </div>
               <!--Fin filtro input -->
               <!--Filtro boton  toggle inhabilidatos -->
@@ -214,7 +214,7 @@
               <div class=" mx-auto  mt-1">
                 <mat-form-field>
                   <mat-select placeholder="Seleccione Usuario recaudador" id="pkidusuario" name="pkidusuario"  formControlName="pkidusuario">
-                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of selectusuarios">{{usuario.nombreusuario}}</mat-option>
+                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of selectusuarios">{{usuario.nombreusuario}} {{usuario.apellido}} </mat-option>
                   </mat-select>
                       <mat-error *ngIf="nuevoZonaForm.get('pkidusuario').hasError('required')">
                           el usuario es <strong>obligatorio</strong>

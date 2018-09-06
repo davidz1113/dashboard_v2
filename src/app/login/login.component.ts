@@ -122,7 +122,7 @@ export class LoginComponent implements OnInit {
 
             );
           } else {
-            this.msg = this.identity.data;
+            this.msg = this.identity.msg;
             this.identity = null;
             this.logeandose = false;
           }

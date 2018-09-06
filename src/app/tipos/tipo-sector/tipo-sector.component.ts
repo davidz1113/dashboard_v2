@@ -238,7 +238,7 @@ export class TipoSectorComponent implements OnInit {
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
-          } else if (result.status == "Success") {
+          } else if (result.status == "Exito") {
             this.mostrarMensaje(1)
             this.toggleActDesc = false;
             this.consultarTipoDeSectores();
@@ -282,6 +282,7 @@ export class TipoSectorComponent implements OnInit {
         });
       }
       this.active = this.tipo != null ? this.tipo.getTiposectoractivo() : false;
+      this.textActive = this.active ? "Activado" : "Desactivado";
 
       //si el tipo es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.tipo == null ? "Guardar" : "Actualizar";
@@ -342,6 +343,7 @@ export class TipoSectorComponent implements OnInit {
                 this.mostrarFormTipo = !this.mostrarFormTipo;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
+                this.toggleActDesc = false;
                 this.consultarTipoDeSectores();
               } else {
                 this.msg = this.respuesta.msg;
@@ -373,6 +375,7 @@ export class TipoSectorComponent implements OnInit {
                 this.mostrarFormTipo = !this.mostrarFormTipo;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
+                this.toggleActDesc = false;
                 this.consultarTipoDeSectores();
               } else {
                 this.msg = this.respuesta.msg;

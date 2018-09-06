@@ -14,6 +14,7 @@ import { PlazasMercadoComponent } from '../../plazas-mercado/plazas-mercado.comp
 import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.component';
 import { GLOBAL } from '../../servicios/globales';
 import { ZonasComponent } from '../../zonas/zonas.component';
+import { SectoresComponent } from '../../sectores/sectores.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -59,17 +60,18 @@ export const AdminLayoutRoutes: Routes = [
     //         component: UpgradeComponent
     //     }]
     // }
-    { path: GLOBAL.urlBase+'/dashboard', component: DashboardComponent },
-    { path: GLOBAL.urlBase+'/usuarios-roles', component: UsuariosRolesComponent },
-    { path: GLOBAL.urlBase+'/plazas-mercado', component: PlazasMercadoComponent },
-    { path: GLOBAL.urlBase+'/tipos/tipo-sector', component: TipoSectorComponent },
-    { path: GLOBAL.urlBase+'/zonas', component: ZonasComponent },
-    { path: GLOBAL.urlBase+'/user-profile', component: UserProfileComponent },
-    { path: GLOBAL.urlBase+'/table-list', component: TableListComponent },
-    { path: GLOBAL.urlBase+'/typography', component: TypographyComponent },
-    { path: GLOBAL.urlBase+'/icons', component: IconsComponent },
-    { path: GLOBAL.urlBase+'/maps', component: MapsComponent },
-    { path: GLOBAL.urlBase+'/notificacion', component: NotificationsComponent },
-    { path: GLOBAL.urlBase+'/upgrade', component: UpgradeComponent },
-    { path: GLOBAL.urlBase+'/tareas', component: TareasComponent },
+    { path: GLOBAL.urlBase + '/dashboard', component: DashboardComponent },
+    { path: GLOBAL.urlBase + '/usuarios-roles', component: UsuariosRolesComponent },
+    { path: GLOBAL.urlBase + '/plazas-mercado', component: PlazasMercadoComponent },
+    { path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
+    { path: GLOBAL.urlBase + '/zonas', component: ZonasComponent },
+    { path: GLOBAL.urlBase + '/sectores', component: SectoresComponent },
+    { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
+    { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
+    { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },
+    { path: GLOBAL.urlBase + '/icons', component: IconsComponent },
+    { path: GLOBAL.urlBase + '/maps', component: MapsComponent },
+    { path: GLOBAL.urlBase + '/notificacion', component: NotificationsComponent },
+    { path: GLOBAL.urlBase + '/upgrade', component: UpgradeComponent },
+    { path: GLOBAL.urlBase + '/tareas', component: TareasComponent },
 ];

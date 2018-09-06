@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { Http, Response, Headers } from '@angular/http';
 import { GLOBAL } from "./globales";
 import { map } from 'rxjs/operators';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class ZonasServices {
@@ -27,6 +26,15 @@ export class ZonasServices {
 
     }
 
+    /**
+     * 
+     * Metodo que recibe el idde la plaza y devuelve las zonas que estan asignadas a la plaza
+     */
+    consultarZonasPorPlaza(pkidplaza){
+        let token = "authorization=" + this.getToken()+"&pkidplaza="+pkidplaza;
+        return this._http.post(this.url + '/zona/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
 
     /*
     Metodo que crea un zona 
@@ -80,8 +88,9 @@ export class ZonasServices {
      */
     cambiarEstadoZona(pkidzona: number, active: boolean, nombre_tabla: string) {
         let enviarDatos = { pkid: pkidzona, active: String(active), nombretabla: nombre_tabla };
+       
         let json = JSON.stringify(enviarDatos);
-        let params = "json=" + json + "&authorization=" + this.getToken();
+        let params = "json=" + json + "&authorization=" + this.getToken()
         return this._http.post(this.url + '/active/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
@@ -91,7 +100,8 @@ export class ZonasServices {
      * Metodo que consultar todos los usuarios que sean de tipo recaudador
      */
     consultarUsuariosRecaudadores(){
-        let params = "authorization="+this.getToken();
+        let filtro =  JSON.stringify({nombrefiltro:'Recaudador'});
+        let params = "authorization="+this.getToken()+"&filtro="+filtro;;
         return this._http.post(this.url + '/user/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
@@ -100,8 +110,9 @@ export class ZonasServices {
     /**
      * metodo que consulta las plazas no asignadas
      */
-    consultarPlazasNoAsignadas(){
-        let params = "authorization="+this.getToken();
+    consultarPlazasAsignadas(zona:boolean){
+        let conzona = JSON.stringify({conzonas:String(zona)});
+        let params = "authorization="+this.getToken()+"&conzonas="+conzona;
         return this._http.post(this.url + '/plaza/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }

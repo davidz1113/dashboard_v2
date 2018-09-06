@@ -15,7 +15,7 @@ import { PlazaServices } from '../servicios/plazaServices.services';
   selector: 'app-zonas',
   templateUrl: './zonas.component.html',
   styleUrls: ['./zonas.component.scss'],
-  providers: [ExcepcionService, ZonasServices, PlazaServices]
+  providers: [ExcepcionService, ZonasServices]
 
 })
 export class ZonasComponent implements OnInit {
@@ -84,14 +84,13 @@ export class ZonasComponent implements OnInit {
 
 
 
-  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _plazaService: PlazaServices) { }
+  constructor(private nuevoForm: FormBuilder, private _zonaService: ZonasServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) { }
 
   ngOnInit() {
   }
 
 
   ngAfterViewInit() {
-
 
     this.consultarPlazasMercado();
     this.consultarZonaDeSectores();
@@ -100,8 +99,7 @@ export class ZonasComponent implements OnInit {
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    console.log(this.plazaselect);
-
+    //console.log(this.plazaselect);
     this.dataSource.filter = this.filtroNombreZona + (!this.toggleActDesc) + this.plazaselect;
   }
 
@@ -112,10 +110,11 @@ export class ZonasComponent implements OnInit {
 
 
   /*
-    Metodo que consulta los roles de usuario y los asigna al dataSource para el ordenamiento, paginacion y demas
+    Metodo que consulta las zonas y los asigna al dataSource para el ordenamiento, paginacion y demas
     */
   consultarZonaDeSectores() {
     this.zonainter = [];
+   
     try {
       this.respuesta = null;
       this._zonaService.consultarTodosZonas().subscribe(
@@ -191,7 +190,7 @@ export class ZonasComponent implements OnInit {
       this.dataSource.sort = this.sort;
       this.dataSource.filterPredicate = (data: ZonaInterface, filter: string) => {
 
-        return ((data.nombrezona.toLowerCase().indexOf(this.filtroNombreZona) !== -1) && (data.zonaactivo == true || this.toggleActDesc == true) && (data.nombreplaza.toLowerCase().indexOf(this.plazaselect) !== -1));
+        return ((data.nombrezona.toLowerCase().indexOf(this.filtroNombreZona) !== -1) && (data.zonaactivo == true || this.toggleActDesc == true) && (data.nombreplaza.indexOf(this.plazaselect) !== -1));
       };
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
@@ -211,7 +210,7 @@ export class ZonasComponent implements OnInit {
     try {
       this.respuesta = null;
 
-      this._plazaService.consultarTodasPlazas().subscribe(
+      this._zonaService.consultarPlazasAsignadas(true).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -305,12 +304,12 @@ export class ZonasComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(zonas): void {
     try {
-      let nombrezona = zonas.pkidzona
-      let idzona = zonas.nombrezona;
+      let nombrezona = zonas.nombrezona;
+      let idzona = zonas.pkidzona;
 
       const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
         width: '250px',
-        data: { nombre: nombrezona, id: idzona, zonaIdentifi: 2 }
+        data: { nombre: nombrezona, id: idzona, tipoIdentifi: 2 }
       });
 
       dialogRef.afterClosed().subscribe(result => {
@@ -320,10 +319,11 @@ export class ZonasComponent implements OnInit {
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
-          } else if (result.status == "Success") {
+          } else if (result.status == "Exito") {
             this.mostrarMensaje(1)
             this.toggleActDesc = false;
             this.consultarZonaDeSectores();
+            this.consultarPlazasMercado();
 
           }
         }
@@ -352,12 +352,8 @@ export class ZonasComponent implements OnInit {
       this.mostrarFormZona = !this.mostrarFormZona;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
-      if(element!=null){
-        this.zona2 = element;
-       
-
-      }
-      this.isUpdate = element != null ? true : false;
+        this.zona2 = element!=null?element:null;
+            this.isUpdate = element != null ? true : false;
 
       //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
 
@@ -376,7 +372,7 @@ export class ZonasComponent implements OnInit {
         });
       }
       this.active = this.zona2 != null ? this.zona2.zonaactivo: false;
-
+      this.textActive = this.active ? "Activado" : "Desactivado";
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.zona2 == null ? "Guardar" : "Actualizar";
 
@@ -445,7 +441,7 @@ export class ZonasComponent implements OnInit {
   consultarPlazasMercadoNoAsignadas(){
     try{
       this.respuesta = null;
-      this._zonaService.consultarPlazasNoAsignadas().subscribe(
+      this._zonaService.consultarPlazasAsignadas(false).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -494,8 +490,9 @@ export class ZonasComponent implements OnInit {
         };
         
       } 
+
       this.zona2.codigozona=(this.nuevoZonaForm.get('codigozona').value);
-      this.zona2.nombreplaza=(this.nuevoZonaForm.get('nombrezona').value);
+      this.zona2.nombrezona=(this.nuevoZonaForm.get('nombrezona').value);
       this.zona2.fkidplaza=(this.nuevoZonaForm.get('pkidplaza').value);
       this.zona2.fkidusuario=(this.nuevoZonaForm.get('pkidusuario').value);
       this.zona2.zonaactivo=(this.active);
@@ -517,7 +514,9 @@ export class ZonasComponent implements OnInit {
                 this.mostrarFormZona = !this.mostrarFormZona;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
+                this.toggleActDesc = false;
                 this.consultarZonaDeSectores();
+                this.consultarPlazasMercado();
               } else {
                 this.msg = this.respuesta.msg;
               }
@@ -546,7 +545,9 @@ export class ZonasComponent implements OnInit {
                 this.mostrarFormZona = !this.mostrarFormZona;
                 this.mostrarTabla = !this.mostrarTabla;
                 this.active = false;
+                this.toggleActDesc = false;
                 this.consultarZonaDeSectores();
+                this.consultarPlazasMercado();
               } else {
                 this.msg = this.respuesta.msg;
               }
