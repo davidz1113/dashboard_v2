@@ -15,6 +15,7 @@ import { TipoSectorComponent } from '../../tipos/tipo-sector/tipo-sector.compone
 import { GLOBAL } from '../../servicios/globales';
 import { ZonasComponent } from '../../zonas/zonas.component';
 import { SectoresComponent } from '../../sectores/sectores.component';
+import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -66,6 +67,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
     { path: GLOBAL.urlBase + '/zonas', component: ZonasComponent },
     { path: GLOBAL.urlBase + '/sectores', component: SectoresComponent },
+    { path: GLOBAL.urlBase + '/parqueaderos', component: ParqueaderoComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },

@@ -4,8 +4,8 @@
       <div class="col-sm-12">
         <div class="card ">
           <div class="card-header card-header-danger">
-            <h4 class="card-title">Tabla de Sectores</h4>
-            <p class="card-category">Registro de Sectores</p>
+            <h4 class="card-title">Tabla de Parqueaderos</h4>
+            <p class="card-category">Registro de Parqueaderos</p>
           </div>
 
           <div class="card-body">
@@ -15,8 +15,8 @@
               <!--Input filtro de un campo-->
               <div class="col-sm-4">
                 <mat-form-field>
-                  <input matInput [(ngModel)]="filtroNombreSector" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de sector">
-                  <button mat-button *ngIf="filtroNombreSector" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                  <input matInput [(ngModel)]="filtroNombreParqueadero" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de parqueadero">
+                  <button mat-button *ngIf="filtroNombreParqueadero" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -25,7 +25,7 @@
               <!--Fin filtro input -->
               <!--Filtro boton  toggle inhabilidatos -->
               <div class="col-sm-4">
-                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Sectores desactivados</mat-slide-toggle>
+                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Parqueaderos desactivados</mat-slide-toggle>
               </div>
               <!--Fin Filtro boton toggle -->
               <!--Fin Filtros-->
@@ -41,16 +41,16 @@
                     <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-
+                <p>Buscando por: {{zonaselect}} </p>
               </div>
 
               <div class="col-sm-4">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione zona" [(ngModel)]="zonaselect" (change)="aplicarFiltro()">
-                    <mat-option [value]='zona.nombrezona' *ngFor="let zona of zonas">{{zona.nombrezona}}</mat-option>
+                  <mat-select placeholder="Seleccione tipos de parqueaderos" [(ngModel)]="tipoparqueselect" (change)="aplicarFiltro()">
+                    <mat-option [value]='tipoparqueadero.nombretipoparqueadero' *ngFor="let tipoparqueadero of tipoparqueaderos">{{tipoparqueadero.nombretipoparqueadero}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <p>Buscando por: {{zonaselect}} </p>
+                <p>Buscando por: {{tipoparqueselect}} </p>
               </div>
 
             </div>
@@ -65,7 +65,7 @@
               <span data-notify="message">
                 <b>Info:</b> {{mensaje}} </span>
               <div class="col-sm-4">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarSectores()" *ngIf="respuesta=='error'">Intentar
+                <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarParqueaderos()" *ngIf="respuesta=='error'">Intentar
                   de nuevo
                 </button>
               </div>
@@ -76,7 +76,7 @@
 
             <!--Fin mensaje confirmacion-->
             <div *ngIf="respuesta==null">
-              Cargando Sectores
+              Cargando Parqueaderos
               <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
             </div>
 
@@ -84,33 +84,33 @@
             <div class="row">
 
               <div class="col-sm-4 ">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarSector()" [disabled]="botonBloqueo">Nueva
-                  Sector
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarParqueadero()" [disabled]="botonBloqueo">Nuevo
+                  Parqueadero
                 </button>
               </div>
             </div>
 
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
-                <ng-container matColumnDef="nombresector">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombresector}}
+                <ng-container matColumnDef="nombreparqueadero">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>Nº Parqueadero </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombreparqueadero}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="nombrezona">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Zona </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombrezona}}
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo parqueadero </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombrezona}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="nombretiposector">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo Sector </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.nombretiposector}}
+                <ng-container matColumnDef="nombretipoparqueadero">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Plaza </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombretipoparqueadero}}
                   </mat-cell>
                 </ng-container>
 
-                <ng-container matColumnDef="sectoractivo">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header> Sector Activo/Desactivado </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.sectoractivo }"> {{element.sectoractivo?'Activo':'Desactivado'}}
+                <ng-container matColumnDef="parqueaderoactivo">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header> Parqueadero Activo/Desactivado </mat-header-cell>
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.parqueaderoactivo?'Activo':'Desactivado'}}
                   </mat-cell>
                 </ng-container>
 
@@ -118,17 +118,17 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                   <mat-cell *matCellDef="let element ; let i=index">
 
-                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarFormularioAgregarSector(element)"> <i class="material-icons ">edit</i>
+                    <button mat-icon-button matTooltip="Editar parqueadero " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="llamarFormularioAgregarParqueadero(element)"> <i class="material-icons ">edit</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                    <button mat-icon-button matTooltip="Eliminar parqueadero " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
                       class="example-button" (click)="openDialog(element)">
                       <i class="material-icons ">delete</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="cambiarEstadoSector(element)">
+                    <button mat-icon-button matTooltip="Desactivar parqueadero " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="cambiarEstadoParqueadero(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
 
@@ -154,7 +154,7 @@
       formulario para agregar o actualizar una tabla TIPO
       -->
 
-    <div class="col-sm-8" *ngIf="mostrarFormSector">
+    <div class="col-sm-8" *ngIf="mostrarFormParqueadero">
       <!--inicio formulario de nuevo sector -->
       <div class="card">
         <div class="card-header card-header-danger ">
@@ -185,7 +185,7 @@
         </div>
 
 
-        <form [formGroup]="nuevoSectorForm" (ngSubmit)="editarAgregarSector()">
+        <form [formGroup]="nuevoParqueaderoForm" (ngSubmit)="editarAgregarParqueadero()">
 
           <div class="form-group">
             <div class="row">
@@ -193,7 +193,7 @@
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
                   <input matInput type="number" placeholder="Digite codigo de el sector " id="codigosector" name="codigosector" formControlName="codigosector">
-                  <mat-error *ngIf="nuevoSectorForm.get('codigosector').hasError('required')">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('codigosector').hasError('required')">
                     el codigo es <strong>obligatorio</strong>
                   </mat-error>
                 </mat-form-field>
@@ -203,7 +203,7 @@
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
                   <input matInput type="text" placeholder="Digite nombre de el sector " id="nombresector" name="nombresector" formControlName="nombresector">
-                  <mat-error *ngIf="nuevoSectorForm.get('nombresector').hasError('required')">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('nombresector').hasError('required')">
                     El nombre es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
@@ -226,7 +226,7 @@
                     <mat-option [value]='tiposect.pkidtiposector' *ngFor="let tiposect of tiposectores">{{tiposect.nombretiposector}}</mat-option>
                   </mat-select>
                   <mat-hint *ngIf="tiposectores==null">Se debe crear primero un tipo de sector</mat-hint>
-                  <mat-error *ngIf="nuevoSectorForm.get('pkidtiposector').hasError('required')">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidtiposector').hasError('required')">
                     El tipo de sector es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
@@ -254,10 +254,10 @@
                   <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona">
                     <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
                   </mat-select>
-                  <mat-error *ngIf="nuevoSectorForm.get('pkidzona').hasError('required')">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidzona').hasError('required')">
                     la zona es <strong>obligatoria</strong>
                   </mat-error>
-                  <mat-error *ngIf="nuevoSectorForm.get('pkidplaza').value=='' ">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidplaza').value=='' ">
                     Primero debe seleccionar una <strong>plaza</strong>
                   </mat-error>
                   <mat-error *ngIf="zonasform==null ">
@@ -274,17 +274,17 @@
           <div class="form-group">
             <div class="row">
 
-              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoSectorForm.valid">{{mensajeBoton}}
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoParqueaderoForm.valid">{{mensajeBoton}}
               </button>
-              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarSector(null)">Cancelar</button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarParqueadero(null)">Cancelar</button>
             </div>
           </div>
 
         </form>
       </div>
       <!--
-                    <pre>Status del formulario: {{ nuevoSectorForm.get('repetirContrasenia').hasError('') | json }}</pre>
-                    <pre>Status del formulario: {{ nuevoSectorForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
+                    <pre>Status del formulario: {{ nuevoParqueaderoForm.get('repetirContrasenia').hasError('') | json }}</pre>
+                    <pre>Status del formulario: {{ nuevoParqueaderoForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
                     Fin formulario nuevo sector
                   -->
     </div>

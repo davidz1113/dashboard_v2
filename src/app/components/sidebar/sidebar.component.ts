@@ -19,12 +19,13 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/tipos/tipo-sector', title: 'Tipos de sectores', icon: 'location_city', class: '', valor: 3 },
     { path: '/' + GLOBAL.urlBase + '/zonas', title: 'Zonas', icon: 'store_mall_directory', class: '', valor: 4 },
     { path: '/' + GLOBAL.urlBase + '/sectores', title: 'Sectores', icon: 'business', class: '', valor: 5 },
-    { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 6 },
-    { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 7 },
-    { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 8 },
-    { path: '/' + GLOBAL.urlBase + '/icons', title: 'Reportes', icon: 'bubble_chart', class: '', valor: 9 },
-    { path: '/' + GLOBAL.urlBase + '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor: 10 },
-    { path: '/' + GLOBAL.urlBase + '/tareas', title: 'Tareas', icon: 'assignment', class: '', valor: 11 },
+    { path: '/' + GLOBAL.urlBase + '/parqueaderos', title: 'Parqueaderos', icon: 'commute', class: '', valor: 6 },
+    { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 10 },
+    { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 11 },
+    { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 12 },
+    { path: '/' + GLOBAL.urlBase + '/icons', title: 'Reportes', icon: 'bubble_chart', class: '', valor: 13 },
+    { path: '/' + GLOBAL.urlBase + '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor: 14 },
+    { path: '/' + GLOBAL.urlBase + '/tareas', title: 'Tareas', icon: 'assignment', class: '', valor: 15 },
 ];
 
 @Component({

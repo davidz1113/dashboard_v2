@@ -24,7 +24,7 @@
               <div class="col-sm-4">
                 <mat-form-field>
                   <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="aplicarFiltro()">
-                    <mat-option value=''> -- </mat-option>
+                    <mat-option value=''> Todos </mat-option>
                     <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                 </mat-form-field>

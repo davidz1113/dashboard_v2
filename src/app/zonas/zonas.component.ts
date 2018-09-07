@@ -39,8 +39,8 @@ export class ZonasComponent implements OnInit {
   public respuesta;
 
   //clase dinamica pra carga de mensajes
-  claseDinamic = "alert alert-success alert-with-icon";
-  iconAlert = "done";
+  claseDinamic = "alert alert-warning alert-with-icon";
+  iconAlert = "warning";
 
   //mensaje de respuesta
   public mensaje: string;

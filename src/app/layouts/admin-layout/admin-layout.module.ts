@@ -32,6 +32,7 @@ import { DialogConfirmacionPlaza } from '../../plazas-mercado/dialogPlaza.confir
 import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.component';
 import { ZonasComponent } from '../../zonas/zonas.component';
 import { SectoresComponent } from '../../sectores/sectores.component';
+import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -65,7 +66,8 @@ import { SectoresComponent } from '../../sectores/sectores.component';
     DialogConfirmacionPlaza,
     DialogConfirmacionTipos,
     ZonasComponent,
-    SectoresComponent
+    SectoresComponent,
+    ParqueaderoComponent
 
 
   ],

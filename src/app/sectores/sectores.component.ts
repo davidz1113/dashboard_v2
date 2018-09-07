@@ -30,7 +30,7 @@ export class SectoresComponent implements OnInit {
   //varible de mostrar desctivados
   toggleActDesc: boolean = false;
 
-  sector: SectorInterface[] = [];
+  sector: SectorInterface[] ;
 
   //Variables de paginacion y ordenamiento
   dataSource: MatTableDataSource<SectorInterface>;
@@ -40,14 +40,14 @@ export class SectoresComponent implements OnInit {
   public respuesta;
 
   //clase dinamica pra carga de mensajes
-  claseDinamic = "alert alert-success alert-with-icon";
-  iconAlert = "done";
+  claseDinamic = "alert alert-warning alert-with-icon";
+  iconAlert = "warning";
 
   //mensaje de respuesta
   public mensaje: string;
 
   //variable para retornar las plazas de mercado
-  plazasmercado: PlazaMercado[] = [];
+  plazasmercado: PlazaMercado[];
   zonas: Zona[] = [];
 
   //boton desactivado en caso q no hayan roles o este caragndo
@@ -151,7 +151,7 @@ export class SectoresComponent implements OnInit {
     try {
       this.respuesta = null;
 
-      this._zonaService.consultarPlazasAsignadas(true).subscribe(
+      this._zonaService.consultarPlazasAsignadas(false).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -332,10 +332,7 @@ export class SectoresComponent implements OnInit {
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
       this.sectoredit = element != null ? element : null;
       this.isUpdate = element != null ? true : false;
-
-      //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
-
-
+      this.zonasform = [];
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormSector) {
         //this.consultarUsuariosRecaudo();
@@ -344,6 +341,7 @@ export class SectoresComponent implements OnInit {
         if(this.sectoredit!=null){
           this.buscarZonaPorPlazaForm(this.sectoredit.fkidplaza);
         }
+        
 
         this.nuevoSectorForm = this.nuevoForm.group({
           codigosector: [this.sectoredit != null ? this.sectoredit.codigosector : '', Validators.required],
@@ -469,11 +467,11 @@ export class SectoresComponent implements OnInit {
 
 
   //variable para setear el selector de zonas en el formulario con respecto al pkid de la plaza
-  zonasform: Zona[] = [];
+  zonasform: Zona[] ;
   //metodo que busca las zonas y las setea en el select zonas de plazas
   buscarZonaPorPlazaForm(event){
     try {
-      
+        //this.nuevoSectorForm.get('pkidzona').setValue('');//cada vez q cambie el selector de plazas, se reinicia el select de zonas
         let pkidplaza =event.value!=null? event.value: event;//capturar el value (pkidplaza) cuando cambie el select me lleve el zonasForm para el select de zonas
         this.respuesta = null;
 
@@ -501,7 +499,7 @@ export class SectoresComponent implements OnInit {
 
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "buscarZonaPorPlaza()"
+      let funcion = "buscarZonaPorPlazaForm()"
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
@@ -517,7 +515,7 @@ export class SectoresComponent implements OnInit {
   
 
 
-  tiposectores : TipoSector[] = [];
+  tiposectores : TipoSector[];
  /*
     Metodo que consulta los tipos de sector para el select
     */
@@ -561,6 +559,44 @@ export class SectoresComponent implements OnInit {
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
 
+
+
+  //dialogo de confirmacion para eliminar o no el usuario
+  openDialog(sector:SectorInterface): void {
+    try {
+      let nombre = sector.nombresector;
+      let id = sector.pkidsector;
+
+      const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
+        width: '250px',
+        data: { nombre: nombre, id: id, tipoIdentifi: 3 }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        this.mensaje = result.respuesta + " Nombre Sector : " + nombre;
+        if (result != null) {
+          console.log(result.status);
+          if (result.status == "error") {
+            this.mostrarMensaje(0);
+          } else if (result.status == "Exito") {
+            this.mostrarMensaje(1)
+            this.toggleActDesc = false;
+            this.consultarSectores();
+          }
+        }
+      });
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "openDialog()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
 
   //Mostrar mensaje variable estilizado de error o de confirmacion 
   mostrarMensaje(codeError: number) {
