@@ -26,9 +26,7 @@ export class ZonasComponent implements OnInit {
   //varible de mostrar desctivados
   toggleActDesc: boolean = false;
 
-
-
-  //variable roles para llenar de la consulta
+  //variable zonas para llenar de la consulta
   zona: Zona[] = [];
 
   //Variables de paginacion y ordenamiento
@@ -64,7 +62,7 @@ export class ZonasComponent implements OnInit {
 
   //formulario reactive
   nuevoZonaForm: FormGroup;
-  //actvar Plaza, desactivar Plaza
+  //actvar zonas, desactivar zonas
   active = false;
   textActive = "Desactivado";
   //mensaje del boton actulizar guardar
@@ -256,7 +254,7 @@ export class ZonasComponent implements OnInit {
    * Metodo que cambia el estado de la zona de la base de datos
    */
   cambiarEstadoZona(zonas) {
-    console.log(zonas);
+    //console.log(zonas);
 
     let zona: Zona = new Zona();
     zona.setPkidzona(zonas.pkidzona);

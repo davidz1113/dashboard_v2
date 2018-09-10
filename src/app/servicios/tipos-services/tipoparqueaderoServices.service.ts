@@ -16,10 +16,10 @@ export class TipoParqueaderoServices {
     }
 
 
-    //consulta todos los tipos de parqeuadero para mostrarlo en el selector de plazas de mercado
+    //consulta todos los tipos de parqeuadero para mostrarlo en el selector de gestion de parqueadero
     consultarTipoParqueadero(){
         let token = "authorization=" + this.getToken();
-        return this._http.post(this.url + '/tipoparqeuadero/query', token, { headers: this.headers })
+        return this._http.post(this.url + '/tipoparqueadero/query', token, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
 

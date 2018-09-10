@@ -15,8 +15,8 @@
               <!--Input filtro de un campo-->
               <div class="col-sm-4">
                 <mat-form-field>
-                  <input matInput [(ngModel)]="filtroNombreParqueadero" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de parqueadero">
-                  <button mat-button *ngIf="filtroNombreParqueadero" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                  <input matInput [(ngModel)]="filtronumeroParqueadero" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de parqueadero">
+                  <button mat-button *ngIf="filtronumeroParqueadero" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
@@ -36,17 +36,18 @@
             <div class="row">
               <div class="col-sm-4">
                 <mat-form-field>
-                  <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="buscarZonaPorPlaza()">
+                  <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="aplicarFiltro()">
                     <mat-option value=''> Todos </mat-option>
-                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <p>Buscando por: {{zonaselect}} </p>
+                <p>Buscando por: {{plazaselect}} </p>
               </div>
 
               <div class="col-sm-4">
                 <mat-form-field>
                   <mat-select placeholder="Seleccione tipos de parqueaderos" [(ngModel)]="tipoparqueselect" (change)="aplicarFiltro()">
+                    <mat-option value=''> Todos </mat-option>
                     <mat-option [value]='tipoparqueadero.nombretipoparqueadero' *ngFor="let tipoparqueadero of tipoparqueaderos">{{tipoparqueadero.nombretipoparqueadero}}</mat-option>
                   </mat-select>
                 </mat-form-field>
@@ -92,19 +93,19 @@
 
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
-                <ng-container matColumnDef="nombreparqueadero">
+                <ng-container matColumnDef="numeroparqueadero">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Nº Parqueadero </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombreparqueadero}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.numeroparqueadero}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="nombrezona">
+                <ng-container matColumnDef="tipoparqueadero">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo parqueadero </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombrezona}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombretipoparqueadero}}
                   </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="nombretipoparqueadero">
+                <ng-container matColumnDef="nombreplaza">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Plaza </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombretipoparqueadero}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.parqueaderoactivo }"> {{element.nombreplaza}}
                   </mat-cell>
                 </ng-container>
 
@@ -155,10 +156,10 @@
       -->
 
     <div class="col-sm-8" *ngIf="mostrarFormParqueadero">
-      <!--inicio formulario de nuevo sector -->
+      <!--inicio formulario de nuevo parqueadero -->
       <div class="card">
         <div class="card-header card-header-danger ">
-          <h4 class="card-title text-center">Agregar una nuevo sector </h4>
+          <h4 class="card-title text-center">Agregar un nuevo parqueadero </h4>
           <p class="card-category text-center">*Todos los campos son obligatorios</p>
         </div>
 
@@ -172,14 +173,14 @@
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
           </div>
-          <div class="alert alert-info alert-with-icon" data-notify="container" *ngIf="tiposectores==null">
+          <div class="alert alert-info alert-with-icon" data-notify="container" *ngIf="tipoparqueaderos==null">
             <i class="material-icons" data-notify="icon">help_outline</i>
             <span data-notify="message">
               <b> Info -</b>
-              Para crear un sector debe crear con anterioridad plazas de mercado y tipos de sector
+              Para crear un parqueadero debe crear con anterioridad plazas de mercado y tipos de parqueadero
             </span>
           </div>
-          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandosector"></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoparqueadero"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->
         </div>
@@ -192,8 +193,8 @@
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite codigo de el sector " id="codigosector" name="codigosector" formControlName="codigosector">
-                  <mat-error *ngIf="nuevoParqueaderoForm.get('codigosector').hasError('required')">
+                  <input matInput type="number" placeholder="Digite codigo de el parqueadero " id="codigoparqueadero" name="codigoparqueadero" formControlName="codigoparqueadero">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('codigoparqueadero').hasError('required')">
                     el codigo es <strong>obligatorio</strong>
                   </mat-error>
                 </mat-form-field>
@@ -202,9 +203,9 @@
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite nombre de el sector " id="nombresector" name="nombresector" formControlName="nombresector">
-                  <mat-error *ngIf="nuevoParqueaderoForm.get('nombresector').hasError('required')">
-                    El nombre es <strong>requerido</strong>
+                  <input matInput type="text" placeholder="Digite numero de el parqueadero " id="numeroparqueadero" name="numeroparqueadero" formControlName="numeroparqueadero">
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('numeroparqueadero').hasError('required')">
+                    El numero es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -216,18 +217,18 @@
             <div class="row">
 
               <div class="col-sm-4 mx-auto mt-1">
-                <mat-slide-toggle (change)="activarDesactivarsector()" [checked]="active">sector {{textActive}} </mat-slide-toggle>
+                <mat-slide-toggle (change)="activarDesactivarparqueadero()" [checked]="active">parqueadero {{textActive}} </mat-slide-toggle>
               </div>
 
 
               <div class="col-sm-4 mx-auto  mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione tipo de sector" id="pkidtiposector" name="pkidtiposector" formControlName="pkidtiposector">
-                    <mat-option [value]='tiposect.pkidtiposector' *ngFor="let tiposect of tiposectores">{{tiposect.nombretiposector}}</mat-option>
+                  <mat-select placeholder="Seleccione Plaza" id="pkidplaza" name="pkidplaza" formControlName="pkidplaza">
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
-                  <mat-hint *ngIf="tiposectores==null">Se debe crear primero un tipo de sector</mat-hint>
-                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidtiposector').hasError('required')">
-                    El tipo de sector es <strong>requerido</strong>
+                  <mat-hint *ngIf="plazasmercado==null">Se debe crear primero plazazas de mercado</mat-hint>
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidplaza').hasError('required')">
+                   la plaza <strong>requerida</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -240,33 +241,15 @@
 
 
               <div class="col-sm-4 mx-auto  mt-1 ">
-                
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione plaza"  (change)="buscarZonaPorPlazaForm($event)"  formControlName="pkidplaza" >
-                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                  <mat-select placeholder="Seleccione tipo de parqueadero"  id="pkidtipoparqueadero" name="pkidtipoparqueadero" formControlName="pkidtipoparqueadero" >
+                    <mat-option [value]='tipoparqueadero.pkidtipoparqueadero' *ngFor="let tipoparqueadero of tipoparqueaderos">{{tipoparqueadero.nombretipoparqueadero}}</mat-option>
                   </mat-select>
-                  <mat-hint>Seleccione una plaza para buscar las zonas asignadas</mat-hint>
+                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidtipoparqueadero').hasError('required')">
+                      El tipo de parqueadero es <strong>requerido</strong>
+                     </mat-error>
                 </mat-form-field>
               </div>
-
-              <div class=" mx-auto  mt-1">
-                <mat-form-field>
-                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona">
-                    <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidzona').hasError('required')">
-                    la zona es <strong>obligatoria</strong>
-                  </mat-error>
-                  <mat-error *ngIf="nuevoParqueaderoForm.get('pkidplaza').value=='' ">
-                    Primero debe seleccionar una <strong>plaza</strong>
-                  </mat-error>
-                  <mat-error *ngIf="zonasform==null ">
-                    No hay <strong>zonas</strong> asignadas a la plaza seleccionada
-                  </mat-error>
-                </mat-form-field>
-              </div>
-
-
 
             </div>
           </div>
