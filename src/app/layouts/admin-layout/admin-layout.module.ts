@@ -33,6 +33,10 @@ import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.componen
 import { ZonasComponent } from '../../zonas/zonas.component';
 import { SectoresComponent } from '../../sectores/sectores.component';
 import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero.component';
+import { GenericComponent } from '../../generic/generic.component';
+import { GenericAgregarEditarComponent } from '../../generic/generic-agregar-editar/generic-agregar-editar.component';
+import { TablaGenericComponent } from '../../generic/tabla-generic/tabla-generic.component';
+import { ArrayOne } from '../../generic/tabla-generic/arrayone.pipe';
 @NgModule({
   imports: [
     CommonModule,
@@ -67,7 +71,11 @@ import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero
     DialogConfirmacionTipos,
     ZonasComponent,
     SectoresComponent,
-    ParqueaderoComponent
+    ParqueaderoComponent,
+    GenericComponent,
+    GenericAgregarEditarComponent,
+    TablaGenericComponent,
+    ArrayOne
 
 
   ],

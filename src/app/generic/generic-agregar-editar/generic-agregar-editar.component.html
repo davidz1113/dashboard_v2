@@ -1,0 +1,46 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="col-sm-12">
+      <!--inicio formulario de nuevo usuario-->
+      <div class="card card-profile" *ngIf="nUsuario">
+        <div class="card-header card-header-danger ">
+          <h4 class="card-title text-center">Agregar un nuevo {{title}}</h4>
+          <p class="card-category text-center">*Todos los campos son obligatorios</p>
+        </div>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
+
+        <form [formGroup]="nuevoUsuarioForm" (ngSubmit)="nuevoUsuario()" >
+            <div class="form-group">
+            <div class="row">
+                <div class="col-sm-5 mx-4 " *ngFor="let item of  etiquetasColumnas;let i=index">
+                  <mat-form-field class="">
+                    <mat-label>{{item.etiqueta}}</mat-label>
+                    <div ngSwitch="item.type">
+                    <input *ngSwitchCase="string"  matInput type="text"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
+                    <input *ngSwitchCase="number"  matInput type="number"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
+                    <input *ngSwitchCase="boolean"  matInput type="checkbox"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
+                    <input *ngSwitchDefault matInput type="text"  placeholder="Digite {{item.etiqueta}}" id="{{item.etiqueta}}" name="{{item.item}}" [formControlName]="item.item" />
+                  </div>
+                    <mat-error>
+                     {{item.item}} es <strong>requerida</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div >
+            </div>
+          </div>
+
+
+          <div class="form-group">
+            <div class="row">
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoUsuarioForm.valid">{{mensajeBoton}}
+              </button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormulario.emit({cancel:'1',msj:'null'});">Cancelar</button>
+            </div>
+          </div>
+
+      </form>
+      </div>
+
+    </div>
+  </div>
+</div>

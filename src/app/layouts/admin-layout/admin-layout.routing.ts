@@ -16,6 +16,7 @@ import { GLOBAL } from '../../servicios/globales';
 import { ZonasComponent } from '../../zonas/zonas.component';
 import { SectoresComponent } from '../../sectores/sectores.component';
 import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero.component';
+import { GenericComponent } from '../../generic/generic.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -65,6 +66,8 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/usuarios-roles', component: UsuariosRolesComponent },
     { path: GLOBAL.urlBase + '/plazas-mercado', component: PlazasMercadoComponent },
     { path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
+    //{ path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
+    { path: GLOBAL.urlBase + '/tipoanimal', component: GenericComponent },
     { path: GLOBAL.urlBase + '/zonas', component: ZonasComponent },
     { path: GLOBAL.urlBase + '/sectores', component: SectoresComponent },
     { path: GLOBAL.urlBase + '/parqueaderos', component: ParqueaderoComponent },
