@@ -6,6 +6,7 @@ import { TipoSectorServices } from '../servicios/tipos-services/tiposectorServic
 import { ZonasServices } from '../servicios/zonaServices.services';
 import { SectoresServices } from '../servicios/sectorServices.service';
 import { ParqueaderoServices } from '../servicios/parqueaderoService.services';
+import { PuestosServices } from '../servicios/puestoServices.service';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -20,7 +21,7 @@ import { ParqueaderoServices } from '../servicios/parqueaderoService.services';
     </div>
         
     `,
-    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices]
+    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices]
 
 })
 
@@ -37,7 +38,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
     public respuesta ;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionTipos>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices) {
+        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices) {
 
         this.nombre = data['nombre'];
         this.id = data['id'];
@@ -118,9 +119,29 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     }
                 },
                 error=>{
-
+                    console.log("Error de conexion");
                 }
             );
+        }else if(this.tipoIdentifi==5){
+            this._puestosServices.eliminarPuesto(this.id).subscribe(
+                response =>{
+                    this.respuesta = response;
+                    if (this.respuesta.length <= 1) {
+                        this.respuesta = 'Error en el servidor';
+                        console.log('Error en el servidor');
+                    }else{
+                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
+                        
+                    }
+                },
+                error=>{
+                    console.log("Error de conexion");
+                }
+
+            )
+
+            
+
         }
     }
 

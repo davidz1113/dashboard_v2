@@ -8,7 +8,7 @@ export class Zona {
     private zonaactivo: string;
     private creacionzona: Date;
     private modificacionzona: Date;
-       public plaza: PlazaMercado;
+    public plaza: PlazaMercado;
     public usuario: Usuario;
    
     constructor() {

@@ -30,8 +30,9 @@ export class ZonasServices {
      * 
      * Metodo que recibe el idde la plaza y devuelve las zonas que estan asignadas a la plaza
      */
-    consultarZonasPorPlaza(pkidplaza){
-        let token = "authorization=" + this.getToken()+"&pkidplaza="+pkidplaza;
+    consultarZonasPorPlaza(pkidplaza, sector){
+        let json = sector!=null? JSON.stringify({pkidplaza:pkidplaza , sector: sector}) :JSON.stringify({pkidplaza:pkidplaza});
+        let token = "authorization=" + this.getToken()+"&json="+json;
         return this._http.post(this.url + '/zona/query', token, { headers: this.headers })
             .pipe(map(res => res.json()));
     }

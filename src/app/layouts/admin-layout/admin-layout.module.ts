@@ -37,6 +37,7 @@ import { GenericComponent } from '../../generic/generic.component';
 import { GenericAgregarEditarComponent } from '../../generic/generic-agregar-editar/generic-agregar-editar.component';
 import { TablaGenericComponent } from '../../generic/tabla-generic/tabla-generic.component';
 import { ArrayOne } from '../../generic/tabla-generic/arrayone.pipe';
+import { PuestosComponent } from '../../puestos/puestos.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -75,7 +76,8 @@ import { ArrayOne } from '../../generic/tabla-generic/arrayone.pipe';
     GenericComponent,
     GenericAgregarEditarComponent,
     TablaGenericComponent,
-    ArrayOne
+    ArrayOne,
+    PuestosComponent
 
 
   ],

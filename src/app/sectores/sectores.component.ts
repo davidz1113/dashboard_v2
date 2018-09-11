@@ -199,7 +199,7 @@ export class SectoresComponent implements OnInit {
         let pkidplaza = this.plazaselect; //capturar el id de la plaza para enviarla a la consulta de zonas
         this.respuesta = null;
 
-        this._zonaService.consultarZonasPorPlaza(pkidplaza).subscribe(
+        this._zonaService.consultarZonasPorPlaza(pkidplaza,null).subscribe(
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
@@ -376,7 +376,7 @@ export class SectoresComponent implements OnInit {
       this.creandosector = true;
       if (this.sectoredit == null){
         this.sectoredit = {
-          pkidsector: null,codigosector:'', nombresector: '', nombrezona: '', nombretiposector: '', sectoractivo: false, fkidzona: null, fkidtiposector: null,fkidplaza:null
+          pkidsector: null,codigosector:'', nombresector: '', nombrezona: '', nombretiposector: '', sectoractivo: false, fkidzona: null, fkidtiposector: null,fkidplaza:null,nombreplaza:''
         };
         
       } 
@@ -475,7 +475,7 @@ export class SectoresComponent implements OnInit {
         let pkidplaza =event.value!=null? event.value: event;//capturar el value (pkidplaza) cuando cambie el select me lleve el zonasForm para el select de zonas
         this.respuesta = null;
 
-        this._zonaService.consultarZonasPorPlaza(pkidplaza).subscribe(
+        this._zonaService.consultarZonasPorPlaza(pkidplaza,null).subscribe(
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
@@ -641,7 +641,7 @@ export class SectoresComponent implements OnInit {
 
 }
 
-interface SectorInterface {
+export interface SectorInterface {
   pkidsector: number;
   codigosector: string;
   nombresector: string;
@@ -651,4 +651,5 @@ interface SectorInterface {
   fkidtiposector: number;
   nombretiposector: string;
   fkidplaza: number;
+  nombreplaza: string;
 }

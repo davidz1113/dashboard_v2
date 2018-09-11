@@ -21,6 +21,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/sectores', title: 'Sectores', icon: 'business', class: '', valor: 5 },
     { path: '/' + GLOBAL.urlBase + '/parqueaderos', title: 'Parqueaderos', icon: 'commute', class: '', valor: 6 },
     { path: '/' + GLOBAL.urlBase + '/tipoanimal', title: 'Tipos de animales', icon: 'pets', class: '', valor: 7 },
+    { path: '/' + GLOBAL.urlBase + '/puesto', title: 'Puestos', icon: 'local_convenience_store', class: '', valor: 8 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 10 },
     { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 11 },
     { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 12 },

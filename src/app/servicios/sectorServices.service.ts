@@ -82,6 +82,16 @@ export class SectoresServices {
     }
 
 
+    /**
+     * 
+     * @param pkidzona id de la zona para consukltar
+     * @param zona parametro true o false para traer todos los sectores(false) solo los que tengan zona por id(true)
+     */
+    consultarSectorPorZona(pkidzona, zona){
+        let token = "authorization=" + this.getToken()+"&zona="+JSON.stringify({pkidzona:pkidzona});
+        return this._http.post(this.url + '/sector/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
 
 
     //obtener de manera global los datos del token
