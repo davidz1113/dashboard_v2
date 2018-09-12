@@ -196,13 +196,7 @@
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
           </div>
-          <div class="alert alert-info alert-with-icon" data-notify="container" *ngIf="tiposectores==null">
-            <i class="material-icons" data-notify="icon">help_outline</i>
-            <span data-notify="message">
-              <b> Info -</b>
-              Para crear un sector debe crear con anterioridad plazas de mercado y tipos de sector
-            </span>
-          </div>
+      
           <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandosector"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->

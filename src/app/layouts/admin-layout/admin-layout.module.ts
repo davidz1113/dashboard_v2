@@ -38,6 +38,7 @@ import { GenericAgregarEditarComponent } from '../../generic/generic-agregar-edi
 import { TablaGenericComponent } from '../../generic/tabla-generic/tabla-generic.component';
 import { ArrayOne } from '../../generic/tabla-generic/arrayone.pipe';
 import { PuestosComponent } from '../../puestos/puestos.component';
+import { PuertasComponent } from '../../puertas/puertas.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -77,7 +78,8 @@ import { PuestosComponent } from '../../puestos/puestos.component';
     GenericAgregarEditarComponent,
     TablaGenericComponent,
     ArrayOne,
-    PuestosComponent
+    PuestosComponent,
+    PuertasComponent
 
 
   ],

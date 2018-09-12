@@ -7,6 +7,7 @@ import { ZonasServices } from '../servicios/zonaServices.services';
 import { SectoresServices } from '../servicios/sectorServices.service';
 import { ParqueaderoServices } from '../servicios/parqueaderoService.services';
 import { PuestosServices } from '../servicios/puestoServices.service';
+import { PuertasService } from '../servicios/puertasService.service';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -21,7 +22,7 @@ import { PuestosServices } from '../servicios/puestoServices.service';
     </div>
         
     `,
-    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices]
+    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices,PuertasService]
 
 })
 
@@ -38,7 +39,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
     public respuesta ;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionTipos>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices) {
+        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices,private _puertasServices: PuertasService) {
 
         this.nombre = data['nombre'];
         this.id = data['id'];
@@ -122,7 +123,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     console.log("Error de conexion");
                 }
             );
-        }else if(this.tipoIdentifi==5){
+        }else if(this.tipoIdentifi==5){//eliminacion de puestos
             this._puestosServices.eliminarPuesto(this.id).subscribe(
                 response =>{
                     this.respuesta = response;
@@ -139,9 +140,18 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 }
 
             )
-
-            
-
+        }else if(this.tipoIdentifi==6){//eliminacion de puertas
+            this._puertasServices.eliminarPuerta(this.id).subscribe(
+                resp => {
+                    this.respuesta = resp;
+                    if (this.respuesta.length <= 1) {
+                        this.respuesta = 'Error en el servidor';
+                        console.log('Error en el servidor');
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+                    }
+                }
+            );
         }
     }
 

@@ -18,6 +18,7 @@ import { SectoresComponent } from '../../sectores/sectores.component';
 import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero.component';
 import { GenericComponent } from '../../generic/generic.component';
 import { PuestosComponent } from '../../puestos/puestos.component';
+import { PuertasComponent } from '../../puertas/puertas.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -69,10 +70,15 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
     //{ path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
     { path: GLOBAL.urlBase + '/tipoanimal', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/tipoparqueadero', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/tiporecaudo', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/tipovehiculo', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/tipopuesto', component: GenericComponent },
     { path: GLOBAL.urlBase + '/zonas', component: ZonasComponent },
     { path: GLOBAL.urlBase + '/sectores', component: SectoresComponent },
     { path: GLOBAL.urlBase + '/parqueaderos', component: ParqueaderoComponent },
     { path: GLOBAL.urlBase + '/puesto', component: PuestosComponent },
+    { path: GLOBAL.urlBase + '/puerta', component: PuertasComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },

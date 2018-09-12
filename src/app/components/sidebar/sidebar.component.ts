@@ -22,12 +22,17 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/parqueaderos', title: 'Parqueaderos', icon: 'commute', class: '', valor: 6 },
     { path: '/' + GLOBAL.urlBase + '/tipoanimal', title: 'Tipos de animales', icon: 'pets', class: '', valor: 7 },
     { path: '/' + GLOBAL.urlBase + '/puesto', title: 'Puestos', icon: 'local_convenience_store', class: '', valor: 8 },
-    { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 10 },
-    { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 11 },
-    { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 12 },
-    { path: '/' + GLOBAL.urlBase + '/icons', title: 'Reportes', icon: 'bubble_chart', class: '', valor: 13 },
-    { path: '/' + GLOBAL.urlBase + '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor: 14 },
-    { path: '/' + GLOBAL.urlBase + '/tareas', title: 'Tareas', icon: 'assignment', class: '', valor: 15 },
+    { path: '/' + GLOBAL.urlBase + '/puerta', title: 'Puertas', icon: 'meeting_room', class: '', valor: 9 },
+    { path: '/' + GLOBAL.urlBase + '/tipoparqueadero', title: 'Tipos de parqueadero', icon: 'meeting_room', class: '', valor: 10 },
+    { path: '/' + GLOBAL.urlBase + '/tiporecaudo', title: 'Tipos de recaudo', icon: 'supervised_user_circle', class: '', valor: 11 },
+    { path: '/' + GLOBAL.urlBase + '/tipovehiculo', title: 'Tipos de vehiculos', icon: 'directions_car', class: '', valor: 12 },
+    { path: '/' + GLOBAL.urlBase + '/tipopuesto', title: 'Tipos de puesto', icon: 'transfer_within_a_station', class: '', valor: 13 },
+    { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 20 },
+    { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 21 },
+    { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 22 },
+    { path: '/' + GLOBAL.urlBase + '/icons', title: 'Reportes', icon: 'bubble_chart', class: '', valor: 23 },
+    { path: '/' + GLOBAL.urlBase + '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor: 24 },
+    { path: '/' + GLOBAL.urlBase + '/tareas', title: 'Tareas', icon: 'assignment', class: '', valor: 25 },
 ];
 
 @Component({
@@ -80,8 +85,10 @@ export class SidebarComponent implements OnInit {
             })
 
         });
-
+        console.log(nuevosRoutes);
+        
         this.menuItems = nuevosRoutes.filter(menuItem => menuItem);
+        //this.menuItems = ROUTES.filter(menuItem => menuItem);
 
     }
 
