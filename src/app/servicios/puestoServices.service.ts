@@ -2,9 +2,12 @@ import { Injectable } from "@angular/core";
 import { Http, Response, Headers } from '@angular/http';
 import { GLOBAL } from "./globales";
 import { map } from 'rxjs/operators';
+import { PuestoInterface } from "../puestos/puestos.component";
 
 @Injectable()
 export class PuestosServices {
+
+ 
 
     public url: string;
     public token;
@@ -15,7 +18,34 @@ export class PuestosServices {
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     }
 
-
+    /**
+     * 
+     * @param puesto2 interfaz con todos los campos para insertar en la tabla puestos
+     */
+    crearPuesto(puesto2: PuestoInterface,uploadData: FormData) {
+        let json = JSON.stringify(puesto2);
+        //let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
+        uploadData.append('json', json);
+        uploadData.append('authorization', this.getToken());
+        console.log(uploadData);
+        return this._http.post(this.url + '/puesto/new', uploadData)
+            .pipe(map(res => res.json()));
+      }
+    
+      /**
+       * 
+       * @param puesto2 
+       * @param uploadData 
+       */
+      actualizarPuesto(puesto2: PuestoInterface, uploadData: FormData): any {
+        let json = JSON.stringify(puesto2);
+        //let params =  "json="+json+"&authorization="+this.getToken()+"&fichero_usuario="+(uploadData);
+        uploadData.append('json', json);
+        uploadData.append('authorization', this.getToken());
+        console.log(uploadData);
+        return this._http.post(this.url + '/puesto/edit', uploadData)
+            .pipe(map(res => res.json()));
+      }
 
     /**
     * Metodo que constulta los sectores para listarlos en la tabla, con todos los campos
@@ -54,6 +84,36 @@ export class PuestosServices {
             .pipe(map(res => res.json()));
      }
 
+
+     /**
+      * consulta todos los estados
+      */
+     consultarEstadosInfraestructura(){
+        let token = "authorization=" + this.getToken();
+        return this._http.post(this.url + '/estadoinfraestructura/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+     }
+
+     /**
+      * Consultar todas las actividades
+      */
+     consultarActividadComercial(){
+        let token = "authorization=" + this.getToken();
+        return this._http.post(this.url + '/actividadcomercial/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+     }
+
+
+     /**
+      * consultar Tipos de puestos
+      */
+     consultarTiposdePuesto(){
+        let token = "authorization=" + this.getToken();
+        return this._http.post(this.url + '/tipopuesto/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+     }
+
+  
 
     //obtener de manera global los datos del token
     getToken() {

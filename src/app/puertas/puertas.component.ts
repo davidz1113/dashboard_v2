@@ -150,6 +150,7 @@ export class PuertasComponent implements OnInit {
 
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.aplicarFiltro();
         this.setFilterDataTable();
         // console.log(this.puertas);
       }

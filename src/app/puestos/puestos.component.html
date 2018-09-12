@@ -180,9 +180,9 @@
 
     <div class="col-sm-8" *ngIf="mostrarFormPuesto">
       <!--inicio formulario de nuevo sector -->
-      <div class="card">
+      <div class="card card-profile">
         <div class="card-header card-header-danger ">
-          <h4 class="card-title text-center">Agregar una nuevo sector </h4>
+          <h4 class="card-title text-center">Agregar una nuevo puesto </h4>
           <p class="card-category text-center">*Todos los campos son obligatorios</p>
         </div>
 
@@ -197,11 +197,16 @@
               <b>Info:</b> {{msg}} </span>
           </div>
       
-          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandosector"></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandopuesto"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->
         </div>
 
+        <div class="card-avatar mt-1">
+          <img class="img" [src]="url" />
+        </div>
+        <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+        <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" (click)="fileInput.click()">Seleccionar foto</button>
 
         <form [formGroup]="nuevoPuestoForm" (ngSubmit)="editarAgregarPuesto()">
 
@@ -277,9 +282,12 @@
                     <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
                   </mat-select>
                   <mat-hint *ngIf="nuevoPuestoForm.get('pkidplaza').value==''">Primero debe seleccionar una <strong>plaza</strong></mat-hint>
-                  <mat-error *ngIf="zonasform==null ">
-                    No hay <strong>zonas</strong> asignadas a la plaza seleccionada
-                  </mat-error>
+                  <mat-hint *ngIf="zonasform==''">
+                      No hay <strong>zonas</strong> asignadas a la plaza seleccionada
+                  </mat-hint>
+                  <mat-hint *ngIf="nuevoPuestoForm.get('pkidplaza').value!='' && zonasform!=''">
+                      Por favor seleccione una zona
+                  </mat-hint>
                 </mat-form-field>
               </div>
 
@@ -288,26 +296,60 @@
                     <mat-select placeholder="Seleccione sector" id="pkidsector" name="pkidsector" formControlName="pkidsector">
                       <mat-option [value]='sector.pkidsector' *ngFor="let sector of sectoresForm">{{sector.nombresector}}</mat-option>
                     </mat-select>
-                    <mat-hint *ngIf="sectoresForm==null">Se debe crear primero un tipo de sector</mat-hint>
+                    <mat-error *ngIf="sectoresForm==null">Se debe crear primero un tipo de sector</mat-error>
                     <mat-error *ngIf="nuevoPuestoForm.get('pkidsector').hasError('required')">
                       El tipo de sector es <strong>requerido</strong>
                     </mat-error>
                   </mat-form-field>
                 </div>
-  
-
 
             </div>
+          </div>
 
+          <div class="form-group">
             <div class="row mb-3">
 
 
+              <div class=" mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado" formControlName="pkidestado" >
+                    <mat-option [value]='estado.pkidestado' *ngFor="let estado of estados"> {{estado.nombreestado}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidestado').hasError('required')">
+                   El estado de infraestructura es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col-sm-4 mx-auto  mt-1">
+                  <mat-form-field>
+                    <mat-select placeholder="Actividad comercial" id="pkidactividad" name="pkidactividad" formControlName="pkidactividad">
+                      <mat-option [value]='actividad.pkidactividad' *ngFor="let actividad of actividades">{{actividad.nombreactividad}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="nuevoPuestoForm.get('pkidactividad').hasError('required')">
+                     La actividad comercial es <strong>requerida</strong>
+                    </mat-error>
+                  </mat-form-field>
+                </div>
 
             </div>
-
-
           </div>
+          <div class="form-group">
+            <div class="row mb-3">
 
+
+              <div class=" mx-auto  mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione tipo de puesto" id="pkidtipopuesto" name="pkidtipopuesto" formControlName="pkidtipopuesto" >
+                    <mat-option [value]='tipo.pkidtipopuesto' *ngFor="let tipo of tipos"> {{tipo.nombretipopuesto}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidtipopuesto').hasError('required')">
+                   El tipo  es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
           <div class="form-group">
             <div class="row">
 

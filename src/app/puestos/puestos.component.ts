@@ -15,11 +15,12 @@ import { PlazaServices } from '../servicios/plazaServices.services';
 import { SectoresServices } from '../servicios/sectorServices.service';
 import { Zona } from '../modelos/zona';
 import { ZonasServices } from '../servicios/zonaServices.services';
+import { GLOBAL } from '../servicios/globales';
 @Component({
   selector: 'app-puestos',
   templateUrl: './puestos.component.html',
   styleUrls: ['./puestos.component.scss'],
-  providers: [PuestosServices, ExcepcionService, PlazaServices, SectoresServices,ZonasServices]
+  providers: [PuestosServices, ExcepcionService, PlazaServices, SectoresServices, ZonasServices]
 })
 export class PuestosComponent implements OnInit {
 
@@ -87,7 +88,7 @@ export class PuestosComponent implements OnInit {
   //variable que valida si esta por actualizar o guardar un nuevo
   isUpdate = false;
 
-  constructor(private _zonasServices:ZonasServices,private nuevoForm: FormBuilder,public dialog: MatDialog,private _puestoService: PuestosServices, private _exceptionService: ExcepcionService, private _plazasServices: PlazaServices,private _sectorService: SectoresServices, private injector: Injector) { }
+  constructor(private _zonasServices: ZonasServices, private nuevoForm: FormBuilder, public dialog: MatDialog, private _puestoService: PuestosServices, private _exceptionService: ExcepcionService, private _plazasServices: PlazaServices, private _sectorService: SectoresServices, private injector: Injector) { }
 
   ngOnInit() {
   }
@@ -120,18 +121,21 @@ export class PuestosComponent implements OnInit {
             console.log(this.puesto[0].getSector()['zona']['plaza'].nombreplaza);
             this.puesto.map((z) => {
               let pi: PuestoInterface = {
-                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '',pkidplaza:null,pkizona:null
+                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: "false", fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
               };
               pi.pkidpuesto = z.getPkidpuesto();
               pi.codigopuesto = z.getCodigopuesto();
               pi.numeropuesto = z.getNumeropuesto();
+              pi.imagenpuesto = z.getImagenpuesto();
+              pi.alto = z.getAlto();
+              pi.ancho = z.getAncho();
               pi.nombrezona = z.getSector()['zona'].nombrezona;
               pi.pkizona = z.getSector()['zona'].pkidzona;
               pi.nombreplaza = z.getSector()['zona']['plaza'].nombreplaza;
-              pi.pkidplaza= z.getSector()['zona']['plaza'].pkidplaza;
+              pi.pkidplaza = z.getSector()['zona']['plaza'].pkidplaza;
               pi.nombresector = z.getSector().nombresector;
               pi.nombretipopuesto = z.getTipopuesto().nombretipopuesto;
-              pi.puestoactivo = z.getPuestoactivo();
+              pi.puestoactivo = String(z.getPuestoactivo());
               pi.fkidactividad = z.getActividadcomercial().pkidactividad;
               pi.fkidestado = z.getEstadoinfraestructura().pkidestado;
               pi.fkidsector = z.getSector().pkidsector;
@@ -223,7 +227,7 @@ export class PuestosComponent implements OnInit {
           } else {
             //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
-            this.sectores =  this.respuesta.sector;
+            this.sectores = this.respuesta.sector;
           }
 
         },
@@ -255,19 +259,19 @@ export class PuestosComponent implements OnInit {
 
 
   setFilterDataTable() {
-   
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.dataSource.filterPredicate = (data: PuestoInterface, filter: string) => {
-        //console.log(filter);
-        //console.log(this.sectorselect );
-        //console.log(data.nombresector);
-        //console.log(data.nombresector.indexOf(this.sectorselect) !== -1);
-        
-        this.haydatos = ((data.numeropuesto.toLowerCase().indexOf(this.filtroNombrePuesto) !== -1) && (data.puestoactivo == true || this.toggleActDesc == true) && (data.nombresector.indexOf(this.sectorselect) !== -1) && (data.nombreplaza.indexOf(this.plazaselect) !== -1));
-        console.log(this.haydatos);
-        return (this.haydatos);
-      };
+
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.dataSource.filterPredicate = (data: PuestoInterface, filter: string) => {
+      //console.log(filter);
+      //console.log(this.sectorselect );
+      //console.log(data.nombresector);
+      //console.log(data.nombresector.indexOf(this.sectorselect) !== -1);
+
+      this.haydatos = ((data.numeropuesto.toLowerCase().indexOf(this.filtroNombrePuesto) !== -1) && (Boolean(data.puestoactivo) == true || this.toggleActDesc == true) && (data.nombresector.indexOf(this.sectorselect) !== -1) && (data.nombreplaza.indexOf(this.plazaselect) !== -1));
+      console.log(this.haydatos);
+      return (this.haydatos);
+    };
 
 
   }
@@ -281,7 +285,7 @@ export class PuestosComponent implements OnInit {
    * 
    * Metodo que cambia el estado de el puesto de la base de datos
    */
-  cambiarEstadoPuesto(puestos){
+  cambiarEstadoPuesto(puestos) {
     let puesto: Puesto = new Puesto();
     puesto.setPkidpuesto(puestos.pkidpuesto);
     puesto.setNumeropuesto(puestos.numeropuesto);
@@ -325,7 +329,7 @@ export class PuestosComponent implements OnInit {
 
 
 
-  
+
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(puestos): void {
     try {
@@ -375,29 +379,37 @@ export class PuestosComponent implements OnInit {
    */
 
   //llamamos al fomrulario para agregar un nuevo zona y inicializamos las validaciones del formulario
-  llamarFormularioAgregarPuesto(element:PuestoInterface) {
+  llamarFormularioAgregarPuesto(element: PuestoInterface) {
     try {
       console.log(element);
+
 
       this.mostrarFormPuesto = !this.mostrarFormPuesto;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
-        this.puesto2 = element!=null?element:null;
-            this.isUpdate = element != null ? true : false;
+      this.puesto2 = element != null ? element : null;
+      this.isUpdate = element != null ? true : false;
 
       //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
 
-      
+
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormPuesto) {
-
-        if(this.puesto2!=null){
+        this.consultarEstadoInfraestructura();
+        this.consultarActividadComercial();
+        this.consultarTipoPuesto();
+        if (this.puesto2 != null) {
           this.buscarZonaPorPlazaForm(this.puesto2.pkidplaza);
           this.buscarSectorPorZonaForm(this.puesto2.pkizona);
-          
+        } else {
+          //reinicio de las variables de zonas y sectores para cuando es un nuevo sector
+          this.zonasform = [];
+          this.sectoresForm = [];
+          this.url = '../' + GLOBAL.urlBase + '/assets/img/empleado.png';
+
         }
 
-        
+
         this.nuevoPuestoForm = this.nuevoForm.group({
           codigopuesto: [this.puesto2 != null ? this.puesto2.codigopuesto : ''],
           numeropuesto: [this.puesto2 != null ? this.puesto2.numeropuesto : '', Validators.required],
@@ -406,12 +418,19 @@ export class PuestosComponent implements OnInit {
           pkidplaza: [this.puesto2 != null ? this.puesto2.pkidplaza : ''],
           pkidzona: [this.puesto2 != null ? this.puesto2.pkizona : ''],
           pkidsector: [this.puesto2 != null ? this.puesto2.fkidsector : '', Validators.required],
+          pkidestado: [this.puesto2 != null ? this.puesto2.fkidestado : '', Validators.required],
+          pkidactividad: [this.puesto2 != null ? this.puesto2.fkidactividad : '', Validators.required],
+          pkidtipopuesto: [this.puesto2 != null ? this.puesto2.fkidtipopuesto : '', Validators.required],
         });
       }
-      this.active = this.puesto2 != null ? this.puesto2.puestoactivo: false;
+      this.active = this.puesto2 != null ? Boolean(this.puesto2.puestoactivo) : false;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.puesto2 == null ? "Guardar" : "Actualizar";
+      if (this.puesto2 != null) {
+        this.url = GLOBAL.urlImagen + (this.puesto2.imagenpuesto.substring(3));
+      }
+
 
 
     } catch (e) {
@@ -426,15 +445,253 @@ export class PuestosComponent implements OnInit {
     }
   }
 
+  //para agregar o editar un puesto
+  editarAgregarPuesto() {
+    try {
+      //this.zona = ;
+      this.creandopuesto = true;
+      if (this.puesto2 == null) {
+        this.puesto2 = {
+          pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: "false", fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
+        };
+
+      }
+
+      this.puesto2.codigopuesto = (this.nuevoPuestoForm.get('codigopuesto').value);
+      this.puesto2.numeropuesto = (this.nuevoPuestoForm.get('numeropuesto').value);
+      this.puesto2.alto = (this.nuevoPuestoForm.get('alto').value);
+      this.puesto2.ancho = (this.nuevoPuestoForm.get('ancho').value);
+      this.puesto2.fkidsector = (this.nuevoPuestoForm.get('pkidsector').value);
+      this.puesto2.fkidestado = (this.nuevoPuestoForm.get('pkidestado').value);
+      this.puesto2.fkidactividad = (this.nuevoPuestoForm.get('pkidactividad').value);
+      this.puesto2.fkidtipopuesto = (this.nuevoPuestoForm.get('pkidtipopuesto').value);
+      this.puesto2.puestoactivo = (String(this.active));
+
+      const uploadData = new FormData();
+      if (this.selectedFile != null) {
+
+        uploadData.append('fichero_puesto', this.selectedFile, this.selectedFile.name);
+        console.log(this.selectedFile.size);
+      }
+
+      this.closeDialog2();
+      if (!this.isUpdate) {//entra por agregar un nuevo zona de 
+        this._puestoService.crearPuesto(this.puesto2, uploadData).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandopuesto = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
+                this.mensaje = this.respuesta.msg;
+                this.mostrarMensaje(1);
+                this.mostrarFormPuesto = !this.mostrarFormPuesto;
+                this.mostrarTabla = !this.mostrarTabla;
+                this.active = false;
+                this.toggleActDesc = false;
+                this.consultarPuestos();
+              } else {
+                this.msg = this.respuesta.msg;
+              }
+
+            }
+          },
+          error => {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor' + error);
+          }
+        );
+
+      } else {//actualizamos el zona de 
+        this._puestoService.actualizarPuesto(this.puesto2, uploadData).subscribe(
+          response => {
+            this.respuesta = response;
+            if (this.respuesta.length <= 1) {
+              this.msg = 'Error en el servidor';
+              console.log('Error en el servidor');
+            } else {
+              //this.msg = this.respuesta.msg;
+              this.creandopuesto = false;
+              if (this.respuesta.status == "Exito") {//si es exitoso, envia la respuesta al mensaje principal, oculta/muestra el formulario/tabla y recarga los zonas de 
+                this.mensaje = this.respuesta.msg;
+                this.mostrarMensaje(1);
+                this.mostrarFormPuesto = !this.mostrarFormPuesto;
+                this.mostrarTabla = !this.mostrarTabla;
+                this.active = false;
+                this.toggleActDesc = false;
+                this.consultarPuestos();
+                this.consultarPlazasMercado();
+              } else {
+                this.msg = this.respuesta.msg;
+              }
+
+            }
+          },
+          error => {
+            this.msg = 'Error en el servidor';
+            console.log('Error en el servidor' + error);
+          }
+        );
+
+
+
+      }
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "agregarEditarZona()"
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+  /**
+   * Consultar todos los estados de infraestructura para mostrarlos en el select
+   */
+  estados: any[];
+  consultarEstadoInfraestructura() {
+    try {
+      this.respuesta = null;
+
+      this._puestoService.consultarEstadosInfraestructura().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            //conversion del json de plazas a la clase plazas 
+            //guardamos el objeto en la variable
+            this.estados = this.respuesta.estadoinfraestructura;
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error al consultar las plazas de mercado';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor');
+        }
+
+      );
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "consultarEstadoInfraestructura()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+  /**
+   * Metodo que consulta la actividad comercial para mostrarlos en el select
+   */
+  actividades: any[];
+  consultarActividadComercial() {
+    try {
+      this.respuesta = null;
+
+      this._puestoService.consultarActividadComercial().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            //conversion del json de plazas a la clase plazas 
+            //guardamos el objeto en la variable
+            this.actividades = this.respuesta.actividadcomercial;
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error al consultar las plazas de mercado';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor');
+        }
+
+      );
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "consultarActividadComercial()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+  /**
+   * Consulta todos los tipos de puesto para listarlos en el select de puestos
+   */
+  tipos: any[];
+  consultarTipoPuesto() {
+    try {
+      this.respuesta = null;
+
+      this._puestoService.consultarTiposdePuesto().subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            //conversion del json de plazas a la clase plazas 
+            //guardamos el objeto en la variable
+            this.tipos = this.respuesta.tipopuesto;
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error al consultar las plazas de mercado';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor');
+        }
+
+      );
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "consultarActividadComercial()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
 
   sectoresForm: any[];
   buscarSectorPorZonaForm(event) {
     try {
       //this.nuevoSectorForm.get('pkidzona').setValue('');//cada vez q cambie el selector de plazas, se reinicia el select de zonas
-      let pkidzona =event.value!=null? event.value: event;//capturar el value (pkidzona) cuando cambie el select me lleve el zonasForm para el select de zonas
+      let pkidzona = event.value != null ? event.value : event;//capturar el value (pkidzona) cuando cambie el select me lleve el zonasForm para el select de zonas
       this.respuesta = null;
+      
+      if(event.value!=null){
+        this.nuevoPuestoForm.get('pkidsector').setValue('');
+      }
 
-      this._sectorService.consultarSectorPorZona(pkidzona,"true").subscribe(
+      this._sectorService.consultarSectorPorZona(pkidzona, "true").subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -454,66 +711,114 @@ export class PuestosComponent implements OnInit {
         }
 
       );
-   
 
-  } catch (e) {
-    const mensaje = e.message ? e.message : e.toString();
-    let funcion = "buscarZonaPorPlazaForm()"
 
-    const location = this.injector.get(LocationStrategy);
-    const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-    this.enviarExcepcion(mensaje, e, funcion, url);
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "buscarZonaPorPlazaForm()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+
 
   }
 
 
-  }
-
-
-   //variable para setear el selector de zonas en el formulario con respecto al pkid de la plaza
-   zonasform: Zona[] ;
-   //metodo que busca las zonas y las setea en el select zonas de plazas
-   buscarZonaPorPlazaForm(event){
-     try {
-         //this.nuevoSectorForm.get('pkidzona').setValue('');//cada vez q cambie el selector de plazas, se reinicia el select de zonas
-         let pkidplaza =event.value!=null? event.value: event;//capturar el value (pkidplaza) cuando cambie el select me lleve el zonasForm para el select de zonas
-         this.respuesta = null;
- 
-         this._zonasServices.consultarZonasPorPlaza(pkidplaza,"false").subscribe(
-           response => {
-             this.respuesta = response;
-             if (this.respuesta.length <= 1) {
-               this.mensaje = 'Error en el servidor';
-               console.log('Error en el servidor');
-               this.mostrarMensaje(0);
-             } else {
-               this.zonasform = this.respuesta.zonas;
-             }
- 
-           },
-           error => {
-             this.mensaje = 'Error en el servidor';
-             this.respuesta = 'error';
-             this.mostrarMensaje(0);
-             console.log('Error en el servidor');
-           }
- 
-         );
+  //variable para setear el selector de zonas en el formulario con respecto al pkid de la plaza
+  zonasform: Zona[];
+  //metodo que busca las zonas y las setea en el select zonas de plazas
+  buscarZonaPorPlazaForm(event) {
+    try {
+      //this.nuevoSectorForm.get('pkidzona').setValue('');//cada vez q cambie el selector de plazas, se reinicia el select de zonas
+      //si cambia de seleccion reiniciamos el select de sector y el control del form
       
- 
-     } catch (e) {
-       const mensaje = e.message ? e.message : e.toString();
-       let funcion = "buscarZonaPorPlazaForm()"
- 
-       const location = this.injector.get(LocationStrategy);
-       const url = location instanceof PathLocationStrategy
-         ? location.path() : '';
-       this.enviarExcepcion(mensaje, e, funcion, url);
- 
-     }
-     
-   }
+
+      let pkidplaza = event.value != null ? event.value : event;//capturar el value (pkidplaza) cuando cambie el select me lleve el zonasForm para el select de zonas
+      this.respuesta = null;
+
+      if(event.value!=null){
+        //en caso de cambiar el select de plazas, se reinicia el valor del select de sectores
+        this.sectoresForm = [];
+        this.nuevoPuestoForm.get('pkidsector').setValue('');
+      }
+    
+
+      this._zonasServices.consultarZonasPorPlaza(pkidplaza, "true").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.zonasform = this.respuesta.zonas;
+            console.log(this.zonasform);
+            
+          }
+
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          this.respuesta = 'error';
+          this.mostrarMensaje(0);
+          console.log('Error en el servidor');
+        }
+
+      );
+
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "buscarZonaPorPlazaForm()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+
+  }
+
+
+
+
+
+  //url de la imagen por defecto si no tiene ninguna imagen
+  url: any = '../' + GLOBAL.urlBase + '/assets/img/empleado.png';
+
+  //variable de tipo file para recibirla por el input
+  selectedFile: File = null;
+
+  onFileChanged(event) {
+    try {
+
+      if (event.target.files && event.target.files[0]) {
+        var reader = new FileReader();
+        this.selectedFile = event.target.files[0]
+        reader.readAsDataURL(event.target.files[0]); // read file as data url
+        reader.onload = (event) => { // called once readAsDataURL is completed
+          this.url = reader.result;
+
+        }
+      }
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "onFileChanged()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+  }
+
 
   //activar o desctivar el boton y mostrar visualmente
   activarDesactivarpuesto() {
@@ -521,8 +826,13 @@ export class PuestosComponent implements OnInit {
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
 
+  closeDialog2() {
+    this.msg = '';
+  }
 
-  
+
+
+
   //Mostrar mensaje variable estilizado de error o de confirmacion 
   mostrarMensaje(codeError: number) {
     if (codeError == 1) {
@@ -560,20 +870,20 @@ export class PuestosComponent implements OnInit {
 }
 
 
-interface PuestoInterface {
+export interface PuestoInterface {
   pkidpuesto: number;
   codigopuesto: string;
   numeropuesto: string;
   alto: number;
   ancho: number;
-  puestoactivo: boolean;
+  puestoactivo: string;
   fkidsector: number;
   nombresector: string;
   fkidestado: number;
   fkidactividad: number;
   fkidtipopuesto: number;
   nombretipopuesto: string;
-
+  imagenpuesto: string;
   //nombreplaza y nombre zona para el mattable, pueden ser vacias 
   nombreplaza: string;
   pkidplaza: number;
