@@ -1,6 +1,6 @@
 <div class="main-content" >
   <div class="container-fluid">
-    <div class="col-sm-8">
+    <div class="col-sm-12">
       <!--inicio formulario de nuevo rol-->
       <div class="card" *ngIf="nRol">
         <div class="card-header card-header-danger ">
@@ -86,8 +86,8 @@
                   <p>
                     Permisos Seleccionados:
                   </p>
-                  <ul>
-                    <li *ngFor="let seleccionado of seleccionados">{{seleccionado}}</li>
+                  <ul class="list-group list-group-flush">
+                    <li *ngFor="let seleccionado of seleccionados" class="list-group-item">{{seleccionado}}</li>
                   </ul>
               </div>
 

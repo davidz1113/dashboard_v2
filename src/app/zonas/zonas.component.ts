@@ -112,7 +112,7 @@ export class ZonasComponent implements OnInit {
     */
   consultarZonaDeSectores() {
     this.zonainter = [];
-   
+
     try {
       this.respuesta = null;
       this._zonaService.consultarTodosZonas().subscribe(
@@ -125,7 +125,7 @@ export class ZonasComponent implements OnInit {
           } else {
 
             console.log(this.respuesta.zonas);
-            
+
             //seteamos el valor de los zonas en el objeto zona
             this.zona = plainToClass(Zona, this.respuesta.zonas);
             this.zona.map((z) => {
@@ -141,7 +141,7 @@ export class ZonasComponent implements OnInit {
             //contenidos en el y no ordenaba
             this.zona.map((z) => {
               let zi: ZonaInterface = {
-                pkidzona: null,codigozona:'', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
+                pkidzona: null, codigozona: '', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
               };
               zi.pkidzona = z.getPkidzona();
               zi.codigozona = z.getCodigozona();
@@ -302,6 +302,7 @@ export class ZonasComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(zonas): void {
     try {
+      this.mensaje='';
       let nombrezona = zonas.nombrezona;
       let idzona = zonas.pkidzona;
 
@@ -343,25 +344,25 @@ export class ZonasComponent implements OnInit {
    */
 
   //llamamos al fomrulario para agregar un nuevo zona y inicializamos las validaciones del formulario
-  llamarFormularioAgregarZona(element:ZonaInterface) {
+  llamarFormularioAgregarZona(element: ZonaInterface) {
     try {
       console.log(element);
-
+      this.mensaje='';
       this.mostrarFormZona = !this.mostrarFormZona;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
-        this.zona2 = element!=null?element:null;
-            this.isUpdate = element != null ? true : false;
+      this.zona2 = element != null ? element : null;
+      this.isUpdate = element != null ? true : false;
 
       //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
 
-      
+
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormZona) {
-       this.consultarUsuariosRecaudo();
-       this.consultarPlazasMercadoNoAsignadas();
+        this.consultarUsuariosRecaudo();
+        this.consultarPlazasMercadoNoAsignadas();
 
-        
+
         this.nuevoZonaForm = this.nuevoForm.group({
           codigozona: [this.zona2 != null ? this.zona2.codigozona : '', Validators.required],
           nombrezona: [this.zona2 != null ? this.zona2.nombrezona : '', Validators.required],
@@ -369,7 +370,7 @@ export class ZonasComponent implements OnInit {
           pkidusuario: [this.zona2 != null ? this.zona2.fkidusuario : '', Validators.required],
         });
       }
-      this.active = this.zona2 != null ? this.zona2.zonaactivo: false;
+      this.active = this.zona2 != null ? this.zona2.zonaactivo : false;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.zona2 == null ? "Guardar" : "Actualizar";
@@ -408,7 +409,7 @@ export class ZonasComponent implements OnInit {
           } else {
             this.selectusuarios = this.respuesta.users;
             console.log(response.users);
-            
+
           }
 
         },
@@ -436,8 +437,8 @@ export class ZonasComponent implements OnInit {
   /**
    * Metodo que consulta todas las plazas no asignadas a ninguna zona y las setea select plazas
    */
-  consultarPlazasMercadoNoAsignadas(){
-    try{
+  consultarPlazasMercadoNoAsignadas() {
+    try {
       this.respuesta = null;
       this._zonaService.consultarPlazasAsignadas(false).subscribe(
         response => {
@@ -449,7 +450,7 @@ export class ZonasComponent implements OnInit {
           } else {
             this.selectplazas = this.respuesta.plazas;
             console.log(response.plazas);
-            
+
           }
 
         },
@@ -461,7 +462,7 @@ export class ZonasComponent implements OnInit {
 
         }
       );
-    }catch(e){
+    } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "ConsultarUsuariosRecaudo()"
       const location = this.injector.get(LocationStrategy);
@@ -482,18 +483,18 @@ export class ZonasComponent implements OnInit {
 
       //this.zona = ;
       this.creandozona = true;
-      if (this.zona2 == null){
+      if (this.zona2 == null) {
         this.zona2 = {
-          pkidzona: null,codigozona:'', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
+          pkidzona: null, codigozona: '', nombrezona: '', nombreplaza: '', nombreusuario: '', zonaactivo: false, fkidplaza: null, fkidusuario: null
         };
-        
-      } 
 
-      this.zona2.codigozona=(this.nuevoZonaForm.get('codigozona').value);
-      this.zona2.nombrezona=(this.nuevoZonaForm.get('nombrezona').value);
-      this.zona2.fkidplaza=(this.nuevoZonaForm.get('pkidplaza').value);
-      this.zona2.fkidusuario=(this.nuevoZonaForm.get('pkidusuario').value);
-      this.zona2.zonaactivo=(this.active);
+      }
+
+      this.zona2.codigozona = (this.nuevoZonaForm.get('codigozona').value);
+      this.zona2.nombrezona = (this.nuevoZonaForm.get('nombrezona').value);
+      this.zona2.fkidplaza = (this.nuevoZonaForm.get('pkidplaza').value);
+      this.zona2.fkidusuario = (this.nuevoZonaForm.get('pkidusuario').value);
+      this.zona2.zonaactivo = (this.active);
 
       this.closeDialog2();
       if (!this.isUpdate) {//entra por agregar un nuevo zona de 

@@ -327,6 +327,7 @@ export class ParqueaderoComponent implements OnInit {
    //dialogo de confirmacion para eliminar o no el usuario
    openDialog(parqueaderos): void {
     try {
+      this.mensaje='';
       let numeroparqueadero = parqueaderos.numeroparqueadero;
       let idparqueadero = parqueaderos.pkidparqueadero;
 
@@ -370,7 +371,7 @@ export class ParqueaderoComponent implements OnInit {
   llamarFormularioAgregarParqueadero(element:ParqueaderoInterface) {
     try {
       console.log(element);
-
+      this.mensaje='';
       this.mostrarFormParqueadero = !this.mostrarFormParqueadero;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables

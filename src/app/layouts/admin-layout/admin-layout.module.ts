@@ -40,6 +40,7 @@ import { ArrayOne } from '../../generic/tabla-generic/arrayone.pipe';
 import { PuestosComponent } from '../../puestos/puestos.component';
 import { PuertasComponent } from '../../puertas/puertas.component';
 import { DialogConfirmacionGenericComponent } from '../../generic/tabla-generic/dialog.confirmgeneric.component';
+import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -81,10 +82,8 @@ import { DialogConfirmacionGenericComponent } from '../../generic/tabla-generic/
     ArrayOne,
     PuestosComponent,
     PuertasComponent,
-    DialogConfirmacionGenericComponent
-
-
-
+    DialogConfirmacionGenericComponent,
+    EspecieAnimalComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,

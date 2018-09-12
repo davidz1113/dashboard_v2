@@ -19,6 +19,7 @@ import { ParqueaderoComponent } from '../../parqueaderos/parqueadero/parqueadero
 import { GenericComponent } from '../../generic/generic.component';
 import { PuestosComponent } from '../../puestos/puestos.component';
 import { PuertasComponent } from '../../puertas/puertas.component';
+import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -82,6 +83,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/abogado', component: GenericComponent },
     { path: GLOBAL.urlBase + '/actividadcomercial', component: GenericComponent },
     { path: GLOBAL.urlBase + '/estadoinfraestructura', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/especieanimal', component: EspecieAnimalComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },

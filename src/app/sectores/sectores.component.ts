@@ -326,7 +326,7 @@ export class SectoresComponent implements OnInit {
   llamarFormularioAgregarSector(element: SectorInterface) {
     try {
       console.log(element);
-
+      this.mensaje='';
       this.mostrarFormSector = !this.mostrarFormSector;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
@@ -564,6 +564,7 @@ export class SectoresComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(sector:SectorInterface): void {
     try {
+      this.mensaje='';
       let nombre = sector.nombresector;
       let id = sector.pkidsector;
 

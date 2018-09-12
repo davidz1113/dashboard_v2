@@ -333,6 +333,7 @@ export class PuestosComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(puestos): void {
     try {
+      this.mensaje='';
       let nombrepuesto = puestos.numeropuesto;
       let idpuesto = puestos.pkidpuesto;
 
@@ -383,7 +384,7 @@ export class PuestosComponent implements OnInit {
     try {
       console.log(element);
 
-
+      this.mensaje='';
       this.mostrarFormPuesto = !this.mostrarFormPuesto;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables

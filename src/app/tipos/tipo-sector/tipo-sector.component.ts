@@ -222,7 +222,7 @@ export class TipoSectorComponent implements OnInit {
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(tiposector: TipoSector): void {
     try {
-
+      this.mensaje='';
       let nombretiposector = tiposector.getNombretiposector();
       let idtiposector = tiposector.getPkidtiposector();
 
@@ -266,7 +266,7 @@ export class TipoSectorComponent implements OnInit {
   //llamamos al fomrulario para agregar un nuevo tipo y inicializamos las validaciones del formulario
   llamarFormularioAgregarTipo(element) {
     try {
-
+      this.mensaje='';
       this.mostrarFormTipo = !this.mostrarFormTipo;
       this.mostrarTabla = !this.mostrarTabla;
 

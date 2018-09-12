@@ -71,6 +71,7 @@ export class PlazasMercadoComponent implements OnInit {
 
   //alternar entre el formulario de agregar plaza y la tabla de plazas
   ocultarTablaPlaza(event){
+    this.mensaje='';
     if (event != null) {
       if (event.cancel == '1') {
         this.plazaEdit = null;
@@ -202,7 +203,7 @@ export class PlazasMercadoComponent implements OnInit {
   openDialog(plaza:PlazaMercado){
     try{
 
-      
+      this.mensaje='';
     let nombrePlaza = plaza.getNombreplaza();
     let idPlaza = plaza.getPkidplaza();
 

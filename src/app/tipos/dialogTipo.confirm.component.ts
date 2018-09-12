@@ -8,6 +8,7 @@ import { SectoresServices } from '../servicios/sectorServices.service';
 import { ParqueaderoServices } from '../servicios/parqueaderoService.services';
 import { PuestosServices } from '../servicios/puestoServices.service';
 import { PuertasService } from '../servicios/puertasService.service';
+import { EspecieAnimalService } from '../servicios/especieanimalService.services';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -22,7 +23,7 @@ import { PuertasService } from '../servicios/puertasService.service';
     </div>
         
     `,
-    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices,PuertasService]
+    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices,PuertasService, EspecieAnimalService]
 
 })
 
@@ -39,7 +40,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
     public respuesta ;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionTipos>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices,private _puertasServices: PuertasService) {
+        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices,private _puertasServices: PuertasService,private _especieanimalServices: EspecieAnimalService) {
 
         this.nombre = data['nombre'];
         this.id = data['id'];
@@ -150,6 +151,23 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
+                }, error=>{
+                    console.log("Error de conexion");
+                }
+
+            );
+        }else if(this.tipoIdentifi==7){
+            this._especieanimalServices.eliminarEspecieAnimal(this.id).subscribe(
+                resp => {
+                    this.respuesta = resp;
+                    if (this.respuesta.length <= 1) {
+                        this.respuesta = 'Error en el servidor';
+                        console.log('Error en el servidor');
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+                    }
+                }, error=>{
+                    console.log("Error de conexion");
                 }
             );
         }
