@@ -42,8 +42,8 @@ export class PlazasMercadoComponent implements OnInit {
   public respuesta;
 
   //clase dinamica pra carga de mensajes
-  claseDinamic = "alert alert-success alert-with-icon";
-  iconAlert = "done";
+  claseDinamic = "alert alert-warning alert-with-icon";
+  iconAlert = "warning";
 
   //boton desactivado en caso q no hayan plazas o este caragndo
   botonBloqueo: boolean = true;
@@ -55,8 +55,8 @@ export class PlazasMercadoComponent implements OnInit {
   plazaEdit: PlazaMercado = null;
 
   //variables booleanas para ocultar tabla y formulario
-   tablaplaza= true;
-   formplaza = false;
+  tablaplaza = true;
+  formplaza = false;
 
   constructor(private _plazaService: PlazaServices, private _exceptionService: ExcepcionService, private injector: Injector, public dialog: MatDialog) { }
 
@@ -66,22 +66,21 @@ export class PlazasMercadoComponent implements OnInit {
 
   closeDialog() {
     this.mensaje = '';
-
   }
 
   //alternar entre el formulario de agregar plaza y la tabla de plazas
-  ocultarTablaPlaza(event){
-    this.mensaje='';
+  ocultarTablaPlaza(event) {
+    this.mensaje = '';
     if (event != null) {
       if (event.cancel == '1') {
         this.plazaEdit = null;
         console.log("cancel");
         //el mensaje pasa a null en caso que solo sea cancelar
-        if(event.mensaje!=null){
-          this.mensaje=event.mensaje;
+        if (event.mensaje != null) {
+          this.mensaje = event.mensaje;
           this.consultarPlazas();
-        }else{
-          this.mensaje=null;
+        } else {
+          this.mensaje = null;
         }
       }
     }
@@ -178,34 +177,23 @@ export class PlazasMercadoComponent implements OnInit {
   }
 
   //Mwtodo que recibe la plaza y la envia al componente para editar
-  enviarPlaza(element){
+  enviarPlaza(element) {
     console.log(element);
-    
+
     this.plazaEdit = element;
     this.ocultarTablaPlaza(null);
   }
 
 
-  /*
-  MEtodo que asigna de manera dinamica el estilo de agregado y alerta
-*/
-  mostrarMensaje(codeError: number) {
-    if (codeError == 1) {
-      this.claseDinamic = "alert alert-success alert-with-icon";
-      this.iconAlert = "done";
-    } else if (codeError == 0) {
-      this.claseDinamic = "alert alert-warning alert-with-icon";
-      this.iconAlert = "warning";
-    }
-  }
 
-    //dialogo de confirmacion para eliminar o no el Plaza
-  openDialog(plaza:PlazaMercado){
-    try{
 
-      this.mensaje='';
-    let nombrePlaza = plaza.getNombreplaza();
-    let idPlaza = plaza.getPkidplaza();
+  //dialogo de confirmacion para eliminar o no el Plaza
+  openDialog(plaza: PlazaMercado) {
+    try {
+
+      this.mensaje = '';
+      let nombrePlaza = plaza.getNombreplaza();
+      let idPlaza = plaza.getPkidplaza();
 
       const dialogRef = this.dialog.open(DialogConfirmacionPlaza, {
         width: '250px',
@@ -214,7 +202,7 @@ export class PlazasMercadoComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje =  result.respuesta +" Nombre de la Plaza: "+nombrePlaza;
+        this.mensaje = result.respuesta + " Nombre de la Plaza: " + nombrePlaza;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
@@ -229,19 +217,19 @@ export class PlazasMercadoComponent implements OnInit {
       });
 
 
-    }catch (e) {
+    } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "openDialog()"
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
     }
   }
 
- 
+
   cambiarEstado(plaza: PlazaMercado) {
     try {
       let active = plaza.getPlazaactivo();
@@ -259,7 +247,7 @@ export class PlazasMercadoComponent implements OnInit {
             //cambiamos el plaza de estado
             this.toggleActDesc = false;
             this.consultarPlazas();
-          
+
             this.mostrarMensaje(1);
           }
         },
@@ -276,34 +264,47 @@ export class PlazasMercadoComponent implements OnInit {
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
-      ? location.path() : '';
-      this.enviarExcepcion(mensaje, e, funcion,url);
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
       //console.log("error asdasd a:" + e.stack);
 
     }
 
   }
 
-  
+  /*
+MEtodo que asigna de manera dinamica el estilo de agregado y alerta
+*/
+  mostrarMensaje(codeError: number) {
+    if (codeError == 1) {
+      this.claseDinamic = "alert alert-success alert-with-icon";
+      this.iconAlert = "done";
+    } else if (codeError == 0) {
+      this.claseDinamic = "alert alert-warning alert-with-icon";
+      this.iconAlert = "warning";
+    }
+  }
+
+
   /*
     MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
   */
- enviarExcepcion(mensaje, e, funcion, url) {
-  this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
-    response => {
+  enviarExcepcion(mensaje, e, funcion, url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+      response => {
 
-      if (response.length <= 1) {
-        console.log('Error en el servidor al enviar excepcion');
-      } else {
-        if (response.status = !"error") {
-          console.log('La excepcion se envio correctamente');
+        if (response.length <= 1) {
+          console.log('Error en el servidor al enviar excepcion');
+        } else {
+          if (response.status = !"error") {
+            console.log('La excepcion se envio correctamente');
+          }
         }
+      },
+      error => {
+        console.log('Error en el servidor al enviar excepcion');
       }
-    },
-    error => {
-      console.log('Error en el servidor al enviar excepcion');
-    }
 
-  );
-}
+    );
+  }
 }

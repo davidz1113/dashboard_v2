@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { plainToClass } from "class-transformer";
 import { ExcepcionService } from '../servicios/excepcionServices.services';
 import { EspecieAnimalService } from '../servicios/especieanimalService.services';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';

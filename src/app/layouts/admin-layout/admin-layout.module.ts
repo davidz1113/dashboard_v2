@@ -41,6 +41,9 @@ import { PuestosComponent } from '../../puestos/puestos.component';
 import { PuertasComponent } from '../../puertas/puertas.component';
 import { DialogConfirmacionGenericComponent } from '../../generic/tabla-generic/dialog.confirmgeneric.component';
 import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.component';
+import { ConfiguracionComponent } from '../../configuracion/configuracion.component';
+import { EquiposComponent } from '../../equipos/equipos.component';
+import { EquiposAgregarEditarComponent } from '../../equipos/equipos-agregar-editar/equipos-agregar-editar.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -83,7 +86,10 @@ import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.comp
     PuestosComponent,
     PuertasComponent,
     DialogConfirmacionGenericComponent,
-    EspecieAnimalComponent
+    EspecieAnimalComponent,
+    ConfiguracionComponent,
+    EquiposComponent,
+    EquiposAgregarEditarComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,
