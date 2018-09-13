@@ -4,6 +4,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ExcepcionService } from '../servicios/excepcionServices.services';
 import { EquipoService } from '../servicios/equipoService.service';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
+import { DialogConfirmacionTipos } from '../tipos/dialogTipo.confirm.component';
 
 @Component({
   selector: 'app-equipos',
@@ -16,7 +17,7 @@ export class EquiposComponent implements OnInit {
 
   //Cabeceras de las columnas
   //cabecerasColumnas: string[] = [];
-  cabecerasColumnas: string[] = ['identificacionequipo', 'nombrequipo', 'descripcionequipo', 'nombreusuario', 'actions'];
+  cabecerasColumnas: string[] = ['identificacionequipo', 'nombrequipo', 'descripcionequipo', 'nombreusuario', 'equipoactivo','actions'];
 
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreEquipo: string = '';
@@ -64,7 +65,7 @@ export class EquiposComponent implements OnInit {
   consultarEquipos() {
     try {
       this.respuesta = null;
-
+      this.equipo=[];
       this._equipoService.consultarTodosEquipo().subscribe(
         response => {
           this.respuesta = response;
@@ -75,7 +76,7 @@ export class EquiposComponent implements OnInit {
           } else {
             this.respuesta.equipos.map((x) => {
               let equi: EquiposInterface={
-                codigoequipo:'',descripcionequipo:'',equipoactivo:false,identificacion:null,identificacionequipo:'',nombrequipo:'',nombreusuario:'',pkidequipo:null,pkidusuario:null
+                codigoequipo:'',descripcionequipo:'',equipoactivo:false,identificacion:null,identificacionequipo:'',nombrequipo:'',nombreusuario:'',pkidequipo:null,fkidusuario:null
               }
               equi.pkidequipo= x.pkidequipo;
               equi.identificacionequipo = x.identificacionequipo;
@@ -83,7 +84,7 @@ export class EquiposComponent implements OnInit {
               equi.codigoequipo = x.codigoequipo;
               equi.descripcionequipo = x.descripcionequipo;
               equi.equipoactivo = x.equipoactivo;
-              equi.pkidusuario = x['usuario'].pkidusuario;
+              equi.fkidusuario = x['usuario'].pkidusuario;
               equi.identificacion= x['usuario'].identificacion;
               equi.nombreusuario = x['usuario'].nombreusuario;
               this.equipo.push(equi);
@@ -127,6 +128,10 @@ export class EquiposComponent implements OnInit {
     this.aplicarFiltro();
   }
 
+  
+  closeDialog() {
+    this.mensaje = '';
+  }
 
   setFilterDataTable() {
     try {
@@ -150,6 +155,116 @@ export class EquiposComponent implements OnInit {
     }
   }
 
+  /**
+   * 
+   * @param equipo identidad para cambiar el estado por el pkid
+   */
+  cambiarEstado(equipo: EquiposInterface) {
+    try {
+      let active = equipo.equipoactivo;
+      this.mensaje = '';
+
+      this._equipoService.cambiarEstadoEquipo(equipo.pkidequipo, !active, "tequipo").subscribe(
+        response => {
+          this.respuesta = response;
+          if (this.respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+            this.mostrarMensaje(0);
+          } else {
+            this.mensaje = "El cambio de estado del equipo " + equipo.nombrequipo + " : " + this.respuesta.msg;
+            //cambiamos el equipo de estado
+            this.toggleActDesc = false;
+            this.consultarEquipos();
+            this.mostrarMensaje(1);
+          }
+        },
+        error => {
+          this.mensaje = 'Error en el servidor';
+          console.log('Error en el servidor');
+          this.mostrarMensaje(0);
+        }
+      );
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "CambiarEstado()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+
+  }
+
+  openDialog(equipo: EquiposInterface) {
+    try {
+      this.mensaje='';
+      let nombreequipo = equipo.nombrequipo;
+      let idequipo = equipo.pkidequipo;
+
+      const dialogRef = this.dialog.open(DialogConfirmacionTipos, {
+        width: '250px',
+        data: { nombre: nombreequipo, id: idequipo, tipoIdentifi: 8 }
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+        if (result != null) {
+          this.mensaje = result.respuesta + " Nombre Equipo : " + nombreequipo;
+          console.log(result.status);
+          if (result.status == "error") {
+            this.mostrarMensaje(0);
+          } else if (result.status == "Exito") {
+            this.mostrarMensaje(1)
+            this.toggleActDesc = false;
+            this.consultarEquipos();
+
+          }
+        }
+      });
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "openDialog()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+
+    }
+  }
+
+
+  //alternar entre el formulario de agregar equipo y la tabla de equipos
+  ocultarTablaEquipo(event) {
+    this.mensaje = '';
+    if (event != null) {
+      if (event.cancel == '1') {
+        this.equipoEdit = null;
+        console.log("cancel");
+        //el mensaje pasa a null en caso que solo sea cancelar
+        if (event.mensaje != null) {
+          if(event.status=="Exito"){
+            this.mostrarMensaje(1)
+          }else{
+            this.mostrarMensaje(0)
+          }
+          this.mensaje = event.mensaje;
+          this.consultarEquipos();
+        } else {
+          this.mensaje = null;
+        }
+      }
+    }
+    this.formequipo = !this.formequipo;
+    this.tablaequipo = !this.tablaequipo;
+  }
+
+
   /*
 MEtodo que asigna de manera dinamica el estilo de agregado y alerta
 */
@@ -163,6 +278,13 @@ MEtodo que asigna de manera dinamica el estilo de agregado y alerta
     }
   }
 
+
+  //Mwtodo que recibe el equipo y la envia al componente para editar
+  enviarEquipo(element) {
+    console.log(element);
+    this.equipoEdit = element;
+    this.ocultarTablaEquipo(null);
+  }
 
   /*
     MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
@@ -194,7 +316,7 @@ export interface EquiposInterface {
   nombrequipo: string;
   codigoequipo: string;
   descripcionequipo: string;
-  pkidusuario: number;
+  fkidusuario: number;
   identificacion: number;
   nombreusuario: string;
   equipoactivo: boolean;

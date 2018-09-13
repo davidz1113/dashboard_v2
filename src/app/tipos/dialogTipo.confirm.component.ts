@@ -9,6 +9,7 @@ import { ParqueaderoServices } from '../servicios/parqueaderoService.services';
 import { PuestosServices } from '../servicios/puestoServices.service';
 import { PuertasService } from '../servicios/puertasService.service';
 import { EspecieAnimalService } from '../servicios/especieanimalService.services';
+import { EquipoService } from '../servicios/equipoService.service';
 //import { RolesServices } from '../../servicios/rolesServices.services';
 //import { DialogDataRol } from './tabla-roles.component';
 
@@ -23,7 +24,7 @@ import { EspecieAnimalService } from '../servicios/especieanimalService.services
     </div>
         
     `,
-    providers: [TipoSectorServices,ZonasServices,SectoresServices,ParqueaderoServices,PuestosServices,PuertasService, EspecieAnimalService]
+    providers: [TipoSectorServices, ZonasServices, SectoresServices, ParqueaderoServices, PuestosServices, PuertasService, EspecieAnimalService, EquipoService]
 
 })
 
@@ -35,12 +36,20 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
     nombre: string;
     id: number;
     //variables de la interfaz
-    
+
     //variable respuesta servidor
-    public respuesta ;
+    public respuesta;
 
     constructor(public dialogRef: MatDialogRef<DialogConfirmacionTipos>,
-        @Inject(MAT_DIALOG_DATA) public data: DialogData, private _tipoServices: TipoSectorServices,private _zonaServices: ZonasServices, private _sectoresServices: SectoresServices,private _parqueaderoServices: ParqueaderoServices, private _puestosServices:PuestosServices,private _puertasServices: PuertasService,private _especieanimalServices: EspecieAnimalService) {
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private _tipoServices: TipoSectorServices,
+        private _zonaServices: ZonasServices,
+        private _sectoresServices: SectoresServices,
+        private _parqueaderoServices: ParqueaderoServices,
+        private _puestosServices: PuestosServices,
+        private _puertasServices: PuertasService,
+        private _especieanimalServices: EspecieAnimalService,
+        private _equipoServices: EquipoService) {
 
         this.nombre = data['nombre'];
         this.id = data['id'];
@@ -52,96 +61,96 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
         this.dialogRef.close();
     }
 
-    
+
     //Metodo q elimina el rol desde la base de datos
     eliminarTipo() {
 
-        if(this.tipoIdentifi==1){//para eliminar tipo de sector
+        if (this.tipoIdentifi == 1) {//para eliminar tipo de sector
             this._tipoServices.eliminartiposector(this.id).subscribe(
                 respose => {
                     this.respuesta = respose;
                     if (this.respuesta.length <= 1) {
                         this.respuesta = 'Error en el servidor';
                         console.log('Error en el servidor');
-                    }else{
-                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 },
                 error => {
                     console.log("Error de conexion");
                 }
-    
+
             );
 
-        }else if(this.tipoIdentifi==2){//eliminacion de zonas
+        } else if (this.tipoIdentifi == 2) {//eliminacion de zonas
             this._zonaServices.eliminarZona(this.id).subscribe(
                 respose => {
                     this.respuesta = respose;
                     if (this.respuesta.length <= 1) {
                         this.respuesta = 'Error en el servidor';
                         console.log('Error en el servidor');
-                    }else{
-                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
-                        
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+
                     }
-    
+
                 },
                 error => {
                     console.log("Error de conexion");
-    
+
                 }
-    
+
             );
-        }else if(this.tipoIdentifi==3){//eliminacion de sectores
+        } else if (this.tipoIdentifi == 3) {//eliminacion de sectores
             this._sectoresServices.eliminarSector(this.id).subscribe(respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {
                     this.respuesta = 'Error en el servidor';
                     console.log('Error en el servidor');
-                }else{
-                    this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
-                    
+                } else {
+                    this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+
                 }
 
             },
-            error => {
-                console.log("Error de conexion");
+                error => {
+                    console.log("Error de conexion");
 
-            });
-        }else if(this.tipoIdentifi==4){//eliminacion de parqueaderos
+                });
+        } else if (this.tipoIdentifi == 4) {//eliminacion de parqueaderos
             this._parqueaderoServices.eliminarParqueadero(this.id).subscribe(
-                response =>{
+                response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
                         this.respuesta = 'Error en el servidor';
                         console.log('Error en el servidor');
-                    }else{
-                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
-                        
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+
                     }
                 },
-                error=>{
+                error => {
                     console.log("Error de conexion");
                 }
             );
-        }else if(this.tipoIdentifi==5){//eliminacion de puestos
+        } else if (this.tipoIdentifi == 5) {//eliminacion de puestos
             this._puestosServices.eliminarPuesto(this.id).subscribe(
-                response =>{
+                response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
                         this.respuesta = 'Error en el servidor';
                         console.log('Error en el servidor');
-                    }else{
-                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
-                        
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+
                     }
                 },
-                error=>{
+                error => {
                     console.log("Error de conexion");
                 }
 
             )
-        }else if(this.tipoIdentifi==6){//eliminacion de puertas
+        } else if (this.tipoIdentifi == 6) {//eliminacion de puertas
             this._puertasServices.eliminarPuerta(this.id).subscribe(
                 resp => {
                     this.respuesta = resp;
@@ -151,12 +160,12 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
-                }, error=>{
+                }, error => {
                     console.log("Error de conexion");
                 }
 
             );
-        }else if(this.tipoIdentifi==7){
+        } else if (this.tipoIdentifi == 7) {
             this._especieanimalServices.eliminarEspecieAnimal(this.id).subscribe(
                 resp => {
                     this.respuesta = resp;
@@ -166,7 +175,21 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
-                }, error=>{
+                }, error => {
+                    console.log("Error de conexion");
+                }
+            );
+        } else if (this.tipoIdentifi == 8) {
+            this._equipoServices.eliminarEquipo(this.id).subscribe(
+                resp => {
+                    this.respuesta = resp;
+                    if (this.respuesta.length <= 1) {
+                        this.respuesta = 'Error en el servidor';
+                        console.log('Error en el servidor');
+                    } else {
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
+                    }
+                }, error => {
                     console.log("Error de conexion");
                 }
             );

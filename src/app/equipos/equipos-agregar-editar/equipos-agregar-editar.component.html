@@ -4,7 +4,7 @@
       <!--inicio formulario de nuevo zona -->
       <div class="card">
         <div class="card-header card-header-danger ">
-          <h4 class="card-title text-center">Agregar una nueva zona </h4>
+          <h4 class="card-title text-center">Agregar un nuevo equipo </h4>
           <p class="card-category text-center">*Todos los campos son obligatorios</p>
         </div>
 
@@ -18,21 +18,21 @@
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
           </div>
-          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoespecie"></mat-progress-bar>
+          <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoequipo"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->
         </div>
 
 
-        <form [formGroup]="nuevoEquipoForm" (ngSubmit)="editarAgregarEquipo()">
+        <form [formGroup]="nuevoEquipoForm" (ngSubmit)="nuevoEquipo()">
 
           <div class="form-group">
             <div class="row">
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite codigo de equipo " id="codigoespecieanimal" name="codigoespecieanimal"
-                    formControlName="codigoespecieanimal">
+                  <input matInput type="number" placeholder="Digite codigo de equipo " id="codigoequipo" name="codigoequipo"
+                    formControlName="codigoequipo">
 
                 </mat-form-field>
               </div>
@@ -40,8 +40,8 @@
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite nombre de equipo " id="nombreespecieanimal" name="nombreespecieanimal" formControlName="nombreespecieanimal">
-                  <mat-error *ngIf="nuevoEquipoForm.get('nombreespecieanimal').hasError('required')">
+                  <input matInput type="text" placeholder="Digite nombre de equipo " id="nombrequipo" name="nombrequipo" formControlName="nombrequipo">
+                  <mat-error *ngIf="nuevoEquipoForm.get('nombrequipo').hasError('required')">
                     El nombre es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
@@ -49,21 +49,47 @@
 
             </div>
           </div>
+          <div class="form-group">
+            <div class="row">
+
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite descripcion de equipo " id="descripcionequipo" name="descripcionequipo"
+                    formControlName="descripcionequipo">
+                   
+                </mat-form-field>
+              </div>
+
+
+              <div class="col-sm-4 mx-auto ">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite identificación de equipo " id="identificacionequipo" name="identificacionequipo" formControlName="identificacionequipo">
+                  <mat-error *ngIf="nuevoEquipoForm.get('identificacionequipo').hasError('required')">
+                    El identificación es <strong>requerida</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+
+
+
 
           <div class="form-group">
             <div class="row">
 
               <div class="col-sm-4 mx-auto mt-1">
-                <mat-slide-toggle (change)="activarDesactivarespecie()" [checked]="active">Equipo {{textActive}} </mat-slide-toggle>
+                <mat-slide-toggle (change)="activarDesactivarequipo()" [checked]="active">Equipo {{textActive}} </mat-slide-toggle>
               </div>
 
               <div class="col-sm-4 mx-auto  mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione tipo de aniamal" id="pkidtipoanimal" name="pkidtipoanimal" formControlName="pkidtipoanimal">
-                    <mat-option [value]='tipoanimal.pkidtipoanimal' *ngFor="let tipoanimal of tipoanimales">{{tipoanimal.nombretipoanimal}}</mat-option>
+                  <mat-select placeholder="Seleccione usuario" id="pkidusuario" name="pkidusuario" formControlName="pkidusuario">
+                    <mat-option [value]='usuario.pkidusuario' *ngFor="let usuario of usuarios" > {{usuario.nombreusuario}}</mat-option>
                   </mat-select>
-                  <mat-error *ngIf="nuevoEquipoForm.get('pkidtipoanimal').hasError('required')">
-                    El tipo de animal es <strong>obligatorio</strong>
+                  <mat-error *ngIf="nuevoEquipoForm.get('pkidusuario').hasError('required')">
+                    El usuario es <strong>obligatorio</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
@@ -76,7 +102,7 @@
 
               <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoEquipoForm.valid">{{mensajeBoton}}
               </button>
-              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarEquipo(null)">Cancelar</button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarEquipo.emit({cancel:'1',msj:'null'});">Cancelar</button>
             </div>
           </div>
 

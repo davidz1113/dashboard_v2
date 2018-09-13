@@ -94,7 +94,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
               //this.msg = this.respuesta.msg;
               this.creandoplaza = false;
               if (this.respuesta.status == "Exito") {
-                this.llamarPlaza.emit({ cancel: '1', mensaje: this.respuesta.msg });
+                this.llamarPlaza.emit({ cancel: '1', mensaje: this.respuesta.msg, status:this.respuesta.status });
               } else {
                 this.msg = this.respuesta.msg;
               }
@@ -121,7 +121,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
               //this.msg = this.respuesta.msg;
               this.creandoplaza = false;
               if (this.respuesta.status == "Exito") {
-                this.llamarPlaza.emit({  cancel: '1' ,mensaje: this.respuesta.msg });
+                this.llamarPlaza.emit({  cancel: '1' ,mensaje: this.respuesta.msg,status:this.respuesta.status });
               }else{
                 this.msg = this.respuesta.msg;
               }
@@ -132,7 +132,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
       }
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "nuevoRol()"
+      let funcion = "nuevaPlaza()"
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
         ? location.path() : '';
@@ -187,7 +187,6 @@ export class PlazasAgregarEditarComponent implements OnInit {
   //consultar los tipos de recaudo y mostrarlo en el select
   consultarTipoRecaduo() {
     try {
-
 
       this._tiporecaudoServices.consultarTipoRecaudo().subscribe(
         response => {

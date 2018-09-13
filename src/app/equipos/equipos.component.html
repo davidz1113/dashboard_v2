@@ -61,7 +61,7 @@
             <div class="row">
 
               <div class="col-sm-4 ">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarEquipo()" [disabled]="botonBloqueo">Nuevo
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="ocultarTablaEquipo()" [disabled]="botonBloqueo">Nuevo
                   Equipo 
                 </button>
               </div>
@@ -101,7 +101,7 @@
                   <mat-cell *matCellDef="let element ; let i=index">
 
                     <button mat-icon-button matTooltip="Editar equipo" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarFormularioAgregarEquipo(element)"> <i class="material-icons ">edit</i>
+                      class="example-button" (click)="enviarEquipo(element)"> <i class="material-icons ">edit</i>
                     </button>
 
                     <button mat-icon-button matTooltip="Eliminar equipo" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
@@ -110,7 +110,7 @@
                     </button>
 
                     <button mat-icon-button matTooltip="Desactivar equipo" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="cambiarEstadoEquipo(element)">
+                      class="example-button" (click)="cambiarEstado(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
 
@@ -134,8 +134,8 @@
     <!--------------------------------------------------------------------------------------------------------->
     <!--
       formulario para agregar o actualizar una tabla TIPO
-      <app-equipos-agregar-editar (llamarEquipo)="ocultarTablaEquipo($event)" [equipo]="equipoEdit"></app-equipos-agregar-editar>
-      -->
+    -->
     
   </div>
 </div>
+<app-equipos-agregar-editar *ngIf="formequipo" (llamarEquipo)="ocultarTablaEquipo($event)" [equipo]="equipoEdit"></app-equipos-agregar-editar>

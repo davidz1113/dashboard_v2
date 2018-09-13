@@ -77,6 +77,12 @@ export class PlazasMercadoComponent implements OnInit {
         console.log("cancel");
         //el mensaje pasa a null en caso que solo sea cancelar
         if (event.mensaje != null) {
+          if(event.status=='Exito'){
+            this.mostrarMensaje(1);
+          }else{
+            this.mostrarMensaje(0);
+
+          }
           this.mensaje = event.mensaje;
           this.consultarPlazas();
         } else {
@@ -202,8 +208,8 @@ export class PlazasMercadoComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje = result.respuesta + " Nombre de la Plaza: " + nombrePlaza;
         if (result != null) {
+          this.mensaje = result.respuesta + " Nombre de la Plaza: " + nombrePlaza;
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
