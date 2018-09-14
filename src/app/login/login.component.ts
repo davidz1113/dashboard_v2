@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators, NgForm, FormGroupDirec
 import { UsuarioServices } from '../servicios/usuarioServices.services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { GLOBAL } from '../servicios/globales';
+import Fingerprint2 = require('fingerprintjs2');
 
 @Component({
   selector: 'app-login',
@@ -92,6 +93,16 @@ export class LoginComponent implements OnInit {
         } else {
 
           if (!this.identity.status) {
+            //antes de llenar los datos en el local storage, se consulta por el identificador de el equipo en la base de datos
+            //si esta en la base de datos signfica q esta entrando por el mismo explorador, caso contrario, lo redirijira a la pagina
+            //de registro de equipo de computo para inserción manual para el usuario
+              //creacion de un 
+        new Fingerprint2().get(function(result, components) {
+          console.log(result) // a hash, representing your device fingerprint
+          console.log(components) // an array of FP components
+        })
+
+
             localStorage.setItem('identity', JSON.stringify(this.identity));
             usuario.getHash = false;
             this._usuarioService.iniciarSesion(usuario).subscribe(

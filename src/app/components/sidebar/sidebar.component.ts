@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Modulo } from '../../modelos/modulo';
-import { plainToClass } from "class-transformer";
 import { GLOBAL } from '../../servicios/globales';
+import { plainToClass } from 'class-transformer';
+import Fingerprint2 = require('fingerprintjs2');
 
 
 declare const $: any;
@@ -61,7 +62,7 @@ export class SidebarComponent implements OnInit {
             this.urlimagen = GLOBAL.urlImagen + (imagen.substring(3));
         }
 
-
+      
         this.nombreUsuario = this.identity.name + " " + this.identity.surname;
     }
 
