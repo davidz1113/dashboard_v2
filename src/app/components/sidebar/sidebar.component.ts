@@ -62,7 +62,7 @@ export class SidebarComponent implements OnInit {
             this.urlimagen = GLOBAL.urlImagen + (imagen.substring(3));
         }
 
-      
+       
         this.nombreUsuario = this.identity.name + " " + this.identity.surname;
     }
 
