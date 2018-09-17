@@ -4,11 +4,21 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class ArrayOne implements PipeTransform {
 
 
-  transform(value:any,i:string): String {
+  transform(value:any): any{
 
+    if(value==true || value ==false){
+      if(value==true){
+        return "Si";
+      }
+      else{
+        return "No";
 
-    return  value[i];// ele[0];
+      }
 
+    }
+    else{
+      return value;
+    }
    }
 
 

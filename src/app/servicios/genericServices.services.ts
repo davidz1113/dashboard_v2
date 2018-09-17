@@ -65,13 +65,14 @@ export class GenericServices {
         pkidusuario:id del usuario
         authorization: token
     */
-    eliminarUsuario(pkidusuario) {
-        let user = { pkidusuario: pkidusuario };
+    eliminarUsuario(pkidusuario:number,pkey:string) {
+        let user:any={};
+        user[pkey] = pkidusuario ;
         let json = JSON.stringify(user);
         let params = "json=" + json + "&authorization=" + this.getToken();
+        console.log("parametros");
         console.log(params);
         //console.log(JSON.stringify(this.getToken()));
-
         return this._http.post(this.url + this.route+'/remove', params, { headers: this.headers })
             .pipe(map(res => res.json()));
     }
@@ -97,7 +98,7 @@ export class GenericServices {
     */
     consultarUsuarios() {
         let token = "authorization=" + this.getToken();
-        console.log();
+        console.log("Consulta");
         return this._http.post(this.url + this.route+'/query', token, { headers: this.headers })
             .pipe(map(res => res.json()));
     }

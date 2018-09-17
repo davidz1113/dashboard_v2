@@ -7,7 +7,7 @@ import { GenericServices } from '../../servicios/genericServices.services';
 @Component({
     selector: 'app-dialog-interface',
     template: `
-    <h1 mat-dialog-title>¿Esta seguro de que eliminara el usuario {{nombreUser}} ?</h1>
+    <h1 mat-dialog-title>¿Esta seguro de que eliminara este registro?</h1>
     <div mat-dialog-actions>
      <button mat-button (click)="onNoClick()">Cancelar</button>
     <button mat-button cdkFocusInitial  (click)="eliminarUsuario()">Eliminar</button>
@@ -38,7 +38,9 @@ export class DialogConfirmacionGenericComponent implements DialogData {
 
     //Metodo q elimina el usuario desde la base de datos
     eliminarUsuario() {
-        this._genericServices.eliminarUsuario(this.idUser).subscribe(
+    console.log("primary key;")
+    console.log(this.nombreUser);
+        this._genericServices.eliminarUsuario(this.idUser,this.nombreUser).subscribe(
             respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {

@@ -7,7 +7,7 @@
         <div class="card ">
           <div class="card-header card-header-danger">
             <h4 class="card-title">Tabla {{title}}</h4>
-            <p class="card-category">Registro de los {{title}}</p>
+            <p class="card-category">Registro {{title}}</p>
           </div>
 
           <div class="card-body">
@@ -17,7 +17,7 @@
               <!--Input filtro de un campo-->
               <div class="col-sm-4">
                 <mat-form-field>
-                  <input matInput [(ngModel)]="filtroNombreCedula" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre o cedula">
+                  <input matInput [(ngModel)]="filtroNombreCedula"  placeholder="Buscar...">
                   <button mat-button *ngIf="filtroNombreCedula" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
                     <mat-icon>close</mat-icon>
                   </button>
@@ -54,23 +54,22 @@
             <div class="row">
 
               <div class="col-sm-4 mx-auto">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);" [disabled]="botonBloqueo">Nuevo
-                  Usuario
+                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormulario.emit(null);" [disabled]="botonBloqueo">{{newTitle}}
                 </button>
               </div>
             </div>
 
             <div class="table-responsive mat-elevation-z8">
-
-              <mat-table  [dataSource]="dataSource" matSort class="table table-full-width">
+              <mat-table  [dataSource]="dataSource" matSort matSortActive="nombreabogado" matSortDirection="desc" matSortDisableClear class="table table-full-width">
                 <div *ngFor="let cabecera of etiquetasColumnas;let indice=index" >
                   <ng-container *ngIf="cabecera.item!='actions'" matColumnDef="{{cabecera.item}}">
-                  <mat-header-cell *matHeaderCellDef mat-sort-header >{{cabecera.etiqueta}}</mat-header-cell>
-                  <mat-cell *matCellDef="let element"  > {{element|arrayOne:cabecera.item}} </mat-cell>
-                </ng-container>
+                    <mat-header-cell *matHeaderCellDef mat-sort-header >{{cabecera.etiqueta}}</mat-header-cell>
+                    <mat-cell *matCellDef="let element"  >{{element[cabecera.item]|arrayOne}}</mat-cell>
+                  </ng-container>
+
                   <ng-container *ngIf="cabecera.item=='actions'" matColumnDef="{{cabecera.item}}">
 
-                    <mat-header-cell *matHeaderCellDef mat-sort-header> {{cabecera.etiqueta}}</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>{{cabecera.etiqueta}}</mat-header-cell>
                     <mat-cell *matCellDef="let element ; let i=index">
 
                       <button mat-icon-button matTooltip="Editar" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
