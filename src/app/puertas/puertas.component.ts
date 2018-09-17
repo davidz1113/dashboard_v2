@@ -110,6 +110,11 @@ export class PuertasComponent implements OnInit {
    */
   plazas: PlazaMercado[] = [];
 
+  /**
+   * Respuesta del servidor
+   */
+  respuesta: string;
+
   // ----------------------------------------------------------------------------------------------------------------
   // Constructor
   // ----------------------------------------------------------------------------------------------------------------
@@ -143,18 +148,29 @@ export class PuertasComponent implements OnInit {
    */
   listarPuertas() {
     // this.dataSource = new MatTableDataSource<Puerta>(this.puertas);
-    this._puertaService.consultarPuertas().subscribe(
-      resp => {
-        this.puertas = resp;
-        this.dataSource = this.dataSource = new MatTableDataSource<Puerta>(this.puertas);
+    try {
+      this.respuesta = null;
+      this._puertaService.consultarPuertas().subscribe(
+        resp => {
+          this.respuesta = resp;
+          this.puertas = resp;
+          this.dataSource = this.dataSource = new MatTableDataSource<Puerta>(this.puertas);
 
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.aplicarFiltro();
-        this.setFilterDataTable();
-        // console.log(this.puertas);
-      }
-    );
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.aplicarFiltro();
+          this.setFilterDataTable();
+          // console.log(this.puertas);
+        }
+      );
+
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      const funcion = 'consultarParqueaderos()';
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+    }
   }
 
   /**

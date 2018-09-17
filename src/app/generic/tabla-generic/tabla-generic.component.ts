@@ -36,7 +36,8 @@ export class TablaGenericComponent implements OnInit {
 
   cabecerasColumnas: string[] = [];
   etiquetasColumnas:any[]=[];
-  title:string="Algo";
+  title:string="";
+  newTitle:string="";
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreCedula: string = '';
   //varible de mostrar desctivados
@@ -70,7 +71,7 @@ export class TablaGenericComponent implements OnInit {
 
   //msg de error
   msg: string = '';
-
+  primaryKey:string=''
   //respuesta del servidor
   public respuesta;
 
@@ -91,7 +92,7 @@ export class TablaGenericComponent implements OnInit {
   iconAlert = "done";
 
   //boton desactivado en caso q no hayan usuarios o este caragndo
-  botonBloqueo: boolean = true;
+  botonBloqueo: boolean = false;
 
 
 
@@ -130,12 +131,13 @@ export class TablaGenericComponent implements OnInit {
             //conversion del json de usuarios a la clase Usuarios
             //guardamos el objeto en la variable
 
-
-
-
             //asignacion de los datos en el datasource para la tabla
-            console.log("cabeceras:"+this.respuesta.cabeceras);
             console.log(this.respuesta);
+            this.etiquetasColumnas=[];
+            this.cabecerasColumnas=[];
+            this.title=this.respuesta.title[1];
+            this.newTitle=this.respuesta.title[0]+" "+this.respuesta.title[1];
+            let j=0;
             for(let i=0;i<this.respuesta.cabeceras.length;i++)
             {
 /*
@@ -147,61 +149,39 @@ export class TablaGenericComponent implements OnInit {
               this.respuesta.cabeceras[i].fk
               this.respuesta.cabeceras[i].fktable
               this.respuesta.cabeceras[i].number*/
+
+              if(this.respuesta.cabeceras[i].pk==true){
+                this.primaryKey=this.respuesta.cabeceras[i].nombrecampo;
+              }
               if(this.respuesta.cabeceras[i].show==true){
-              this.cabecerasColumnas[i]=this.respuesta.cabeceras[i].nombrecampo;
+              this.cabecerasColumnas[j]=this.respuesta.cabeceras[i].nombrecampo;
+              j=j+1;
               this.etiquetasColumnas.push({etiqueta:this.respuesta.cabeceras[i].nombreetiqueta,item:this.respuesta.cabeceras[i].nombrecampo});
               }
             }
             this.etiquetasColumnas.push({etiqueta:'Acciones',item:'actions'});
             this.cabecerasColumnas.push('actions');
 
-              console.log(this.cabecerasColumnas);
-              console.log(this.etiquetasColumnas);
 
             //meustra nombres de cabeceras
-            //console.log(Object.keys(this.respuesta.cabeceras));
-            //console.log(Object.values(this.respuesta.cabeceras));
-            console.log("Terce puecsto");
+
 
 
             let cadena = this.router.url.substring(15);;
             let nuevaCadena = cadena.replace('/','');
-            console.log(this.respuesta[nuevaCadena]);
+
             this.router.url
             let valoresgen=Object["keys"](this.respuesta[nuevaCadena]);
             let llavesgen=Object["values"](this.respuesta[nuevaCadena]);
+              //para aplicar a llaves fk
+              /*let level =  0;
+              for(var property in this.respuesta.users) {
+                  console.log('  '.repeat(level) + property);
+                  if(typeof this.respuesta.users["property"] === 'object') {
+                      listProps(this.respuesta.users["property"], ++level);
+                  }
+              }*/
 
-
-            //let arraygen[];
-
-
-
-
-
-
-
-            //console.log(arraygen);
-
-
-
-console.log("pripiedades");
-
-
-/*let level =  0;
-for(var property in this.respuesta.users) {
-    console.log('  '.repeat(level) + property);
-    if(typeof this.respuesta.users["property"] === 'object') {
-        listProps(this.respuesta.users["property"], ++level);
-    }
-}*/
-
-
-
-
-console.log("cabeceras2:")
-            console.log(this.cabecerasColumnas);
-              console.log(this.etiquetasColumnas);
-                console.log(llavesgen);
           //  console.log(this.respuesta.users[0].nombrerol);
 
           /*  for (let i = 0; i < this.usuarios.length; i++) {
@@ -211,12 +191,11 @@ console.log("cabeceras2:")
 
             }*/
             this.dataSource = new MatTableDataSource(llavesgen);
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+
             //console.log("rol: "+this.usuarios[0].getRoles().pkidrol);
             //Aplicamos el filtro de paginado, ordenamiento y filtros
-            this.botonBloqueo = false;
-            this.aplicarFiltro();
-
-
           }
 
         },
@@ -244,6 +223,7 @@ console.log("cabeceras2:")
 
   ngAfterViewInit() {
     this.consultarUsuarios();
+
   }
 
 
@@ -251,28 +231,20 @@ console.log("cabeceras2:")
   }
 
   //Método para aplicar el filtro en la tabla
-  aplicarFiltro() {
 
-    this.dataSource.filter = this.filtroNombreCedula.trim().toLowerCase();
-
-
-  }
 
 
   clearInput() {
     this.filtroNombreCedula = '';
-    this.aplicarFiltro();
-  }
+    }
 
 
 
   //LLama al dialogo de confirmacion para eliminar o no el usuario,
   //le enviamos el parametro del nombre de usuario y el id
-  llamarDialog(user:Usuario) {
+  llamarDialog(user:any) {
     try {
-
-      console.log(user.getNombreUsuario());
-      this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
+      this.openDialog(this.primaryKey,user[this.primaryKey]);
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       let funcion = "llamarDialog()"
@@ -292,7 +264,8 @@ console.log("cabeceras2:")
   //dialogo de confirmacion para eliminar o no el usuario
   openDialog(nombreUser, idUser): void {
     try {
-
+      console.log("primary key;")
+      console.log(nombreUser);
       const dialogRef = this.dialog.open(DialogConfirmacionGenericComponent, {
         width: '250px',
         data: { nombreUser: nombreUser, idUser: idUser }
@@ -300,12 +273,13 @@ console.log("cabeceras2:")
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje =  result.respuesta +" Nombre del usuario: "+nombreUser;
+        this.mensaje =  result.respuesta;
         if (result != null) {
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
-          } else if (result.status == "Success") {
+          } else if (result.status == "Exito") {
+            console.log("reload...");
             this.mostrarMensaje(1)
             this.toggleActDesc = false;
             this.consultarUsuarios();

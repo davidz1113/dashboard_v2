@@ -4,8 +4,8 @@
       <!--inicio formulario de nuevo usuario-->
       <div class="card card-profile" *ngIf="nUsuario">
         <div class="card-header card-header-danger ">
-          <h4 class="card-title text-center">Agregar un nuevo {{title}}</h4>
-          <p class="card-category text-center">*Todos los campos son obligatorios</p>
+          <h4 class="card-title text-center">Agregar un {{newTitle}}</h4>
+          <p class="card-category text-center">*Campos marcados con * son requeridos</p>
         </div>
           <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
 
@@ -13,18 +13,18 @@
             <div class="form-group">
             <div class="row">
                 <div class="col-sm-5 mx-4 " *ngFor="let item of  etiquetasColumnas;let i=index">
-                  <mat-form-field class="">
-                    <mat-label>{{item.etiqueta}}</mat-label>
-                    <div ngSwitch="item.type">
-                    <input *ngSwitchCase="string"  matInput type="text"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
-                    <input *ngSwitchCase="number"  matInput type="number"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
-                    <input *ngSwitchCase="boolean"  matInput type="checkbox"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" />
-                    <input *ngSwitchDefault matInput type="text"  placeholder="Digite {{item.etiqueta}}" id="{{item.etiqueta}}" name="{{item.item}}" [formControlName]="item.item" />
-                  </div>
+                  <mat-form-field  *ngIf="item.type!='boolean'" class="">
+                    <mat-label >{{item.etiqueta}}</mat-label>
+                    <div [ngSwitch]="item.type">
+                      <input *ngSwitchCase="'string'"   matInput type="text"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" required/>
+                      <input *ngSwitchCase="'number'"  matInput type="number"  placeholder="Digite {{item.etiqueta}}" id="{{item.item}}" name="{{item.item}}" [formControlName]="item.item" required/>
+                      <input *ngSwitchDefault type="text"  matInput  placeholder="Digite {{item.etiqueta}}" id="{{item.etiqueta}}" name="{{item.item}}" [formControlName]="item.item" required/>
+                    </div>
                     <mat-error>
                      {{item.item}} es <strong>requerida</strong>
                     </mat-error>
                   </mat-form-field>
+                    <mat-slide-toggle  *ngIf="item.type=='boolean'" matInput  [checked]="active" [formControlName]="item.item"> {{item.etiqueta}} </mat-slide-toggle>
                 </div >
             </div>
           </div>

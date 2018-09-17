@@ -17,7 +17,7 @@ import { DialogConfirmacionTipos } from '../../tipos/dialogTipo.confirm.componen
   selector: 'app-parqueadero',
   templateUrl: './parqueadero.component.html',
   styleUrls: ['./parqueadero.component.scss'],
-  providers: [ExcepcionService,PlazaServices, ParqueaderoServices,TipoParqueaderoServices]
+  providers: [ExcepcionService, PlazaServices, ParqueaderoServices, TipoParqueaderoServices]
 
 })
 export class ParqueaderoComponent implements OnInit {
@@ -29,7 +29,7 @@ export class ParqueaderoComponent implements OnInit {
   toggleActDesc: boolean = false;
 
   //variable para obtener los datos de la consulta
-  parqueadero : Parqueadero[];
+  parqueadero: Parqueadero[];
 
   //Variables de paginacion y ordenamiento
   dataSource: MatTableDataSource<ParqueaderoInterface>;
@@ -57,7 +57,7 @@ export class ParqueaderoComponent implements OnInit {
   tipoparqueselect: string = '';
 
   //variable de tipo interface para envio y muestra en la mattable
-  parqueaderoInterface : ParqueaderoInterface[];
+  parqueaderoInterface: ParqueaderoInterface[];
 
   /*-------------------------------------------------------------------------- */
   //Variables para el formulario de agregar un nuevo parqeu
@@ -79,8 +79,8 @@ export class ParqueaderoComponent implements OnInit {
   //variable que valida si esta por actualizar o guardar un nuevo
   isUpdate = false;
 
- 
-  constructor(private nuevoForm: FormBuilder,  public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _plazaService: PlazaServices, private _parqueaderoService: ParqueaderoServices, private _tipoparqueService:TipoParqueaderoServices) { }
+
+  constructor(private nuevoForm: FormBuilder, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _plazaService: PlazaServices, private _parqueaderoService: ParqueaderoServices, private _tipoparqueService: TipoParqueaderoServices) { }
 
   ngOnInit() {
   }
@@ -94,13 +94,13 @@ export class ParqueaderoComponent implements OnInit {
   }
 
 
-  
+
   /**
    * MEtodo que consulta todos los parqueaderos, los transforma a la interfaz para el datasource y tambien para ordenamiento 
    */
-  consultarParqueaderos(){
+  consultarParqueaderos() {
     this.parqueaderoInterface = [];
-   
+
     try {
       this.respuesta = null;
       this._parqueaderoService.consultarTodosParqueaderos().subscribe(
@@ -113,12 +113,12 @@ export class ParqueaderoComponent implements OnInit {
           } else {
 
             console.log(this.respuesta.parqueaderos);
-            
+
             //seteamos el valor de los parqueaderos en el objeto parqueadero
             this.parqueadero = plainToClass(Parqueadero, this.respuesta.parqueaderos);
             this.parqueadero.map((z) => {
               z.plaza = plainToClass(PlazaMercado, z.getPlaza());
-              z.setTipoparqueadero(plainToClass(TipoParqueadero, z.getTipoparqueadero())) ;
+              z.setTipoparqueadero(plainToClass(TipoParqueadero, z.getTipoparqueadero()));
             }
 
             );
@@ -129,7 +129,7 @@ export class ParqueaderoComponent implements OnInit {
             //contenidos en el y no ordenaba
             this.parqueadero.map((z) => {
               let pi: ParqueaderoInterface = {
-                pkidparqueadero: null,codigoparqueadero:'', nombreplaza: '',numeroparqueadero:'', nombretipoparqueadero: '', parqueaderoactivo: false, fkidplaza: null, fkidtipoparqueadero: null
+                pkidparqueadero: null, codigoparqueadero: '', nombreplaza: '', numeroparqueadero: '', nombretipoparqueadero: '', parqueaderoactivo: false, fkidplaza: null, fkidtipoparqueadero: null
               };
               pi.pkidparqueadero = z.getPkidparqueadero();
               pi.codigoparqueadero = z.getCodigoparqueadero();
@@ -209,7 +209,7 @@ export class ParqueaderoComponent implements OnInit {
   }
 
   //metodo que consulta todos los tipos de parqueadero
-  consultarTiposParque(){
+  consultarTiposParque() {
     try {
       this.respuesta = null;
 
@@ -231,7 +231,7 @@ export class ParqueaderoComponent implements OnInit {
           this.mensaje = 'Error en el servidor al consultar los tipos de parqueadero';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
-          console.log('Error en el servidor '+error);
+          console.log('Error en el servidor ' + error);
         }
 
       );
@@ -246,7 +246,7 @@ export class ParqueaderoComponent implements OnInit {
 
     }
   }
-  
+
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
     //console.log(this.plazaselect);
@@ -281,8 +281,8 @@ export class ParqueaderoComponent implements OnInit {
   }
 
 
-  cambiarEstadoParqueadero(parqueaderos){
-    let parqueadero:Parqueadero = new Parqueadero();
+  cambiarEstadoParqueadero(parqueaderos) {
+    let parqueadero: Parqueadero = new Parqueadero();
     parqueadero.setPkidparqueadero(parqueaderos.pkidparqueadero);
     parqueadero.setNumeroparqueadero(parqueaderos.numeroparqueadero);
     try {
@@ -324,10 +324,10 @@ export class ParqueaderoComponent implements OnInit {
     }
   }
 
-   //dialogo de confirmacion para eliminar o no el usuario
-   openDialog(parqueaderos): void {
+  //dialogo de confirmacion para eliminar o no el usuario
+  openDialog(parqueaderos): void {
     try {
-      this.mensaje='';
+      this.mensaje = '';
       let numeroparqueadero = parqueaderos.numeroparqueadero;
       let idparqueadero = parqueaderos.pkidparqueadero;
 
@@ -363,36 +363,36 @@ export class ParqueaderoComponent implements OnInit {
   }
 
 
-   /**
-  * Metodos para agregar un nuevo zona o editar un zona 
-   */
+  /**
+ * Metodos para agregar un nuevo zona o editar un zona 
+  */
 
   //llamamos al fomrulario para agregar un nuevo zona y inicializamos las validaciones del formulario
-  llamarFormularioAgregarParqueadero(element:ParqueaderoInterface) {
+  llamarFormularioAgregarParqueadero(element: ParqueaderoInterface) {
     try {
       console.log(element);
-      this.mensaje='';
+      this.mensaje = '';
       this.mostrarFormParqueadero = !this.mostrarFormParqueadero;
       this.mostrarTabla = !this.mostrarTabla;
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
-      this.parqueadero2 = element!=null?element:null;
+      this.parqueadero2 = element != null ? element : null;
       this.isUpdate = element != null ? true : false;
 
       //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
 
-      
+
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormParqueadero) {
-       //this.consultarUsuariosRecaudo();
-       //this.consultarPlazasMercadoNoAsignadas();
+        //this.consultarUsuariosRecaudo();
+        //this.consultarPlazasMercadoNoAsignadas();
         this.nuevoParqueaderoForm = this.nuevoForm.group({
           codigoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.codigoparqueadero : '', Validators.required],
           numeroparqueadero: [this.parqueadero2 != null ? this.parqueadero2.numeroparqueadero : '', Validators.required],
           pkidplaza: [this.parqueadero2 != null ? this.parqueadero2.fkidplaza : '', Validators.required],
-          pkidtipoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.fkidtipoparqueadero: '', Validators.required],
+          pkidtipoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.fkidtipoparqueadero : '', Validators.required],
         });
       }
-      this.active = this.parqueadero2 != null ? this.parqueadero2.parqueaderoactivo: false;
+      this.active = this.parqueadero2 != null ? this.parqueadero2.parqueaderoactivo : false;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el parqueadero es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.parqueadero2 == null ? "Guardar" : "Actualizar";
@@ -410,28 +410,28 @@ export class ParqueaderoComponent implements OnInit {
     }
   }
 
-   /**
-   * 
-   * metodo que agrega el parqeuadero de  o edita un parqeuadero de  
-   */
+  /**
+  * 
+  * metodo que agrega el parqeuadero de  o edita un parqeuadero de  
+  */
   editarAgregarParqueadero() {
     try {
 
 
       //this.zona = ;
       this.creandoparqueadero = true;
-      if (this.parqueadero2 == null){
+      if (this.parqueadero2 == null) {
         this.parqueadero2 = {
-          pkidparqueadero: null,codigoparqueadero:'', numeroparqueadero: '', nombreplaza: '', nombretipoparqueadero: '', parqueaderoactivo: false, fkidplaza: null, fkidtipoparqueadero: null
+          pkidparqueadero: null, codigoparqueadero: '', numeroparqueadero: '', nombreplaza: '', nombretipoparqueadero: '', parqueaderoactivo: false, fkidplaza: null, fkidtipoparqueadero: null
         };
-        
-      } 
 
-      this.parqueadero2.codigoparqueadero=(this.nuevoParqueaderoForm.get('codigoparqueadero').value);
-      this.parqueadero2.numeroparqueadero=(this.nuevoParqueaderoForm.get('numeroparqueadero').value);
-      this.parqueadero2.fkidplaza=(this.nuevoParqueaderoForm.get('pkidplaza').value);
-      this.parqueadero2.fkidtipoparqueadero=(this.nuevoParqueaderoForm.get('pkidtipoparqueadero').value);
-      this.parqueadero2.parqueaderoactivo=(this.active);
+      }
+
+      this.parqueadero2.codigoparqueadero = (this.nuevoParqueaderoForm.get('codigoparqueadero').value);
+      this.parqueadero2.numeroparqueadero = (this.nuevoParqueaderoForm.get('numeroparqueadero').value);
+      this.parqueadero2.fkidplaza = (this.nuevoParqueaderoForm.get('pkidplaza').value);
+      this.parqueadero2.fkidtipoparqueadero = (this.nuevoParqueaderoForm.get('pkidtipoparqueadero').value);
+      this.parqueadero2.parqueaderoactivo = (this.active);
 
       this.closeDialog2();
       if (!this.isUpdate) {//entra por agregar un nuevo zona de 
@@ -514,11 +514,11 @@ export class ParqueaderoComponent implements OnInit {
     this.msg = '';
   }
 
-  activarDesactivarparqueadero(){
+  activarDesactivarparqueadero() {
     this.active = !this.active;
     this.textActive = this.active ? "Activado" : "Desactivado";
   }
-  
+
   //Mostrar mensaje variable estilizado de error o de confirmacion 
   mostrarMensaje(codeError: number) {
     if (codeError == 1) {
@@ -531,27 +531,35 @@ export class ParqueaderoComponent implements OnInit {
   }
 
 
-   /*
-   MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
- */
-enviarExcepcion(mensaje, e, funcion, url) {
-  this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
-    response => {
+  /*
+  MEtoido que captura las excepciones y las envia al servicio de capturar la excepcion
+*/
+  enviarExcepcion(mensaje, e, funcion, url) {
+    this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
+      response => {
 
-      if (response.length <= 1) {
-        console.log('Error en el servidor al enviar excepcion');
-      } else {
-        if (response.status = !"error") {
-          console.log('La excepcion se envio correctamente');
+        if (response.length <= 1) {
+          console.log('Error en el servidor al enviar excepcion');
+        } else {
+          if (response.status = !"error") {
+            console.log('La excepcion se envio correctamente');
+          }
         }
+      },
+      error => {
+        console.log('Error en el servidor al enviar excepcion');
       }
-    },
-    error => {
-      console.log('Error en el servidor al enviar excepcion');
-    }
 
-  );
-}
+    );
+  }
+
+  /**
+   * Limpia el filtro por numero de parqueadero
+   */
+  clearInput() {
+    this.filtronumeroParqueadero = '';
+    this.aplicarFiltro();
+  }
 
 
 }
