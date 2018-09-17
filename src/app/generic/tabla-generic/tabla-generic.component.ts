@@ -92,7 +92,7 @@ export class TablaGenericComponent implements OnInit {
   iconAlert = "done";
 
   //boton desactivado en caso q no hayan usuarios o este caragndo
-  botonBloqueo: boolean = true;
+  botonBloqueo: boolean = false;
 
 
 

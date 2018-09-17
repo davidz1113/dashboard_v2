@@ -74,11 +74,12 @@ export class GenericAgregarEditarComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    //console.log("oninit");
     //validamos el formulario
+    if(this.usuario!=null){let update:boolean=true; this.consultarUsuarios(update,this.usuario);}else{let update:boolean=false;this.consultarUsuarios(update);}
     this.validarFormulario();
     //this.identidad = new Usuario(0, '', 0, '', '', "true", new Date, new Date, '');
-    //console.log(this.identidad);
+
 
     this.onChanges();
   }
@@ -376,7 +377,7 @@ export class GenericAgregarEditarComponent implements OnInit {
   ngAfterViewInit() {
     //this.consultarUsuarios();
 
-    if(this.usuario!=null){let update:boolean=true; this.consultarUsuarios(update,this.usuario);}else{let update:boolean=false;this.consultarUsuarios(update);}
+
 
   }
 
