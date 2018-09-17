@@ -31,7 +31,7 @@ export class TablaUsuariosComponent implements OnInit {
   //datos a llenar mediante la consulta
   usuarios: Usuario[] = [];
   rol: Rol[] = [];
-  
+
   //usuarios de prueba para el data source
   /*usuarios: Usuario[] =
    [
@@ -41,7 +41,7 @@ export class TablaUsuariosComponent implements OnInit {
      new Usuario(0,'84545454',787788787,'Juan','carvajal','false',new Date,new Date,''),
      new Usuario(0,'64545454',287788787,'lopez','carvajal','false',new Date,new Date,''),
   ]
-  
+
   ;*/
 
 
@@ -78,7 +78,7 @@ export class TablaUsuariosComponent implements OnInit {
   botonBloqueo: boolean = true;
 
 
-  
+
   constructor(private _userService: UsuarioServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService) {
 
 
@@ -106,7 +106,7 @@ export class TablaUsuariosComponent implements OnInit {
             //cabeceras
             //this.cabecerasColumnas = this.respuesta.cabeceras;
             //this.cabecerasColumnas.push('actions');
-            //conversion del json de usuarios a la clase Usuarios 
+            //conversion del json de usuarios a la clase Usuarios
             //guardamos el objeto en la variable
             this.usuarios = plainToClass(Usuario, this.respuesta.users);
 
@@ -163,7 +163,7 @@ export class TablaUsuariosComponent implements OnInit {
     this.dataSource.filter = this.filtroNombreCedula + (!this.toggleActDesc);
   }
 
- 
+
 
   setFilterDataTable() {
     try {
@@ -192,13 +192,13 @@ export class TablaUsuariosComponent implements OnInit {
     this.aplicarFiltro();
   }
 
- 
+
 
   //LLama al dialogo de confirmacion para eliminar o no el usuario,
   //le enviamos el parametro del nombre de usuario y el id
   llamarDialog(user:Usuario) {
     try {
-      
+
       console.log(user.getNombreUsuario());
       this.openDialog(user.getNombreUsuario(), user.getPkidusuario());
     } catch (e) {
@@ -272,7 +272,7 @@ export class TablaUsuariosComponent implements OnInit {
             //cambiamos el usuario de estado
             this.toggleActDesc = false;
             this.consultarUsuarios();
-          
+
             this.mostrarMensaje(1);
           }
         },
@@ -316,7 +316,7 @@ export class TablaUsuariosComponent implements OnInit {
   enviarExcepcion(mensaje, e, funcion,url) {
     this._exceptionService.capturarExcepcion({ mensaje, url: url, stack: e.stack, funcion: funcion }).subscribe(
       response => {
-        
+
         if (response.length <= 1) {
           console.log('Error en el servidor al enviar excepcion');
         } else {

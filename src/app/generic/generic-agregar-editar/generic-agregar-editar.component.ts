@@ -8,6 +8,7 @@ import { plainToClass } from "class-transformer";
 import { ExcepcionService } from '../../servicios/excepcionServices.services';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 
+
 @Component({
   selector: 'app-generic-agregar-editar',
   templateUrl: './generic-agregar-editar.component.html',
@@ -29,10 +30,11 @@ export class GenericAgregarEditarComponent implements OnInit {
 
   //para mostrar el formulario de usuario
   nUsuario = true;
-  primaryKey:string=''
-
+  primaryKey:string='';
+  title:string="";
+  newTitle:string="";
   //actvar user, desactivar usuario
-  active = false;
+  active = true;
   textActive = "Desactivado";
   etiquetasColumnas:any[]=[];
   //campos de las contraseñas
@@ -72,12 +74,13 @@ export class GenericAgregarEditarComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    //console.log("oninit");
     //validamos el formulario
+    if(this.usuario!=null){let update:boolean=true; this.consultarUsuarios(update,this.usuario);}else{let update:boolean=false;this.consultarUsuarios(update);}
     this.validarFormulario();
     //this.identidad = new Usuario(0, '', 0, '', '', "true", new Date, new Date, '');
-    //console.log(this.identidad);
-    if(this.usuario!=null){let update:boolean=true;  this.consultarUsuarios(update,this.usuario);}else{let update:boolean=false;this.consultarUsuarios(update);}
+
+
     this.onChanges();
   }
 
@@ -137,6 +140,7 @@ export class GenericAgregarEditarComponent implements OnInit {
 
 
 
+
   //conecta a la api rest e inserta o actualiza  los campos del usuario
   nuevoUsuario() {
     try {
@@ -152,11 +156,6 @@ export class GenericAgregarEditarComponent implements OnInit {
       console.log("identidad");
       console.log(this.identidad[etiqueta.item]);
       }
-        //estas son opcionales solamente validas para user
-      //  this.identidad['usuarioactivo']=true;
-      //  this.identidad['fkidrol']='1';
-        //this.identidad['contrasenia']='1240';
-
 
       const uploadData = new FormData();
 
@@ -242,10 +241,7 @@ export class GenericAgregarEditarComponent implements OnInit {
 
   validarFormulario() {
     try {
-      console.log("usuario");
-
-
-      if (this.usuario != null) {//si llega por actualizar
+        if (this.usuario != null) {//si llega por actualizar
         //this.url = this.url.substring(2);
         this.mensajeBoton = "Actualizar";
         console.log(this.usuario);
@@ -302,6 +298,10 @@ export class GenericAgregarEditarComponent implements OnInit {
 
           } else {
 
+            this.title=this.respuesta.title[1];
+            this.newTitle=this.respuesta.title[0]+" "+this.respuesta.title[1];
+
+            console.log(this.newTitle);
 
            for(let i=0;i<this.respuesta.cabeceras.length;i++)
              {
@@ -311,12 +311,14 @@ export class GenericAgregarEditarComponent implements OnInit {
                }
                if(update){
                  if(this.respuesta.cabeceras[i].update==true){
-                   this.etiquetasColumnas.push({etiqueta:this.respuesta.cabeceras[i].nombreetiqueta,item:this.respuesta.cabeceras[i].nombrecampo,type:this.respuesta.cabeceras[i].type});
+                   console.log("update..");
+                   this.etiquetasColumnas.push({etiqueta:this.respuesta.cabeceras[i].nombreetiqueta,item:this.respuesta.cabeceras[i].nombrecampo,type:this.respuesta.cabeceras[i].type,required:this.respuesta.cabeceras[i]["update-required"]});
                  }
                }
                else{
                  if(this.respuesta.cabeceras[i].create==true){
-                 this.etiquetasColumnas.push({etiqueta:this.respuesta.cabeceras[i].nombreetiqueta,item:this.respuesta.cabeceras[i].nombrecampo,type:this.respuesta.cabeceras[i].type});
+                   console.log("create...");
+                 this.etiquetasColumnas.push({etiqueta:this.respuesta.cabeceras[i].nombreetiqueta,item:this.respuesta.cabeceras[i].nombrecampo,type:this.respuesta.cabeceras[i].type,required:this.respuesta.cabeceras[i]["create-required"]});
                  }
                }
 
@@ -326,15 +328,27 @@ export class GenericAgregarEditarComponent implements OnInit {
             this.etiquetasColumnas
             for (let campo of this.etiquetasColumnas) {
               if(update){
-                group[campo.item] = new FormControl(element[campo.item]);
+
+                if(campo.required){
+                  group[campo.item] = new FormControl(element[campo.item],Validators.required);
+                }
+                else{
+                  group[campo.item] = new FormControl(element[campo.item]);
+                }
+
                 }
               else
                 {
-                  group[campo.item] = new FormControl();
+                  if(campo.required){
+                  group[campo.item] = new FormControl('',Validators.required);
+
+                  }
+                  else{
+                    group[campo.item] = new FormControl();
+                   }
+
                 }
-              console.log("campo");
-              console.log(campo);
-            //  this.nuevoUsuarioForm.addControl(campo.item,new FormControl(campo.item));
+              //  this.nuevoUsuarioForm.addControl(campo.item,new FormControl(campo.item));
             }
           this.nuevoUsuarioForm=new FormGroup(group);
 
@@ -362,6 +376,8 @@ export class GenericAgregarEditarComponent implements OnInit {
 
   ngAfterViewInit() {
     //this.consultarUsuarios();
+
+
 
   }
 
