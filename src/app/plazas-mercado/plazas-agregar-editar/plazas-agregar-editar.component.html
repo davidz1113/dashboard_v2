@@ -1,6 +1,6 @@
 <div class="main-content">
   <div class="container-fluid">
-    <div class="col-sm-8">
+    <div class="col-sm-12">
       <!--inicio formulario de nuevo Plaza-->
       <div class="card">
         <div class="card-header card-header-danger ">
@@ -24,24 +24,46 @@
         </div>
 
 
-        <form [formGroup]="nuevoPlazaForm" (ngSubmit)="nuevaPlaza()">
+        <form [formGroup]="nuevoPlazaForm" (ngSubmit)="nuevaPlaza()" class="pl-5">
 
           <div class="form-group">
-            <div class="row">
+            <div class="form-row">
 
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-5">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite codigo de la plaza" id="codigoplaza" name="codigoplaza" formControlName="codigoplaza">
+                  <input matInput type="number" placeholder="Digite codigo de la plaza" id="codigoplaza" name="codigoplaza"
+                    formControlName="codigoplaza">
                   <mat-error *ngIf="nuevoPlazaForm.get('codigoplaza').hasError('required')">
                     el codigo es <strong>obligatorio</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
 
+              <div class="col pr-5">
+                <mat-slide-toggle class="mt-3" (change)="activarDesactivarPlaza()" [checked]="active">Plaza
+                  {{textActive}} </mat-slide-toggle>
+              </div>
+            </div>
+          </div>
 
-              <div class="col-sm-4 mx-auto ">
+          <div class="form-group">
+            <div class="form-row">
+              <div class="col pr-5">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione tipo de recaudo" id="pkidtiporecaudo" name="pkidtiporecaudo"
+                    (change)="onChangePermisos($event)" formControlName="pkidtiporecaudo" multiple>
+                    <mat-option *ngFor="let tiporecaudo of tiporecaudos" [value]=" tiporecaudo.pkidtiporecaudo">{{tiporecaudo.nombretiporecaudo}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoPlazaForm.get('pkidtiporecaudo').hasError('required')">
+                    Porfavor seleccione al menos un tipo de recaudo
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col pr-5">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite nombre de la plaza" id="nombreplaza" name="nombreplaza" formControlName="nombreplaza">
+                  <input matInput type="text" placeholder="Digite nombre de la plaza" id="nombreplaza" name="nombreplaza"
+                    formControlName="nombreplaza">
                   <mat-error *ngIf="nuevoPlazaForm.get('nombreplaza').hasError('required')">
                     El nombre es <strong>requerido</strong>
                   </mat-error>
@@ -51,40 +73,20 @@
           </div>
 
           <div class="form-group">
-            <div class="row">
-
-              <div class="col-sm-4 mx-auto mt-1">
-                <mat-slide-toggle (change)="activarDesactivarPlaza()" [checked]="active">Plaza {{textActive}} </mat-slide-toggle>
+            <div class="form-row">
+              <div class="col mx-auto">
+                <p class="">
+                  Tipo recaudo Seleccionados:
+                </p>
+                <ul class="">
+                  <li *ngFor="let seleccionado of seleccionados">{{seleccionado}}</li>
+                </ul>
               </div>
             </div>
           </div>
 
           <div class="form-group">
-            <div class="row">
-              <div class="col-sm-4 mx-auto mt-1">
-                <mat-form-field>
-                  <mat-select placeholder="Seleccione tipo de recaudo" id="pkidtiporecaudo" name="pkidtiporecaudo" (change)="onChangePermisos($event)" formControlName="pkidtiporecaudo" multiple >
-                    <mat-option *ngFor="let tiporecaudo of tiporecaudos" [value]=" tiporecaudo.pkidtiporecaudo">{{tiporecaudo.nombretiporecaudo}}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="nuevoPlazaForm.get('pkidtiporecaudo').hasError('required')">Porfavor seleccione al menos un
-                    tipo de recaudo</mat-error>
-                </mat-form-field>
-              </div>
-
-              <div class="col-sm-4 mx-auto mt-1">
-                  <p>
-                    Tipo recaudo Seleccionados:
-                  </p>
-                  <ul>
-                    <li *ngFor="let seleccionado of seleccionados">{{seleccionado}}</li>
-                  </ul>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="form-group">
-            <div class="row">
+            <div class="form-row pr-5">
 
               <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoPlazaForm.valid">{{mensajeBoton}}
               </button>

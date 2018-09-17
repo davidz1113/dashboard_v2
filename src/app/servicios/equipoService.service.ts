@@ -29,9 +29,10 @@ export class EquipoService {
         Metodo que crea un equipo 
         recibe como parametro el equipo de tipo Equipo para insertar
         */
-    crearEquipo(nuevo_equipo) {
+    crearEquipo(nuevo_equipo,token) {
+        
         let json = JSON.stringify(nuevo_equipo);
-        let params = "json=" + json + "&authorization=" + this.getToken();
+        let params = "json=" + json + "&authorization=" + (token!=null?token:this.getToken());
 
         return this._http.post(this.url + '/equipo/new', params, { headers: this.headers }).pipe(map(res => res.json()));
 

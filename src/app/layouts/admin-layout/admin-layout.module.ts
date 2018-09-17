@@ -44,6 +44,7 @@ import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.comp
 import { ConfiguracionComponent } from '../../configuracion/configuracion.component';
 import { EquiposComponent } from '../../equipos/equipos.component';
 import { EquiposAgregarEditarComponent } from '../../equipos/equipos-agregar-editar/equipos-agregar-editar.component';
+import { DialogRegistroEquipo } from '../../login/dialogo-registro-equipo/registroequipo.dialog';
 @NgModule({
   imports: [
     CommonModule,
@@ -89,14 +90,16 @@ import { EquiposAgregarEditarComponent } from '../../equipos/equipos-agregar-edi
     EspecieAnimalComponent,
     ConfiguracionComponent,
     EquiposComponent,
-    EquiposAgregarEditarComponent
+    EquiposAgregarEditarComponent,
+    
   ],
   entryComponents: [
     DialogConfirmacionComponent,
     DialogConfirmacionRol,
     DialogConfirmacionPlaza,
     DialogConfirmacionTipos,
-    DialogConfirmacionGenericComponent
+    DialogConfirmacionGenericComponent,
+    
   ],
 })
 

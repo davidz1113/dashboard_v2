@@ -10,28 +10,28 @@
 
           <div class="card-body">
             <!--Filtros  -->
-            <div class="row">
+            <div class="row justify-content-center">
 
               <!--Input filtro de un campo-->
-              <div class="col-sm-4">
+              <div class="col-sm-5">
                 <mat-form-field>
                   <input matInput [(ngModel)]="filtroNombreTipoSector" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de tipo de rol">
-                  <button mat-button *ngIf="filtroNombreTipoSector" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                  <button mat-button *ngIf="filtroNombreTipoSector" matSuffix mat-icon-button aria-label="Clear"
+                    (click)="clearInput()">
                     <mat-icon>close</mat-icon>
                   </button>
                 </mat-form-field>
               </div>
               <!--Fin filtro input -->
               <!--Filtro boton  toggle inhabilidatos -->
-              <div class="col-sm-4">
-                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Tipo de Sectores desactivados</mat-slide-toggle>
+              <div class="col-sm-5 mt-3">
+                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Tipo de Sectores
+                  desactivados</mat-slide-toggle>
               </div>
               <!--Fin Filtro boton toggle -->
               <!--Fin Filtros-->
-
-
-
             </div>
+            <hr>
 
             <!--Mensaje de confirmacion-->
             <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">
@@ -58,30 +58,31 @@
             </div>
 
 
-            <div class="row">
-
-              <div class="col-sm-4 ">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarTipo()" [disabled]="botonBloqueo">Nuevo
-                  tipo de sector
-                </button>
-              </div>
+            <div class="row px-4">
+              <button mat-raised-button class="btn btn-outline-primary col-sm-6 mx-auto mb-3" type="submit" (click)="llamarFormularioAgregarTipo()"
+                [disabled]="botonBloqueo">
+                Nuevo tipo de sector
+              </button>
             </div>
 
             <div class="table-responsive mat-elevation-z8">
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="nombretiposector">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Nombre tipo de sector </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getNombretiposector()}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }">
+                    {{element.getNombretiposector()}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="descripciontiposector">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>Descripción tipo de sector</mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getDescripciontiposector()}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }">
+                    {{element.getDescripciontiposector()}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="tiposectoractivo">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo sector Activo/Desactivado </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }"> {{element.getTiposectoractivo()?'Activo':'Desactivado'}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.getTiposectoractivo() }">
+                    {{element.getTiposectoractivo()?'Activo':'Desactivado'}}
                   </mat-cell>
                 </ng-container>
 
@@ -89,17 +90,18 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                   <mat-cell *matCellDef="let element ; let i=index">
 
-                    <button mat-icon-button matTooltip="Editar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarFormularioAgregarTipo(element)"> <i class="material-icons ">edit</i>
+                    <button mat-icon-button matTooltip="Editar tipo sector" matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="llamarFormularioAgregarTipo(element)">
+                      <i class="material-icons ">edit</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Eliminar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="openDialog(element)">
+                    <button mat-icon-button matTooltip="Eliminar tipo sector" matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="openDialog(element)">
                       <i class="material-icons ">delete</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Desactivar tipo sector" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="cambiarEstadoTipo(element)">
+                    <button mat-icon-button matTooltip="Desactivar tipo sector" matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="cambiarEstadoTipo(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
 
@@ -125,7 +127,7 @@
       formulario para agregar o actualizar una tabla TIPO
       -->
 
-    <div class="col-sm-8" *ngIf="mostrarFormTipo">
+    <div class="col-sm-12" *ngIf="mostrarFormTipo">
       <!--inicio formulario de nuevo tipo de sector-->
       <div class="card">
         <div class="card-header card-header-danger ">
@@ -149,14 +151,15 @@
         </div>
 
 
-        <form [formGroup]="nuevoTipoForm" (ngSubmit)="editarAgregarTipo()">
+        <form [formGroup]="nuevoTipoForm" (ngSubmit)="editarAgregarTipo()" class="pl-4">
 
           <div class="form-group">
-            <div class="row">
+            <div class="form-row">
 
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite codigo de el tipo de sector" id="codigotiposector" name="codigotiposector" formControlName="codigotiposector">
+                  <input matInput type="number" placeholder="Digite codigo de el tipo de sector" id="codigotiposector"
+                    name="codigotiposector" formControlName="codigotiposector">
                   <mat-error *ngIf="nuevoTipoForm.get('codigotiposector').hasError('required')">
                     el codigo es <strong>obligatorio</strong>
                   </mat-error>
@@ -164,9 +167,10 @@
               </div>
 
 
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite nombre de el tipo de sector" id="nombretiposector" name="nombretiposector" formControlName="nombretiposector">
+                  <input matInput type="text" placeholder="Digite nombre de el tipo de sector" id="nombretiposector"
+                    name="nombretiposector" formControlName="nombretiposector">
                   <mat-error *ngIf="nuevoTipoForm.get('nombretiposector').hasError('required')">
                     El nombre es <strong>requerido</strong>
                   </mat-error>
@@ -178,27 +182,28 @@
           </div>
 
           <div class="form-group">
-            <div class="row">
-
-              <div class="col-sm-4 mx-auto mt-1">
-                <mat-slide-toggle (change)="activarDesactivartipo()" [checked]="active">tipo {{textActive}} </mat-slide-toggle>
+            <div class="form-row">
+              <div class="col pr-4">
+                <mat-form-field class="example-full-width">
+                  <input matInput type="text" placeholder="Digite descripción de el tipo de sector" id="descripciontiposector"
+                    name="descripciontiposector" formControlName="descripciontiposector">
+                  <mat-error *ngIf="nuevoTipoForm.get('descripciontiposector').hasError('required')">
+                    La descripción es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
               </div>
-            
 
-            <div class="col-sm-4 mx-auto ">
-              <mat-form-field class="example-full-width">
-                <input matInput type="text" placeholder="Digite descripción de el tipo de sector" id="descripciontiposector" name="descripciontiposector" formControlName="descripciontiposector">
-                <mat-error *ngIf="nuevoTipoForm.get('descripciontiposector').hasError('required')">
-                  La descripción es <strong>requerido</strong>
-                </mat-error>
-              </mat-form-field>
+              <div class="col pr-4 mt-3">
+                <mat-slide-toggle (change)="activarDesactivartipo()" [checked]="active">
+                  tipo {{textActive}}
+                </mat-slide-toggle>
+              </div>
             </div>
-          </div>
           </div>
 
 
           <div class="form-group">
-            <div class="row">
+            <div class="row pr-4">
 
               <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoTipoForm.valid">{{mensajeBoton}}
               </button>
@@ -208,11 +213,7 @@
 
         </form>
       </div>
-      <!--
-                    <pre>Status del formulario: {{ nuevoTipoForm.get('repetirContrasenia').hasError('') | json }}</pre>
-                    <pre>Status del formulario: {{ nuevoTipoForm.get('repetirContrasenia').errors.validUrl | json }}</pre>
-                    Fin formulario nuevo tipo
-                  -->
+      
     </div>
   </div>
 </div>

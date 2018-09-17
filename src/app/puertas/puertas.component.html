@@ -12,9 +12,9 @@
 
                     <div class="card-body">
                         <!--Filtros  -->
-                        <div class="row  justify-content-between">
+                        <div class="row justify-content-center">
                             <!--Input filtro de un campo-->
-                            <div class="col-4">
+                            <div class="col-md-4">
                                 <mat-form-field>
                                     <input matInput [(ngModel)]="filtroNombre" (keyup)="aplicarFiltro()" placeholder="Buscar por nombre de la puerta">
                                     <button mat-button *ngIf="filtroNombre" matSuffix mat-icon-button aria-label="Clear"
@@ -24,7 +24,7 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-3">
+                            <div class="col-md-3">
                                 <mat-form-field>
                                     <mat-select placeholder="buscar por plaza" [(ngModel)]="plazaselect" (change)="aplicarFiltro()">
                                         <mat-option value=''> Todos </mat-option>
@@ -33,14 +33,16 @@
                                 </mat-form-field>
                             </div>
 
-                            <div class="col-5">
+                            <div class="col-md-5">
                                 <mat-slide-toggle class="mt-3" (change)="aplicarFiltro()" [(ngModel)]="estadoToggle">
-                                    Mostrar puertas desactivados
+                                    Mostrar puertas desactivadas
                                 </mat-slide-toggle>
                             </div>
                         </div>
 
-                        <div class="row">
+                        <hr>
+
+                        <div class="row mt-3">
                             <div class="col-12">
                                 <!--Mensaje de confirmacion-->
                                 <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">
@@ -60,8 +62,16 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <button mat-raised-button class="btn btn-outline-primary col-6 mx-auto" (click)="muestraOcultaTabla()">
+
+                        <!--Fin mensaje confirmacion-->
+                        <div *ngIf="respuesta==null">
+                            Cargando Puertas
+                            <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
+                        </div>
+
+                        <div class="row px-4">
+                            <button mat-raised-button class="btn btn-outline-primary col-sm-8 col-md-6 col-lg-6 mx-auto"
+                                (click)="muestraOcultaTabla()">
                                 Nueva puerta
                             </button>
                         </div>
@@ -152,18 +162,18 @@
                     </div>
 
                     <div class="card-body">
-                        <form [formGroup]="puertasForm" (ngSubmit)="guardarCambios()">
+                        <form [formGroup]="puertasForm" (ngSubmit)="guardarCambios()" class="pl-4">
 
                             <div class="form-group">
-                                <div class="row">
-                                    <div class="col-sm-4 mx-auto ">
+                                <div class="form-row">
+                                    <div class="col pr-4 mx-auto">
                                         <mat-form-field class="example-full-width">
                                             <input matInput type="text" placeholder="Digite codigo de la puerta" id="codigopuerta"
                                                 name="codigopuerta" formControlName="codigopuerta">
                                         </mat-form-field>
                                     </div>
 
-                                    <div class="col-sm-4 mx-auto mt-1">
+                                    <div class="col pr-4 mx-auto mt-3">
                                         <mat-slide-toggle (change)="cambiarEstadoForm()" formControlName="puertaactivo">
                                             Puerta {{textActive}}
                                         </mat-slide-toggle>
@@ -172,8 +182,8 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="row">
-                                    <div class="col-sm-4 mx-auto mt-1">
+                                <div class="form-row">
+                                    <div class="col pr-4 mx-auto">
                                         <mat-form-field>
                                             <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza"
                                                 formControlName="fkidplaza">
@@ -185,7 +195,7 @@
                                         </mat-form-field>
                                     </div>
 
-                                    <div class="col-sm-4 mx-auto ">
+                                    <div class="col pr-4 mx-auto ">
                                         <mat-form-field class="example-full-width">
                                             <input matInput type="text" placeholder="Digite nombre de la puerta" id="nombrepuerta"
                                                 name="nombrepuerta" formControlName="nombrepuerta">
@@ -199,7 +209,7 @@
 
 
                             <div class="form-group">
-                                <div class="row">
+                                <div class="form-row pr-4">
                                     <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
                                         [disabled]="!puertasForm.valid">
                                         Guardar

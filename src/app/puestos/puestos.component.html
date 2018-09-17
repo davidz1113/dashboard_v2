@@ -10,7 +10,7 @@
 
           <div class="card-body">
             <!--Filtros  -->
-            <div class="row">
+            <div class="row mb-2">
 
               <!--Input filtro de un campo-->
               <div class="col-sm-4">
@@ -23,17 +23,7 @@
               </div>
 
               <!--Fin filtro input -->
-              <!--Filtro boton  toggle inhabilidatos -->
-              <div class="col-sm-4">
-                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Puestos desactivados</mat-slide-toggle>
-              </div>
-              <!--Fin Filtro boton toggle -->
-              <!--Fin Filtros-->
 
-
-            </div>
-
-            <div class="row">
               <div class="col-sm-4">
                 <mat-form-field>
                   <mat-select placeholder="buscar por plaza de mercado" [(ngModel)]="plazaselect" (change)="aplicarFiltro()">
@@ -41,7 +31,7 @@
                     <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <p>Buscando por: {{plazaselect}} </p>
+                <!-- <p>Buscando por: {{plazaselect}} </p> -->
 
               </div>
 
@@ -52,9 +42,20 @@
                     <mat-option [value]='sector.nombresector' *ngFor="let sector of sectores">{{sector.nombresector}}</mat-option>
                   </mat-select>
                 </mat-form-field>
-                <p>Buscando por: {{sectorselect}} </p>
+                <!-- <p>Buscando por: {{sectorselect}} </p> -->
               </div>
+              <!--Fin Filtros-->
             </div>
+
+            <div class="row mb-2">
+              <!--Filtro boton  toggle inhabilidatos -->
+              <div class="col-sm-4 mx-auto">
+                <mat-slide-toggle (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Puestos desactivados</mat-slide-toggle>
+              </div>
+              <!--Fin Filtro boton toggle -->
+            </div>
+
+            <hr>
 
 
             <!--Mensaje de confirmacion-->
@@ -82,12 +83,11 @@
             </div>
 
 
-            <div class="row">
-              <div class="col-sm-4 ">
-                <button mat-raised-button class="btn btn-outline-primary mb-3" type="submit" (click)="llamarFormularioAgregarPuesto()" [disabled]="botonBloqueo">Nuevo
-                  Puesto
-                </button>
-              </div>
+            <div class="row px-4 mb-3">
+              <button mat-raised-button class="btn btn-outline-primary col-md-6 mx-auto" type="submit" (click)="llamarFormularioAgregarPuesto()"
+                [disabled]="botonBloqueo">Nuevo
+                Puesto
+              </button>
             </div>
 
 
@@ -110,30 +110,35 @@
               <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
                 <ng-container matColumnDef="nombreplaza">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Plaza </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }"> {{element.nombreplaza}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }">
+                    {{element.nombreplaza}}
                   </mat-cell>
 
                 </ng-container>
                 <ng-container matColumnDef="nombrezona">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Zona </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }"> {{element.nombrezona}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }">
+                    {{element.nombrezona}}
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="nombresector">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Sector </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }"> {{element.nombresector}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }">
+                    {{element.nombresector}}
                   </mat-cell>
                 </ng-container>
 
                 <ng-container matColumnDef="nombretipopuesto">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Tipo puesto </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }"> {{element.nombretipopuesto}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }">
+                    {{element.nombretipopuesto}}
                   </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="numeropuesto">
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Puesto </mat-header-cell>
-                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }"> {{element.numeropuesto}}
+                  <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element.puestoactivo }">
+                    {{element.numeropuesto}}
                   </mat-cell>
                 </ng-container>
 
@@ -142,17 +147,18 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                   <mat-cell *matCellDef="let element ; let i=index">
 
-                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="llamarFormularioAgregarPuesto(element)"> <i class="material-icons ">edit</i>
+                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="llamarFormularioAgregarPuesto(element)">
+                      <i class="material-icons ">edit</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="openDialog(element)">
+                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="openDialog(element)">
                       <i class="material-icons ">delete</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
-                      class="example-button" (click)="cambiarEstadoPuesto(element)">
+                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red"
+                      aria-label="Button that shows a red tooltip" class="example-button" (click)="cambiarEstadoPuesto(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
 
@@ -178,7 +184,7 @@
       formulario para agregar o actualizar una tabla TIPO
       -->
 
-    <div class="col-sm-8" *ngIf="mostrarFormPuesto">
+    <div class="col-sm-12" *ngIf="mostrarFormPuesto">
       <!--inicio formulario de nuevo sector -->
       <div class="card card-profile">
         <div class="card-header card-header-danger ">
@@ -196,7 +202,7 @@
             <span data-notify="message">
               <b>Info:</b> {{msg}} </span>
           </div>
-      
+
           <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandopuesto"></mat-progress-bar>
 
           <!--Fin mensaje confirmacion-->
@@ -205,24 +211,30 @@
         <div class="card-avatar mt-1">
           <img class="img" [src]="url" />
         </div>
-        <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-        <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" (click)="fileInput.click()">Seleccionar foto</button>
-
-        <form [formGroup]="nuevoPuestoForm" (ngSubmit)="editarAgregarPuesto()">
+        <div class="row px-5 mb-4">
+          <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+          <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" (click)="fileInput.click()">
+            Seleccionar foto
+          </button>
+        </div>
+        <hr>
+        <form [formGroup]="nuevoPuestoForm" (ngSubmit)="editarAgregarPuesto()" class="pl-4 mt-4">
 
           <div class="form-group">
 
-            <div class="row">
-              <div class="col-sm-4 mx-auto ">
+            <div class="form-row">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite codigo de el puesto " id="codigopuesto" name="codigopuesto" formControlName="codigopuesto">
+                  <input matInput type="text" placeholder="Digite codigo de el puesto " id="codigopuesto" name="codigopuesto"
+                    formControlName="codigopuesto">
                 </mat-form-field>
               </div>
 
 
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite numero de el puesto " id="numeropuesto" name="numeropuesto" formControlName="numeropuesto">
+                  <input matInput type="text" placeholder="Digite numero de el puesto " id="numeropuesto" name="numeropuesto"
+                    formControlName="numeropuesto">
                   <mat-error *ngIf="nuevoPuestoForm.get('numeropuesto').hasError('required')">
                     El número es <strong>requerido</strong>
                   </mat-error>
@@ -231,127 +243,123 @@
 
             </div>
 
-            <div class="row">
+            <div class="form-row">
 
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite alto de el puesto " id="alto" name="alto" formControlName="alto">
+                  <input matInput type="number" placeholder="Digite alto de el puesto " id="alto" name="alto"
+                    formControlName="alto">
                 </mat-form-field>
               </div>
-              <div class="col-sm-4 mx-auto ">
+              <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite ancho de el puesto " id="ancho" name="ancho" formControlName="ancho">
+                  <input matInput type="number" placeholder="Digite ancho de el puesto " id="ancho" name="ancho"
+                    formControlName="ancho">
                 </mat-form-field>
               </div>
-
             </div>
-
-
-
           </div>
 
           <div class="form-group">
-            <div class="row">
+            <div class="form-row">
 
-              <div class="col-sm-4 mx-auto mt-1">
-                <mat-slide-toggle (change)="activarDesactivarpuesto()" [checked]="active">puesto {{textActive}} </mat-slide-toggle>
-              </div>
-
-
-              <div class="col-sm-4 mx-auto  mt-1 ">
-
-                  <mat-form-field>
-                    <mat-select placeholder="Seleccione plaza" (change)="buscarZonaPorPlazaForm($event)" formControlName="pkidplaza">
-                      <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
-                    </mat-select>
-                    <mat-hint>Seleccione una plaza para buscar las zonas asignadas</mat-hint>
-                  </mat-form-field>
-                </div>
-  
-            
-
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="row mb-3">
-
-
-              <div class=" mx-auto  mt-1">
+              <div class="col pr-4 mt-1 ">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona" (change)="buscarSectorPorZonaForm($event)">
+                  <mat-select placeholder="Seleccione plaza" (change)="buscarZonaPorPlazaForm($event)" formControlName="pkidplaza">
+                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                  </mat-select>
+                  <mat-hint>Seleccione una plaza para buscar las zonas asignadas</mat-hint>
+                </mat-form-field>
+              </div>
+
+              <div class="col pr-4 mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona"
+                    (change)="buscarSectorPorZonaForm($event)">
                     <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
                   </mat-select>
                   <mat-hint *ngIf="nuevoPuestoForm.get('pkidplaza').value==''">Primero debe seleccionar una <strong>plaza</strong></mat-hint>
                   <mat-hint *ngIf="zonasform==''">
-                      No hay <strong>zonas</strong> asignadas a la plaza seleccionada
+                    No hay <strong>zonas</strong> asignadas a la plaza seleccionada
                   </mat-hint>
                   <mat-hint *ngIf="nuevoPuestoForm.get('pkidplaza').value!='' && zonasform!=''">
-                      Por favor seleccione una zona
+                    Por favor seleccione una zona
                   </mat-hint>
                 </mat-form-field>
               </div>
-
-              <div class="col-sm-4 mx-auto  mt-1">
-                  <mat-form-field>
-                    <mat-select placeholder="Seleccione sector" id="pkidsector" name="pkidsector" formControlName="pkidsector">
-                      <mat-option [value]='sector.pkidsector' *ngFor="let sector of sectoresForm">{{sector.nombresector}}</mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="sectoresForm==null">Se debe crear primero un tipo de sector</mat-error>
-                    <mat-error *ngIf="nuevoPuestoForm.get('pkidsector').hasError('required')">
-                      El tipo de sector es <strong>requerido</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
 
             </div>
           </div>
 
           <div class="form-group">
-            <div class="row mb-3">
+            <div class="form-row mb-3">
 
-
-              <div class=" mx-auto  mt-1">
+              <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado" formControlName="pkidestado" >
+                  <mat-select placeholder="Seleccione sector" id="pkidsector" name="pkidsector" formControlName="pkidsector">
+                    <mat-option [value]='sector.pkidsector' *ngFor="let sector of sectoresForm">{{sector.nombresector}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="sectoresForm==null">Se debe crear primero un tipo de sector</mat-error>
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidsector').hasError('required')">
+                    El tipo de sector es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="col pr-4 mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado"
+                    formControlName="pkidestado">
                     <mat-option [value]='estado.pkidestado' *ngFor="let estado of estados"> {{estado.nombreestado}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoPuestoForm.get('pkidestado').hasError('required')">
-                   El estado de infraestructura es <strong>requerido</strong>
+                    El estado de infraestructura es <strong>requerido</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-row mb-3">
+
+              <div class="col pr-4 mt-1">
+                <mat-form-field>
+                  <mat-select placeholder="Actividad comercial" id="pkidactividad" name="pkidactividad" formControlName="pkidactividad">
+                    <mat-option [value]='actividad.pkidactividad' *ngFor="let actividad of actividades">{{actividad.nombreactividad}}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidactividad').hasError('required')">
+                    La actividad comercial es <strong>requerida</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
 
-              <div class="col-sm-4 mx-auto  mt-1">
-                  <mat-form-field>
-                    <mat-select placeholder="Actividad comercial" id="pkidactividad" name="pkidactividad" formControlName="pkidactividad">
-                      <mat-option [value]='actividad.pkidactividad' *ngFor="let actividad of actividades">{{actividad.nombreactividad}}</mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="nuevoPuestoForm.get('pkidactividad').hasError('required')">
-                     La actividad comercial es <strong>requerida</strong>
-                    </mat-error>
-                  </mat-form-field>
-                </div>
-
-            </div>
-          </div>
-          <div class="form-group">
-            <div class="row mb-3">
-
-
-              <div class=" mx-auto  mt-1">
+              <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione tipo de puesto" id="pkidtipopuesto" name="pkidtipopuesto" formControlName="pkidtipopuesto" >
+                  <mat-select placeholder="Seleccione tipo de puesto" id="pkidtipopuesto" name="pkidtipopuesto"
+                    formControlName="pkidtipopuesto">
                     <mat-option [value]='tipo.pkidtipopuesto' *ngFor="let tipo of tipos"> {{tipo.nombretipopuesto}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoPuestoForm.get('pkidtipopuesto').hasError('required')">
-                   El tipo  es <strong>requerido</strong>
+                    El tipo es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
               </div>
             </div>
           </div>
           <div class="form-group">
-            <div class="row">
+            <div class="form-row mb-3">
+
+              <!-- aqui -->
+              <div class="col pr-4">
+                <mat-slide-toggle (change)="activarDesactivarpuesto()" [checked]="active">puesto {{textActive}}
+                </mat-slide-toggle>
+              </div>
+
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="form-row pr-4">
 
               <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoPuestoForm.valid">{{mensajeBoton}}
               </button>
