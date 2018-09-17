@@ -35,6 +35,7 @@ import { MaterialModules } from './material.modules';
 import "reflect-metadata";
 import "es6-shim";
 import { ExcepcionService } from './servicios/excepcionServices.services';
+import { DialogRegistroEquipo } from './login/dialogo-registro-equipo/registroequipo.dialog';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -48,6 +49,7 @@ import { ExcepcionService } from './servicios/excepcionServices.services';
     }),
     MaterialModules,
     ReactiveFormsModule
+
   ],
   
 
@@ -55,11 +57,14 @@ import { ExcepcionService } from './servicios/excepcionServices.services';
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
+    DialogRegistroEquipo
   ],
   providers: [
   
 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [DialogRegistroEquipo]
+
 })
 export class AppModule { }

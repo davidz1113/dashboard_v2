@@ -114,6 +114,21 @@ export class UsuarioServices {
 
     }
 
+
+    /**
+     * 
+     * @param identificacion identificacion del equipo al cual esta ingresando a la plataforma
+     * @param idUsuario pkid del usuario a identificar
+     */
+    consultarIdentificacion(identificacion: string, idUsuario: number){
+        let datos = JSON.stringify({identificacionequipo: identificacion, fkidusuario: idUsuario});
+        let json = "json="+datos;
+        return this._http.post(this.url+'/equipo/query',json, {headers: this.headers})
+        .pipe(map(res=>res.json()));
+
+    }
+
+
     //Obtener de manera globar los datos del usuario
     getIdentity() {
         let identity = JSON.parse(localStorage.getItem('identity'));

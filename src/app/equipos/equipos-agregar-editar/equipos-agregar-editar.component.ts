@@ -86,7 +86,7 @@ export class EquiposAgregarEditarComponent implements OnInit {
      
       
       if (this.equipo == null) {//significa que esta entrando por un nueva equipo
-        this._equipoService.crearEquipo(this.identidad).subscribe(
+        this._equipoService.crearEquipo(this.identidad,null).subscribe(
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
