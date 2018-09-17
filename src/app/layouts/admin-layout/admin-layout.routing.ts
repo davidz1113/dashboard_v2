@@ -22,6 +22,7 @@ import { PuertasComponent } from '../../puertas/puertas.component';
 import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.component';
 import { ConfiguracionComponent } from '../../configuracion/configuracion.component';
 import { EquiposComponent } from '../../equipos/equipos.component';
+import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamico.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -88,6 +89,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/estadoinfraestructura', component: GenericComponent },
     { path: GLOBAL.urlBase + '/especieanimal', component: EspecieAnimalComponent },
     { path: GLOBAL.urlBase + '/equipo', component: EquiposComponent },
+    { path: GLOBAL.urlBase + '/recibopuestoeventual', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },

@@ -1,0 +1,41 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header card-header-danger ">
+          <h4 class="card-title text-center">{{nombrereporte}}</h4>
+        </div>
+
+        <div class="card-body">
+         <!--Mensaje de confirmacion-->
+         <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
+            <i class="material-icons" data-notify="icon">warning</i>
+            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+              <i class="material-icons">close</i>
+            </button>
+            <span data-notify="message">
+              <b>Info:</b> {{mensaje}} </span>
+            <div class="col-sm-4">
+              <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()"
+                *ngIf="respuesta=='error'">Intentar
+                nuevamente
+              </button>
+            </div>
+          </div>
+          <!--
+            <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoplaza"></mat-progress-bar>
+          -->
+
+          <!--Fin mensaje confirmacion-->
+          <div *ngIf="respuesta==null">
+            Cargando datos de reporte
+            <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
+          </div>
+
+          
+
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

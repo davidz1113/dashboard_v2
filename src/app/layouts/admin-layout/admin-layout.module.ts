@@ -45,6 +45,7 @@ import { ConfiguracionComponent } from '../../configuracion/configuracion.compon
 import { EquiposComponent } from '../../equipos/equipos.component';
 import { EquiposAgregarEditarComponent } from '../../equipos/equipos-agregar-editar/equipos-agregar-editar.component';
 import { DialogRegistroEquipo } from '../../login/dialogo-registro-equipo/registroequipo.dialog';
+import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamico.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -91,7 +92,7 @@ import { DialogRegistroEquipo } from '../../login/dialogo-registro-equipo/regist
     ConfiguracionComponent,
     EquiposComponent,
     EquiposAgregarEditarComponent,
-    
+    ReporteDinamicoComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,
