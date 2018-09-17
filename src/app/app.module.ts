@@ -36,6 +36,7 @@ import "reflect-metadata";
 import "es6-shim";
 import { ExcepcionService } from './servicios/excepcionServices.services';
 import { DialogRegistroEquipo } from './login/dialogo-registro-equipo/registroequipo.dialog';
+import { ReporteRecaudoEventualComponent } from './reportes/reporte-recaudo-eventual/reporte-recaudo-eventual.component';
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -57,7 +58,8 @@ import { DialogRegistroEquipo } from './login/dialogo-registro-equipo/registroeq
     AppComponent,
     AdminLayoutComponent,
     LoginComponent,
-    DialogRegistroEquipo
+    DialogRegistroEquipo,
+    ReporteRecaudoEventualComponent
   ],
   providers: [
   

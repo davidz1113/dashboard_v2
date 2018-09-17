@@ -8,6 +8,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatDialogModule} from '@angular/material/dialog';
+import {CdkTableModule} from '@angular/cdk/table';
+
 
 import {
   MatButtonModule,
@@ -31,7 +33,8 @@ const modules =[
   MatSlideToggleModule,
   MatProgressSpinnerModule,
   MatProgressBarModule,
-  MatDialogModule
+  MatDialogModule,
+  CdkTableModule
 ];
 
   @NgModule({

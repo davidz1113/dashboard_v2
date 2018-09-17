@@ -377,14 +377,8 @@ export class ParqueaderoComponent implements OnInit {
       //si llega por actualizar seteamos el objeto zona 2 con los campos de las variables
       this.parqueadero2 = element != null ? element : null;
       this.isUpdate = element != null ? true : false;
-
-      //Consultar los usuaros de tipo recaudo y consultar las plazas de mercadp q no tengan ninguna asignacion en zonas
-
-
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormParqueadero) {
-        //this.consultarUsuariosRecaudo();
-        //this.consultarPlazasMercadoNoAsignadas();
         this.nuevoParqueaderoForm = this.nuevoForm.group({
           codigoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.codigoparqueadero : '', Validators.required],
           numeroparqueadero: [this.parqueadero2 != null ? this.parqueadero2.numeroparqueadero : '', Validators.required],
@@ -397,6 +391,10 @@ export class ParqueaderoComponent implements OnInit {
       //si el parqueadero es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.parqueadero2 == null ? "Guardar" : "Actualizar";
 
+      if (element == null) {
+      this.consultarParqueaderos();
+        //this.dataSource = new MatTableDataSource<any>(this.parqueaderoInterface);
+      }
 
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();

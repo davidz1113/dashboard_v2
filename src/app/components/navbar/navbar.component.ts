@@ -16,12 +16,14 @@ export class NavbarComponent implements OnInit {
     private toggleButton: any;
     private sidebarVisible: boolean;
     logOut2: any; 
+    setting : any;
 
     constructor(location: Location,  private element: ElementRef, private router: Router, private _route:ActivatedRoute) {
       this.location = location;
           this.sidebarVisible = false;
 
           this.logOut2 = ['/'+GLOBAL.urlBase+'/login',1];
+          this.setting = ['/'+GLOBAL.urlBase+'/configuracion'];
     }
 
     ngOnInit(){

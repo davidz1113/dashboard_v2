@@ -30,7 +30,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/tipopuesto', title: 'Tipos de puesto', icon: 'transfer_within_a_station', class: '', valor: 13 },
     { path: '/' + GLOBAL.urlBase + '/actividadcomercial', title: 'Actividad Comercial', icon: 'swap_horiz', class: '', valor: 14 },
     { path: '/' + GLOBAL.urlBase + '/estadoinfraestructura', title: 'Estado Infraestructura', icon: 'ballot', class: '', valor: 15 },
-    { path: '/' + GLOBAL.urlBase + '/especieanimal', title: 'Especies de animales', icon: 'pets', class: '', valor: 16 },
+    //{ path: '/' + GLOBAL.urlBase + '/especieanimal', title: 'Especies de animales', icon: 'pets', class: '', valor: 16 },
     { path: '/' + GLOBAL.urlBase + '/configuracion', title: 'Configuración', icon: 'settings', class: '', valor: 17 },
     { path: '/' + GLOBAL.urlBase + '/equipo', title: 'Equipos', icon: 'computer', class: '', valor: 18 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 20 },
