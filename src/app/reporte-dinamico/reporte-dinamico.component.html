@@ -7,8 +7,8 @@
         </div>
 
         <div class="card-body">
-         <!--Mensaje de confirmacion-->
-         <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
+          <!--Mensaje de confirmacion-->
+          <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
             <i class="material-icons" data-notify="icon">warning</i>
             <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
               <i class="material-icons">close</i>
@@ -16,25 +16,83 @@
             <span data-notify="message">
               <b>Info:</b> {{mensaje}} </span>
             <div class="col-sm-4">
-              <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()"
-                *ngIf="respuesta=='error'">Intentar
+              <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()" *ngIf="respuesta=='error'">Intentar
                 nuevamente
               </button>
             </div>
           </div>
-          <!--
-            <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoplaza"></mat-progress-bar>
-          -->
-
           <!--Fin mensaje confirmacion-->
+          <!--Filtros para fechas de inicio/final-->
+          <div class="row justify-content-center">
+            <div class="col-sm-3">
+
+              <mat-form-field>
+                <input matInput [matDatepicker]="fechainicio" placeholder="Fecha inicio" [value]="dateinicial.value">
+                <mat-datepicker-toggle matSuffix [for]="fechainicio"></mat-datepicker-toggle>
+                <mat-datepicker #fechainicio></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+            <div class="col-sm-3">
+              <mat-form-field>
+                <input matInput [matDatepicker]="fechafinal" placeholder="Fecha final" [value]="datefinal.value">
+                <mat-datepicker-toggle matSuffix [for]="fechafinal"></mat-datepicker-toggle>
+                <mat-datepicker #fechafinal></mat-datepicker>
+              </mat-form-field>
+
+            </div>
+          </div>
+          <!--FIN Filtros input/select para fechas de inicio/final-->
+
+          <!--
+            controles generados dinamicamente con la consulta 
+          -->
+          <div class="row">
+            <div class="col-sm-3" *ngFor="let item of filtros">
+              <div [ngSwitch]="item.tipofiltro">
+                <mat-form-field *ngSwitchCase="'input'">
+                  <input matInput placeholder="Digite {{item.nombrefiltro}}" id="{{item.nombreatributo}}" name="{{item.nombreatributo}}">
+                  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </mat-form-field>
+                <mat-form-field *ngSwitchCase="'select'">
+                  <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" >
+                    <mat-option  *ngFor="let plaza of consultas">{{plaza}}</mat-option>
+                    <!--
+                      <mat-option [value]='item2["nombre" {{item.nombretabla}}]' *ngFor="let item2 of consultas[{{item.nombretabla}}]"> Todos </mat-option>
+                    -->
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+            </div>
+          </div>
+
+          <!--
+                <mat-form-field>
+                  <input  matInput type="text" placeholder="Digite {{item.nombrefiltro}}" id="{{item.nombreatributo}}"
+                    name="{{item.nombreatributo}}" />
+                </mat-form-field>
+            FIN controles input/select generados dinamicamente con la consulta 
+          -->
+          <hr>
+          <!--linea divisora entre filtros y tabla de reportes-->
+
           <div *ngIf="respuesta==null">
             Cargando datos de reporte
             <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
           </div>
 
-          
 
-          </div>
+
+
+
+
+
+
+
+        </div>
       </div>
     </div>
   </div>

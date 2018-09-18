@@ -113,7 +113,7 @@ export class PlazasMercadoComponent implements OnInit {
             //this.cabecerasColumnas.push('actions');
             //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
-            this.plaza = plainToClass(PlazaMercado, this.respuesta.plazas);
+            this.plaza = plainToClass(PlazaMercado, this.respuesta.plaza);
 
             //asignacion de los datos en el datasource para la tabla
 

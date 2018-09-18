@@ -33,7 +33,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/especieanimal', title: 'Especies de animales', icon: 'pets', class: '', valor: 16 },
     //{ path: '/' + GLOBAL.urlBase + '/configuracion', title: 'Configuración', icon: 'settings', class: '', valor: 17 },
     { path: '/' + GLOBAL.urlBase + '/equipo', title: 'Equipos', icon: 'computer', class: '', valor: 18 },
-    { path: '/' + GLOBAL.urlBase + '/recibopuestoeventual', title: 'Reporte puesto eventual', icon: 'credit_card', class: '', valor: 19 },
+    { path: '/' + GLOBAL.urlBase + '/reporterecibopuestoeventual', title: 'Reporte puesto eventual', icon: 'credit_card', class: '', valor: 19 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 200 },
     { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 210 },
     { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 220 },

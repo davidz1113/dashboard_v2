@@ -453,8 +453,8 @@ export class PuertasComponent implements OnInit {
 
       this._plazaService.consultarTodasPlazas().subscribe(
         (resp: any) => {
-          this.plazas = resp.plazas;
-          // console.log(this.plazas);
+          this.plazas = resp.plaza;
+          // console.log(this.plaza);
         }
       );
 

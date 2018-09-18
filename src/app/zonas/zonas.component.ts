@@ -218,7 +218,7 @@ export class ZonasComponent implements OnInit {
           } else {
             //conversion del json de plazas a la clase plazas 
             //guardamos el objeto en la variable
-            this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
+            this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plaza);
           }
 
         },
@@ -448,8 +448,8 @@ export class ZonasComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            this.selectplazas = this.respuesta.plazas;
-            console.log(response.plazas);
+            this.selectplazas = this.respuesta.plaza;
+            console.log(response.plaza);
 
           }
 

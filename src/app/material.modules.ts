@@ -9,6 +9,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatDialogModule} from '@angular/material/dialog';
 import {CdkTableModule} from '@angular/cdk/table';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 
 import {
@@ -16,6 +17,7 @@ import {
   MatInputModule,
   MatRippleModule,
   MatTooltipModule,
+  MatNativeDateModule,
   
 } from '@angular/material';
 import { NgModule } from '@angular/core';
@@ -34,7 +36,9 @@ const modules =[
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatDialogModule,
-  CdkTableModule
+  CdkTableModule,
+  MatDatepickerModule,
+  MatNativeDateModule
 ];
 
   @NgModule({

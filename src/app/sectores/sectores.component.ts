@@ -159,7 +159,7 @@ export class SectoresComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plazas);
+            this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plaza);
           }
 
         },
