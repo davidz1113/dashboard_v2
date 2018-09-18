@@ -143,7 +143,7 @@ export class LoginComponent implements OnInit {
               //En caso que no este el identificador, llama al dialogo de registrar el explorador
               this.mostrarDialogoRegistroEquipo(fkidusuario, nombreuser, result);
               this.logeandose = false;
-              
+
 
             }
 

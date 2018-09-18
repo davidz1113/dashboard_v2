@@ -58,7 +58,7 @@
                 </mat-form-field>
                 <mat-form-field *ngSwitchCase="'select'">
                   <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" >
-                    <mat-option  *ngFor="let plaza of consultas">{{plaza}}</mat-option>
+                    <mat-option  [value]='consulta["pkid"+item.nombretabla]' *ngFor="let consulta of consultas[item.nombretabla]">{{consulta['nombre'+item.nombretabla]}}</mat-option>
                     <!--
                       <mat-option [value]='item2["nombre" {{item.nombretabla}}]' *ngFor="let item2 of consultas[{{item.nombretabla}}]"> Todos </mat-option>
                     -->

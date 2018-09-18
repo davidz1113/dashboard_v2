@@ -9,6 +9,7 @@ import { PlazaMercado } from '../modelos/plaza-mercado';
 import { PlazaServices } from '../servicios/plazaServices.services';
 import { DialogConfirmacionTipos } from '../tipos/dialogTipo.confirm.component';
 
+
 @Component({
   selector: 'app-puertas',
   templateUrl: './puertas.component.html',

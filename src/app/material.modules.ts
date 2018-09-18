@@ -21,8 +21,11 @@ import {
   
 } from '@angular/material';
 import { NgModule } from '@angular/core';
+import { TokenGuard } from './servicios/guards/token-guard.guard';
+import { VerificaTokenService } from './servicios/verificaToken.service';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
-const modules =[  
+const modules = [
   MatButtonModule,
   MatRippleModule,
   MatInputModule,
@@ -37,13 +40,21 @@ const modules =[
   MatProgressBarModule,
   MatDialogModule,
   CdkTableModule,
+
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+
+  SweetAlert2Module
+
 ];
 
-  @NgModule({
-    imports: [modules],
-    exports:[modules]
+@NgModule({
+  imports: [modules],
+  exports: [modules],
+  providers: [
+    TokenGuard,
+    VerificaTokenService
+  ]
 
-  })
-  export class MaterialModules{}
+})
+export class MaterialModules { }
