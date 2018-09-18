@@ -105,7 +105,7 @@ public route;
 
 
   closeDialog() {
-    this.mensaje = '';this.respuesta.cabeceras[i].nombrecampo
+    this.mensaje = '';//this.respuesta.cabeceras[i].nombrecampo
 
   }
 
@@ -282,8 +282,8 @@ public route;
         data: { nombreUser: nombreUser, idUser: idUser }
       });
 
-      dialogRef.afterClosed().subscribe(result => {.getUsuarioActivo();
-        console.log('The dialog was closed');this.respuesta.cabeceras[i].nombrecampo
+      dialogRef.afterClosed().subscribe(result => {//.getUsuarioActivo();
+        console.log('The dialog was closed');//this.respuesta.cabeceras[i].nombrecampo
         this.mensaje =  result.respuesta;
         if (result != null) {
           console.log(result.status);

@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Modulo } from '../../modelos/modulo';
 import { GLOBAL } from '../../servicios/globales';
 import { plainToClass } from 'class-transformer';
-import Fingerprint2 = require('fingerprintjs2');
 
 
 declare const $: any;

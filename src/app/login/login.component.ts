@@ -3,7 +3,10 @@ import { FormControl, FormGroup, FormBuilder, Validators, NgForm, FormGroupDirec
 import { UsuarioServices } from '../servicios/usuarioServices.services';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { GLOBAL } from '../servicios/globales';
-import Fingerprint2 = require('fingerprintjs2');
+//import Fingerprint2 = require('fingerprintjs2');
+//import { Fingerprint2 } from '../../../node_modules/fingerprintjs2';
+import * as Fingerprint2 from '../../../node_modules/fingerprintjs2';
+//declare var Fingerprint2: any;
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { DialogRegistroEquipo } from './dialogo-registro-equipo/registroequipo.dialog';
 import { createUrlResolverWithoutPackagePrefix } from '@angular/compiler';
