@@ -23,6 +23,7 @@ import { Router } from '@angular/router';
 })
 export class TablaGenericComponent implements OnInit {
 
+public route;
   //Cabeceras de las columnas
   //cabecerasColumnas: string[] = [];
 
@@ -33,11 +34,12 @@ export class TablaGenericComponent implements OnInit {
 
 
   //}
-
+  filtroGeneric: string = '';
   cabecerasColumnas: string[] = [];
   etiquetasColumnas:any[]=[];
   title:string="";
   newTitle:string="";
+  genericActive:string='';
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreCedula: string = '';
   //varible de mostrar desctivados
@@ -98,12 +100,12 @@ export class TablaGenericComponent implements OnInit {
 
   constructor(private _genericService: GenericServices, public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService,private router: Router) {
 
-
+        this.route= this.router.url.substring(15);
   }
 
 
   closeDialog() {
-    this.mensaje = '';
+    this.mensaje = '';this.respuesta.cabeceras[i].nombrecampo
 
   }
 
@@ -150,6 +152,12 @@ export class TablaGenericComponent implements OnInit {
               this.respuesta.cabeceras[i].fktable
               this.respuesta.cabeceras[i].number*/
 
+              if(this.respuesta.cabeceras[i].nombrecampo.toLowerCase().includes("activ"))
+              {
+                this.genericActive=this.respuesta.cabeceras[i].nombrecampo;
+
+              }
+
               if(this.respuesta.cabeceras[i].pk==true){
                 this.primaryKey=this.respuesta.cabeceras[i].nombrecampo;
               }
@@ -193,6 +201,7 @@ export class TablaGenericComponent implements OnInit {
             this.dataSource = new MatTableDataSource(llavesgen);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
+            this.dataSource.filter=this.filtroGeneric;
 
             //console.log("rol: "+this.usuarios[0].getRoles().pkidrol);
             //Aplicamos el filtro de paginado, ordenamiento y filtros
@@ -231,7 +240,9 @@ export class TablaGenericComponent implements OnInit {
   }
 
   //Método para aplicar el filtro en la tabla
-
+  aplicarFiltro() {
+    this.dataSource.filter = this.filtroGeneric;
+  }
 
 
   clearInput() {
@@ -271,8 +282,8 @@ export class TablaGenericComponent implements OnInit {
         data: { nombreUser: nombreUser, idUser: idUser }
       });
 
-      dialogRef.afterClosed().subscribe(result => {
-        console.log('The dialog was closed');
+      dialogRef.afterClosed().subscribe(result => {.getUsuarioActivo();
+        console.log('The dialog was closed');this.respuesta.cabeceras[i].nombrecampo
         this.mensaje =  result.respuesta;
         if (result != null) {
           console.log(result.status);
@@ -301,12 +312,12 @@ export class TablaGenericComponent implements OnInit {
   }
 
 
-  cambiarEstado(usuario: Usuario) {
+  cambiarEstado(usuario:any ) {
     try {
-      let active = usuario.getUsuarioActivo();
+      let active:boolean = usuario[this.genericActive];
       console.log("Active: " + active);
 
-      this._genericService.cambiarEstadoUsuario(usuario.getPkidusuario(), !active, "tusuario").subscribe(
+      this._genericService.cambiarEstadoUsuario(usuario[this.primaryKey], !active, "t"+this.route.substring(1),this.primaryKey).subscribe(
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
@@ -314,11 +325,10 @@ export class TablaGenericComponent implements OnInit {
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
-            this.mensaje = "El cambio de estado del usuario " + usuario.getNombreUsuario() + " : " + this.respuesta.msg;
+            this.mensaje = "Cambio de estado: " + this.respuesta.msg;
             //cambiamos el usuario de estado
             this.toggleActDesc = false;
             this.consultarUsuarios();
-
             this.mostrarMensaje(1);
           }
         },

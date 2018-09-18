@@ -111,9 +111,13 @@ export class GenericServices {
       active : valor de usuario activo/inactivo
       nombre_tabla: nombre de la tabla a eliminar
     */
-    cambiarEstadoUsuario(pkidusuario: number, active: boolean, nombre_tabla: string) {
-        let enviarDatos = { pkid: pkidusuario, active: String(active), nombretabla: nombre_tabla };
+    cambiarEstadoUsuario(pkidusuario: number, active: boolean, nombre_tabla: string,pkname:string) {
+        let enviarDatos = {};
+        enviarDatos['pkid']=pkidusuario;
+        enviarDatos['active']=String(active);
+        enviarDatos['nombretabla']=nombre_tabla;
         let json = JSON.stringify(enviarDatos);
+        console.log(enviarDatos);
         let params = "json=" + json + "&authorization=" + this.getToken();
         return this._http.post(this.url + '/active/query', params, { headers: this.headers })
             .pipe(map(res => res.json()));

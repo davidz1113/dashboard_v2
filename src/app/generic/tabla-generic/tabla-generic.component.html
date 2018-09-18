@@ -17,7 +17,7 @@
               <!--Input filtro de un campo-->
               <div class="col-sm-4">
                 <mat-form-field>
-                  <input matInput [(ngModel)]="filtroNombreCedula"  placeholder="Buscar...">
+                  <input matInput [(ngModel)]="filtroGeneric" (keyup)="aplicarFiltro()" placeholder="Buscar...">
                   <button mat-button *ngIf="filtroNombreCedula" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
                     <mat-icon>close</mat-icon>
                   </button>
@@ -64,7 +64,7 @@
                 <div *ngFor="let cabecera of etiquetasColumnas;let indice=index" >
                   <ng-container *ngIf="cabecera.item!='actions'" matColumnDef="{{cabecera.item}}">
                     <mat-header-cell *matHeaderCellDef mat-sort-header >{{cabecera.etiqueta}}</mat-header-cell>
-                    <mat-cell *matCellDef="let element"  >{{element[cabecera.item]|arrayOne}}</mat-cell>
+                    <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element[this.genericActive] }" >{{element[cabecera.item]|arrayOne}}</mat-cell>
                   </ng-container>
 
                   <ng-container *ngIf="cabecera.item=='actions'" matColumnDef="{{cabecera.item}}">
@@ -80,6 +80,12 @@
                         class="example-button" (click)="llamarDialog(element)">
                         <i class="material-icons ">delete</i>
                       </button>
+
+                      <button mat-icon-button matTooltip="Desactivar usuario" matTooltipClass="primary-tooltip" class="example-button"
+                        (click)="cambiarEstado(element)">
+                        <i class="material-icons ">not_interested</i>
+                      </button>
+
                     </mat-cell>
                   </ng-container>
                 </div>
