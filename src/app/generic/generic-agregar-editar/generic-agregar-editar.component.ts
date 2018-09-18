@@ -138,7 +138,10 @@ export class GenericAgregarEditarComponent implements OnInit {
   }
 
 
-
+  activarDesactivarUsuario() {
+    this.active = !this.active;
+    this.textActive = this.active ? "Activado" : "Desactivado";
+  }
 
 
   //conecta a la api rest e inserta o actualiza  los campos del usuario

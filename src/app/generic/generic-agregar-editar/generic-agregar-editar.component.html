@@ -24,7 +24,7 @@
                      {{item.item}} es <strong>requerida</strong>
                     </mat-error>
                   </mat-form-field>
-                    <mat-slide-toggle  *ngIf="item.type=='boolean'" matInput  [checked]="active" [formControlName]="item.item"> {{item.etiqueta}} </mat-slide-toggle>
+                    <mat-slide-toggle  *ngIf="item.type=='boolean'" matInput  [checked]="active" [formControlName]="item.item" (change)="activarDesactivarUsuario()"> {{item.etiqueta+" "+this.textActive}} </mat-slide-toggle>
                 </div >
             </div>
           </div>
