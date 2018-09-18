@@ -23,6 +23,7 @@ import { EspecieAnimalComponent } from '../../especie-animal/especie-animal.comp
 import { ConfiguracionComponent } from '../../configuracion/configuracion.component';
 import { EquiposComponent } from '../../equipos/equipos.component';
 import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamico.component';
+import { TokenGuard } from '../../servicios/guards/token-guard.guard';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -72,7 +73,6 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/usuarios-roles', component: UsuariosRolesComponent },
     { path: GLOBAL.urlBase + '/plazas-mercado', component: PlazasMercadoComponent },
     { path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
-    //{ path: GLOBAL.urlBase + '/tipos/tipo-sector', component: TipoSectorComponent },
     { path: GLOBAL.urlBase + '/tipoanimal', component: GenericComponent },
     { path: GLOBAL.urlBase + '/tipoparqueadero', component: GenericComponent },
     { path: GLOBAL.urlBase + '/tiporecaudo', component: GenericComponent },
@@ -82,7 +82,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/sectores', component: SectoresComponent },
     { path: GLOBAL.urlBase + '/parqueaderos', component: ParqueaderoComponent },
     { path: GLOBAL.urlBase + '/puesto', component: PuestosComponent },
-    { path: GLOBAL.urlBase + '/puerta', component: PuertasComponent },
+    { path: GLOBAL.urlBase + '/puerta', component: PuertasComponent, canActivate: [TokenGuard] },
     { path: GLOBAL.urlBase + '/abogado', component: GenericComponent },
     { path: GLOBAL.urlBase + '/configuracion', component: ConfiguracionComponent },
     { path: GLOBAL.urlBase + '/actividadcomercial', component: GenericComponent },
