@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ReportesServices } from '../servicios/reportedinamicoService.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
+import { log } from 'util';
+import { DatePipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reporte-dinamico',
   templateUrl: './reporte-dinamico.component.html',
   styleUrls: ['./reporte-dinamico.component.scss'],
-  providers: [ReportesServices]
+  providers: [ReportesServices,DatePipe]
 })
 export class ReporteDinamicoComponent implements OnInit {
 
@@ -26,8 +29,24 @@ export class ReporteDinamicoComponent implements OnInit {
   //variables para llenar las consultas de los selects;
   consultas: any = {};
 
-  constructor(private _reporteService: ReportesServices) {
+  //Formulario reactive para enviar de filtros al backend
+  formDatos:FormGroup = new FormGroup({
+    default: new FormControl()
+  });
 
+
+  //datos de la tabla
+  datostabla:any[]=[];
+
+  //cabeceras columnas
+  cabeceras:any[]=[];
+
+  //ruta dinamica para consultar los datos
+  public route='';
+
+  constructor(private _reporteService: ReportesServices,private datePipe: DatePipe,private router: Router) {
+    this.route= this.router.url.substring(15);
+    
   }
 
   ngOnInit() {
@@ -56,6 +75,7 @@ export class ReporteDinamicoComponent implements OnInit {
 
           });
 
+          this.validarFormulario();
           //console.log(this.consultas);
           
 
@@ -93,6 +113,57 @@ export class ReporteDinamicoComponent implements OnInit {
       }
 
     );
+  }
+
+  validarFormulario(){
+    let group:any ={};
+    for(let campo of this.filtros){
+      group[campo.nombreatributo] = new FormControl();
+    } 
+    this.formDatos = new FormGroup(group);
+  }
+
+  clearInput(nombreatributo:string){
+    this.formDatos.get(nombreatributo).setValue('');
+  }
+
+  public datos:any={};
+
+  generarReporte(){
+    console.log(this.dateinicial.value);
+    console.log(this.datefinal.value);
+    
+    for(let dato of this.filtros){
+      if(this.formDatos.get(dato.nombreatributo).value!=null){
+
+        this.datos[dato.nombreatributo]= this.formDatos.get(dato.nombreatributo).value;
+      }
+    }
+    this.datos['fechainicio'] = this.datePipe.transform(this.dateinicial.value,'yyyy-MM-dd');
+    this.datos['fechafin'] = this.datePipe.transform(this.datefinal.value,'yyyy-MM-dd');
+    console.log(this.datos);
+    
+    this._reporteService.consultarDatosTablaConFiltros(this.datos).subscribe(
+      response=>{
+        let respuesta= response;
+        if (respuesta.length <= 1) {
+          this.mensaje = 'Error en el servidor';
+          console.log('Error en el servidor');
+        } else {
+          //console.log(respuesta[nombretabla]);
+         this.cabeceras = respuesta.cabeceras;
+         this.datostabla = respuesta[this.route.substring(1)];
+
+         console.log(this.datostabla);
+         
+        }
+        
+      },
+      error=>{
+
+      }
+    );
+    
   }
 
 }

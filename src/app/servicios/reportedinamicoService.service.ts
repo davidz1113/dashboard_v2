@@ -15,7 +15,7 @@ export class ReportesServices {
 
     
     constructor(private _http: Http,private router: Router) {
-        this.url = GLOBAL.url;
+        this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
         this.route= this.router.url.substring(15);
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     }
@@ -42,6 +42,17 @@ export class ReportesServices {
         console.log(this.url +"/"+nombretabla+'/query');
         return this._http.post(this.url  + "/"+nombretabla+'/query', token, { headers: this.headers })
         .pipe(map(res => res.json()));
+    }
+
+
+    consultarDatosTablaConFiltros(filtros){
+        let token = "authorization=" + this.getToken();
+        console.log(this.url + this.route+'/query');
+        const key =this.route.substring(1); 
+        const params = token+"&"+key+"="+true+"&filtros="+JSON.stringify(filtros);
+        return this._http.post(this.url  +this.route+'/query', params, { headers: this.headers })
+        .pipe(map(res => res.json()));
+
     }
 
     getToken() {

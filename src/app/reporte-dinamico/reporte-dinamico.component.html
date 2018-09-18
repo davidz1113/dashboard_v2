@@ -27,15 +27,15 @@
             <div class="col-sm-3">
 
               <mat-form-field>
-                <input matInput [matDatepicker]="fechainicio" placeholder="Fecha inicio" [value]="dateinicial.value">
-                <mat-datepicker-toggle matSuffix [for]="fechainicio"></mat-datepicker-toggle>
-                <mat-datepicker #fechainicio></mat-datepicker>
+                <input matInput [matDatepicker]="fechainicial" placeholder="Fecha inicio" [formControl]="dateinicial">
+                <mat-datepicker-toggle matSuffix [for]="fechainicial"></mat-datepicker-toggle>
+                <mat-datepicker #fechainicial></mat-datepicker>
               </mat-form-field>
 
             </div>
             <div class="col-sm-3">
               <mat-form-field>
-                <input matInput [matDatepicker]="fechafinal" placeholder="Fecha final" [value]="datefinal.value">
+                <input matInput [matDatepicker]="fechafinal" placeholder="Fecha final" [formControl]="datefinal">
                 <mat-datepicker-toggle matSuffix [for]="fechafinal"></mat-datepicker-toggle>
                 <mat-datepicker #fechafinal></mat-datepicker>
               </mat-form-field>
@@ -47,33 +47,45 @@
           <!--
             controles generados dinamicamente con la consulta 
           -->
-          <div class="row">
-            <div class="col-sm-3" *ngFor="let item of filtros">
-              <div [ngSwitch]="item.tipofiltro">
-                <mat-form-field *ngSwitchCase="'input'">
-                  <input matInput placeholder="Digite {{item.nombrefiltro}}" id="{{item.nombreatributo}}" name="{{item.nombreatributo}}">
-                  <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
-                    <mat-icon>close</mat-icon>
-                  </button>
-                </mat-form-field>
-                <mat-form-field *ngSwitchCase="'select'">
-                  <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" >
-                    <mat-option  [value]='consulta["pkid"+item.nombretabla]' *ngFor="let consulta of consultas[item.nombretabla]">{{consulta['nombre'+item.nombretabla]}}</mat-option>
-                    <!--
-                      <mat-option [value]='item2["nombre" {{item.nombretabla}}]' *ngFor="let item2 of consultas[{{item.nombretabla}}]"> Todos </mat-option>
-                    -->
-                  </mat-select>
-                </mat-form-field>
+          <form [formGroup]="formDatos">
 
+            <div class="row">
+              <div class="col-sm-3" *ngFor="let item of filtros">
+                <div [ngSwitch]="item.tipofiltro">
+                  <mat-form-field *ngSwitchCase="'input'">
+                    <input matInput placeholder="Digite {{item.nombrefiltro}}" id="{{item.nombreatributo}}" name="{{item.nombreatributo}}" [formControlName]="item.nombreatributo">
+                    <button mat-button matSuffix mat-icon-button aria-label="Clear" (click)="clearInput(item.nombreatributo)">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                  </mat-form-field>
+                  <mat-form-field *ngSwitchCase="'select'">
+                    <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" [formControlName]="item.nombreatributo">
+                      <mat-option [value]='consulta["pkid"+item.nombretabla]' *ngFor="let consulta of consultas[item.nombretabla]">{{consulta['nombre'+item.nombretabla]}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
               </div>
             </div>
-          </div>
+
+            <!--Boton para generar reporte-->
+            <div class="row justify-content-sm-end">
+              <div class="col-sm-6">
+                <button mat-button class="btn btn-outline-danger" type="submit" (click)="generarReporte()">Generar reporte
+                </button>
+              </div>
+              <div class="col-sm-6 ">
+                <button mat-button class="btn btn-danger" type="submit">Exportar PDF
+                </button>
+                <button mat-button class="btn btn-success" type="submit">Exportar EXCEL
+                </button>
+              </div>
+
+
+            </div>
+
+          </form>
 
           <!--
-                <mat-form-field>
-                  <input  matInput type="text" placeholder="Digite {{item.nombrefiltro}}" id="{{item.nombreatributo}}"
-                    name="{{item.nombreatributo}}" />
-                </mat-form-field>
             FIN controles input/select generados dinamicamente con la consulta 
           -->
           <hr>
@@ -85,12 +97,17 @@
           </div>
 
 
+          <!--
 
-
-
-
-
-
+            <div class="table-responsive mat-elevation-z8">
+              <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
+                <div *ngFor="let cabecera of etiquetasColumnas;let indice=index" >
+                  
+                  
+                </div>
+              </mat-table>
+            </div>
+          -->
 
         </div>
       </div>
