@@ -39,6 +39,8 @@ import { DialogRegistroEquipo } from './login/dialogo-registro-equipo/registroeq
 import { ReporteRecaudoEventualComponent } from './reportes/reporte-recaudo-eventual/reporte-recaudo-eventual.component';
 import { VerificaTokenService } from './servicios/verificaToken.service';
 import { TokenGuard } from './servicios/guards/token-guard.guard';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
@@ -51,7 +53,8 @@ import { TokenGuard } from './servicios/guards/token-guard.guard';
       apiKey: 'YOUR_GOOGLE_MAPS_API_KEY'
     }),
     MaterialModules,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SweetAlert2Module.forRoot()
 
   ],
   declarations: [

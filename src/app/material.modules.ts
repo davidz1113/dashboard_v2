@@ -21,6 +21,7 @@ import {
 import { NgModule } from '@angular/core';
 import { TokenGuard } from './servicios/guards/token-guard.guard';
 import { VerificaTokenService } from './servicios/verificaToken.service';
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 
 const modules = [
   MatButtonModule,
@@ -36,7 +37,8 @@ const modules = [
   MatProgressSpinnerModule,
   MatProgressBarModule,
   MatDialogModule,
-  CdkTableModule
+  CdkTableModule,
+  SweetAlert2Module
 ];
 
 @NgModule({
