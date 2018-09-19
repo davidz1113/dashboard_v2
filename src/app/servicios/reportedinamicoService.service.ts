@@ -55,6 +55,14 @@ export class ReportesServices {
 
     }
 
+
+    consultarSectoresPorPlaza(fkidplaza){
+        let token = "authorization=" + this.getToken();
+        const params = token+"&pkidplaza="+fkidplaza;
+        return this._http.post(this.url  +'/sector/query', params, { headers: this.headers })
+        .pipe(map(res => res.json()));
+    }
+
     getToken() {
         let token = JSON.parse(localStorage.getItem('token'));
 

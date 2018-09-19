@@ -42,6 +42,28 @@
 
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+              <mat-form-field>
+                <mat-select placeholder="Seleccione plaza" id="fkidplaza" [formControl]="fkidplaza" (change)="consultarSectores(fkidplaza.value)">
+                  <mat-option value=''>Todos</mat-option>
+                  <mat-option [value]='consulta["pkidplaza"]' *ngFor="let consulta of consultas['plaza']">{{consulta['nombreplaza']}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div [ngSwitch]="numerofiltro">
+              <mat-form-field *ngSwitchCase="'2'">
+                <mat-select placeholder="Seleccione Sector" id="fkidsector" [formControl]="fkidsector">
+                  <mat-option value=''>Todos</mat-option>
+                  <mat-option [value]='sector.pkidsector' *ngFor="let sector of sectores">{{sector.nombresector}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+            </div>
+          </div>
+
+
           <!--FIN Filtros input/select para fechas de inicio/final-->
 
           <!--
@@ -58,19 +80,24 @@
                       <mat-icon>close</mat-icon>
                     </button>
                   </mat-form-field>
-                  <mat-form-field *ngSwitchCase="'select'">
-                    <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" [formControlName]="item.nombreatributo">
-                      <mat-option [value]='consulta["pkid"+item.nombretabla]' *ngFor="let consulta of consultas[item.nombretabla]">{{consulta['nombre'+item.nombretabla]}}</mat-option>
-                    </mat-select>
-                  </mat-form-field>
                 </div>
+                <!--
+                    <mat-form-field *ngSwitchCase="'select'">
+                      <mat-select placeholder="Seleccione {{item.nombrefiltro}}" id="{{item.nombreatributo}}" [formControlName]="item.nombreatributo">
+                        <mat-option [value]='consulta["pkid"+item.nombretabla]' *ngFor="let consulta of consultas[item.nombretabla]">{{consulta['nombre'+item.nombretabla]}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  -->
               </div>
+
+
             </div>
 
             <!--Boton para generar reporte-->
             <div class="row justify-content-sm-end">
               <div class="col-sm-6">
-                <button mat-button class="btn btn-outline-danger" type="submit" (click)="generarReporte()">Generar reporte
+                <button mat-button class="btn btn-outline-danger" type="submit" (click)="generarReporte();mostrartabla=!mostrartabla;respuesta=null">Generar
+                  reporte
                 </button>
               </div>
               <div class="col-sm-6 ">
@@ -79,8 +106,6 @@
                 <button mat-button class="btn btn-success" type="submit">Exportar EXCEL
                 </button>
               </div>
-
-
             </div>
 
           </form>
@@ -91,23 +116,29 @@
           <hr>
           <!--linea divisora entre filtros y tabla de reportes-->
 
-          <div *ngIf="respuesta==null">
+          <div *ngIf="respuesta==null ">
             Cargando datos de reporte
             <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
           </div>
 
 
-          <!--
 
-            <div class="table-responsive mat-elevation-z8">
-              <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
-                <div *ngFor="let cabecera of etiquetasColumnas;let indice=index" >
-                  
-                  
-                </div>
-              </mat-table>
-            </div>
-          -->
+          <div class="table-responsive mat-elevation-z8" *ngIf="mostrartabla">
+            <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
+              <div *ngFor="let cabecera of cabeceras;let indice=index">
+                <ng-container matColumnDef="{{cabecera.nombrecampo}}">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecera.nombreetiqueta}}</mat-header-cell>
+                  <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]}}</mat-cell>
+                </ng-container>
+
+              </div>
+              <mat-header-row *matHeaderRowDef="cabecerasColumnas"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: cabecerasColumnas;"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [pageSize]="50" [showFirstLastButtons]="true">
+            </mat-paginator>
+          </div>
+
 
         </div>
       </div>
