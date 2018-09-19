@@ -47,7 +47,7 @@ export class ReporteDinamicoComponent implements OnInit {
   plazas: any[] = [];
 
   //sectores
-  sectores:any[]=[];
+  sectores: any[] = [];
 
   /**-----Variables para la tabla -----*/
 
@@ -68,7 +68,10 @@ export class ReporteDinamicoComponent implements OnInit {
   //para mostrar solo las cabeceras
   cabecerasColumnas: string[] = [];
 
+  //para mostrar el msj de datos vacios tabla
+  datosvacios:boolean=false;
 
+  bloqueo:boolean = true;
 
   constructor(private _reporteService: ReportesServices, private datePipe: DatePipe, private router: Router) {
     this.route = this.router.url.substring(15);
@@ -77,7 +80,9 @@ export class ReporteDinamicoComponent implements OnInit {
 
   ngOnInit() {
     this.consultarDatos();
-    this.consultarDatosSelect("plaza");
+    if(this.filtros.length!=0){
+      this.consultarDatosSelect("plaza");
+    }
   }
 
   /**
@@ -93,7 +98,9 @@ export class ReporteDinamicoComponent implements OnInit {
         } else {
           console.log(this.respuesta);
           this.nombrereporte = this.respuesta.title;
-          this.filtros = this.respuesta.filtros;
+          if( this.respuesta.filtros!=null){
+            this.filtros = this.respuesta.filtros;
+          }
           this.numerofiltro = this.respuesta.numerofiltro;
 
           /*
@@ -152,7 +159,7 @@ export class ReporteDinamicoComponent implements OnInit {
    * Metodo que inicia los datos del formulario
    */
   group: any = {
-   
+
   };
   validarFormulario() {
     //group["fkidplaza"] = new FormControl('');
@@ -169,7 +176,11 @@ export class ReporteDinamicoComponent implements OnInit {
   //varible para obtener los datos de la consulta despues de enviar el json de filtros
   public datos: any = {};
 
+  //MEtodo que consulta a la bd los datos con filtros para luego mostrarlos en la tabla y las cabeceras pàra armar la tabla dinamicamente
   generarReporte() {
+    this.datosvacios=false;
+    this.bloqueo = true;
+
     console.log(this.dateinicial.value);
     console.log(this.datefinal.value);
     this.datos = {};
@@ -180,12 +191,15 @@ export class ReporteDinamicoComponent implements OnInit {
         this.datos[dato.nombreatributo] = this.formDatos.get(dato.nombreatributo).value;
       }
     }
-    if(this.fkidplaza.value!=''  && this.fkidplaza.value!=null )this.datos['fkidplaza']= this.fkidplaza.value;
-    if(this.fkidsector.value!='' && this.fkidsector.value!=null )this.datos['fkidsector']= this.fkidsector.value;
+    //opciones
+    if (this.fkidplaza.value != '' && this.fkidplaza.value != null) this.datos['fkidplaza'] = this.fkidplaza.value;
+    if (this.fkidsector.value != '' && this.fkidsector.value != null) this.datos['fkidsector'] = this.fkidsector.value;
     this.datos['fechainicio'] = this.datePipe.transform(this.dateinicial.value, 'yyyy-MM-dd');
     this.datos['fechafin'] = this.datePipe.transform(this.datefinal.value, 'yyyy-MM-dd');
     console.log(this.datos);
 
+    //reinicio de la variable datos tabla
+    this.datostabla = [];
     //enviamos el json y recibimos la respuesta
     this._reporteService.consultarDatosTablaConFiltros(this.datos).subscribe(
       response => {
@@ -205,6 +219,8 @@ export class ReporteDinamicoComponent implements OnInit {
           this.cabeceras.map((dato) => {
             this.cabecerasColumnas.push(dato.nombrecampo);//llenado de las cabeceras para las columnas
           });
+          this.datosvacios = this.datostabla.length==0?true:false;
+          this.bloqueo = this.datostabla.length!=0?false:true;
 
           this.dataSource = new MatTableDataSource(this.datostabla);
           this.dataSource.sort = this.sort;
@@ -224,36 +240,67 @@ export class ReporteDinamicoComponent implements OnInit {
 
   }
 
-
-  consultarSectores(fkidplaza){
+  /**
+   * 
+   * @param fkidplaza id de la plaza para consultar sectores
+   * MEtodo que consulta sectores para el caso numerofiltro (2)
+   */
+  consultarSectores(fkidplaza) {
     console.log(fkidplaza);
     //reinicio de variables
     this.sectores = [];
-    this.fkidsector=new FormControl();
-    if(fkidplaza!=''){
+    this.fkidsector = new FormControl();
+    if (fkidplaza != '') {
 
-    this._reporteService.consultarSectoresPorPlaza(fkidplaza).subscribe(
-      response => {
-        let respuesta = response;
-        if (respuesta.length <= 1) {
+      this._reporteService.consultarSectoresPorPlaza(fkidplaza).subscribe(
+        response => {
+          let respuesta = response;
+          if (respuesta.length <= 1) {
+            this.mensaje = 'Error en el servidor';
+            console.log('Error en el servidor');
+          } else {
+            //console.log(respuesta[nombretabla]);
+            this.sectores = respuesta.sector;
+          }
+
+        },
+        error => {
           this.mensaje = 'Error en el servidor';
           console.log('Error en el servidor');
-        } else {
-          //console.log(respuesta[nombretabla]);
-          this.sectores = respuesta.sector;
+          this.respuesta = null;
         }
 
-      },
-      error => {
-        this.mensaje = 'Error en el servidor';
-        console.log('Error en el servidor');
-        this.respuesta = null;
-      }
+      );
+    }
 
+
+  }
+
+  //metodo que llama al metodo de generar un pdf con los parametros de filtros
+  generarPDF() {
+    this._reporteService.generarPDF(this.datos).subscribe(
+      response=>{
+        console.log(response);
+        var fileURL = URL.createObjectURL(response);
+        window.open(fileURL);
+      },
+      error=>{
+
+      }
     );
   }
 
-    
+  generarEXCEL(){
+    this._reporteService.generarExcel(this.datos).subscribe(
+      response=>{
+        console.log(response);
+        var fileURL = URL.createObjectURL(response);
+        window.open(fileURL);
+      },
+      error=>{
+
+      }
+    );
   }
 
 }

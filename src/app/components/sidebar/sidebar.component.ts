@@ -33,6 +33,8 @@ export const ROUTES: RouteInfo[] = [
     //{ path: '/' + GLOBAL.urlBase + '/configuracion', title: 'Configuración', icon: 'settings', class: '', valor: 17 },
     { path: '/' + GLOBAL.urlBase + '/equipo', title: 'Equipos', icon: 'computer', class: '', valor: 18 },
     { path: '/' + GLOBAL.urlBase + '/reporterecibopuestoeventual', title: 'Reporte puesto eventual', icon: 'credit_card', class: '', valor: 19 },
+    { path: '/' + GLOBAL.urlBase + '/reporteauditoria', title: 'Reporte Auditoria', icon: 'description', class: '', valor: 20},
+    { path: '/' + GLOBAL.urlBase + '', title: '', icon: '', class: '', valor: 4 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 200 },
     { path: '/' + GLOBAL.urlBase + '/table-list', title: 'Sectores', icon: 'content_paste', class: '', valor: 210 },
     { path: '/' + GLOBAL.urlBase + '/typography', title: 'Recaudo', icon: 'library_books', class: '', valor: 220 },

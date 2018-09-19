@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Http, Response, Headers } from '@angular/http';
+import { Http, Response, Headers, ResponseContentType } from '@angular/http';
 import { GLOBAL } from "./globales";
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
@@ -13,54 +13,70 @@ export class ReportesServices {
     public headers;
     public route;
 
-    
-    constructor(private _http: Http,private router: Router) {
+
+    constructor(private _http: Http, private router: Router) {
         this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
-        this.route= this.router.url.substring(15);
+        this.route = this.router.url.substring(15);
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     }
 
 
 
-    consultarCampos(){
+    consultarCampos() {
         let token = "authorization=" + this.getToken();
-        console.log(this.url + this.route+'/query');
-        const key =this.route.substring(1); 
+        console.log(this.url + this.route + '/query');
+        const key = this.route.substring(1);
         //let json = {}
         //json[key]=false;
         //console.log(json);
-        const params = token+"&"+key+"="+false;
+        const params = token + "&" + key + "=" + false;
         //console.log(params);
-        
-        return this._http.post(this.url + this.route+'/query', params, { headers: this.headers })
-          .pipe(map(res => res.json()));
+
+        return this._http.post(this.url + this.route + '/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
     }
 
 
-    consultarCamposSelect(nombretabla){
-        let token =  "authorization=" + this.getToken();
-        console.log(this.url +"/"+nombretabla+'/query');
-        return this._http.post(this.url  + "/"+nombretabla+'/query', token, { headers: this.headers })
-        .pipe(map(res => res.json()));
-    }
-
-
-    consultarDatosTablaConFiltros(filtros){
+    consultarCamposSelect(nombretabla) {
         let token = "authorization=" + this.getToken();
-        console.log(this.url + this.route+'/query');
-        const key =this.route.substring(1); 
-        const params = token+"&"+key+"="+true+"&filtros="+JSON.stringify(filtros);
-        return this._http.post(this.url  +this.route+'/query', params, { headers: this.headers })
-        .pipe(map(res => res.json()));
+        console.log(this.url + "/" + nombretabla + '/query');
+        return this._http.post(this.url + "/" + nombretabla + '/query', token, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
+
+
+    consultarDatosTablaConFiltros(filtros) {
+        let token = "authorization=" + this.getToken();
+        console.log(this.url + this.route + '/query');
+        const key = this.route.substring(1);
+        const params = token + "&" + key + "=" + true + "&filtros=" + JSON.stringify(filtros);
+        return this._http.post(this.url + this.route + '/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
 
     }
 
 
-    consultarSectoresPorPlaza(fkidplaza){
+    consultarSectoresPorPlaza(fkidplaza) {
         let token = "authorization=" + this.getToken();
-        const params = token+"&pkidplaza="+fkidplaza;
-        return this._http.post(this.url  +'/sector/query', params, { headers: this.headers })
-        .pipe(map(res => res.json()));
+        const params = token + "&pkidplaza=" + fkidplaza;
+        return this._http.post(this.url + '/sector/query', params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+    }
+
+    generarPDF(filtros) {
+        const nombrereporte = this.route.substring(1);
+        let token = "authorization=" + this.getToken();
+        const params = token + "&nombrereporte=" + nombrereporte + "&filtros=" + JSON.stringify(filtros);
+        return this._http.post(this.url + '/export/pdf', params, { responseType: ResponseContentType.Blob, headers: this.headers })
+            .pipe(map(res => { return new Blob([res.blob()], { type: 'application/pdf' }) }));
+    }
+
+    generarExcel(filtros){
+        const nombrereporte = this.route.substring(1);
+        let token = "authorization=" + this.getToken();
+        const params = token + "&nombrereporte=" + nombrereporte + "&filtros=" + JSON.stringify(filtros);
+        return this._http.post(this.url + '/export/excel', params, { responseType: ResponseContentType.Blob, headers: this.headers })
+            .pipe(map(res => { return new Blob([res.blob()], { type: 'application/vnd.ms-excel' }) }));
     }
 
     getToken() {

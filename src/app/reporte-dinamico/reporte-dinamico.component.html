@@ -43,8 +43,8 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-sm-3">
+          <div class="row" *ngIf="filtros.length!=0">
+            <div class="col-sm-3" >
               <mat-form-field>
                 <mat-select placeholder="Seleccione plaza" id="fkidplaza" [formControl]="fkidplaza" (change)="consultarSectores(fkidplaza.value)">
                   <mat-option value=''>Todos</mat-option>
@@ -66,8 +66,10 @@
 
           <!--FIN Filtros input/select para fechas de inicio/final-->
 
-          <!--
+      
+              <!--
             controles generados dinamicamente con la consulta 
+            
           -->
           <form [formGroup]="formDatos">
 
@@ -101,9 +103,9 @@
                 </button>
               </div>
               <div class="col-sm-6 ">
-                <button mat-button class="btn btn-danger" type="submit">Exportar PDF
+                <button mat-button class="btn btn-danger" type="submit" (click)="generarPDF()" [disabled]="bloqueo">Exportar PDF
                 </button>
-                <button mat-button class="btn btn-success" type="submit">Exportar EXCEL
+                <button mat-button class="btn btn-success" type="submit" (click)="generarEXCEL()" [disabled]="bloqueo">Exportar EXCEL
                 </button>
               </div>
             </div>
@@ -121,7 +123,16 @@
             <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
           </div>
 
-
+            <!--mensaje en caso q los datos sean nullos-->
+            <div data-notify="container" *ngIf="datosvacios" class="alert alert-warning alert-with-icon">
+                <i class="material-icons" data-notify="icon">warning</i>
+                <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+                  <i class="material-icons">close</i>
+                </button>
+                <span data-notify="message">
+                  <b>Info:</b> No hay datos para los filtros seleccionados </span>
+               
+              </div>
 
           <div class="table-responsive mat-elevation-z8" *ngIf="mostrartabla">
             <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
