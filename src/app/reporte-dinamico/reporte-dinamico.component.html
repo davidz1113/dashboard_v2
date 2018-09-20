@@ -7,10 +7,20 @@
         </div>
 
         <div class="card-body">
+
+          <div class="alert alert-info">
+            <button mat-button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <i class="material-icons">close</i>
+            </button>
+            <span>
+              <b> Info - </b> Seleccione los filtros y presione Generar Reporte para ver los resultados en una tabla</span>
+          </div>
+
+
           <!--Mensaje de confirmacion-->
           <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
             <i class="material-icons" data-notify="icon">warning</i>
-            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
               <i class="material-icons">close</i>
             </button>
             <span data-notify="message">
@@ -44,7 +54,7 @@
           </div>
 
           <div class="row" *ngIf="filtros.length!=0">
-            <div class="col-sm-3" >
+            <div class="col-sm-3">
               <mat-form-field>
                 <mat-select placeholder="Seleccione plaza" id="fkidplaza" [formControl]="fkidplaza" (change)="consultarSectores(fkidplaza.value)">
                   <mat-option value=''>Todos</mat-option>
@@ -52,7 +62,7 @@
                 </mat-select>
               </mat-form-field>
             </div>
-            <div [ngSwitch]="numerofiltro">
+            <div [ngSwitch]="numerofiltro" class="col-sm-3">
               <mat-form-field *ngSwitchCase="'2'">
                 <mat-select placeholder="Seleccione Sector" id="fkidsector" [formControl]="fkidsector">
                   <mat-option value=''>Todos</mat-option>
@@ -66,8 +76,8 @@
 
           <!--FIN Filtros input/select para fechas de inicio/final-->
 
-      
-              <!--
+
+          <!--
             controles generados dinamicamente con la consulta 
             
           -->
@@ -98,15 +108,23 @@
             <!--Boton para generar reporte-->
             <div class="row justify-content-sm-end">
               <div class="col-sm-6">
-                <button mat-button class="btn btn-outline-danger" type="submit" (click)="generarReporte();mostrartabla=!mostrartabla;respuesta=null">Generar
+                <button mat-button class="btn btn-outline-danger" type="submit" (click)="generarReportePaginado(0);mostrartabla=!mostrartabla;respuesta=null">Generar
                   reporte
                 </button>
               </div>
               <div class="col-sm-6 ">
-                <button mat-button class="btn btn-danger" type="submit" (click)="generarPDF()" [disabled]="bloqueo">Exportar PDF
-                </button>
-                <button mat-button class="btn btn-success" type="submit" (click)="generarEXCEL()" [disabled]="bloqueo">Exportar EXCEL
-                </button>
+                <div class="row">
+                  <p class="text-info col-sm-12">
+                    Para exportar un reporte, recuerde deshabilitar los PopUps </p>
+                  <button mat-button class="btn btn-danger col-sm-5" type="submit" (click)="generarPDF()" [disabled]="bloqueo">Exportar
+                    PDF
+                  </button>
+                  <button mat-button class="btn btn-success col-sm-5" type="submit" (click)="generarEXCEL()" [disabled]="bloqueo">Exportar
+                    EXCEL
+                  </button>
+
+
+                </div>
               </div>
             </div>
 
@@ -123,32 +141,39 @@
             <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
           </div>
 
-            <!--mensaje en caso q los datos sean nullos-->
-            <div data-notify="container" *ngIf="datosvacios" class="alert alert-warning alert-with-icon">
-                <i class="material-icons" data-notify="icon">warning</i>
-                <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
-                  <i class="material-icons">close</i>
-                </button>
-                <span data-notify="message">
-                  <b>Info:</b> No hay datos para los filtros seleccionados </span>
-               
-              </div>
+          <!--mensaje en caso q los datos sean nullos-->
+          <div data-notify="container" *ngIf="datosvacios" class="alert alert-warning alert-with-icon">
+            <i class="material-icons" data-notify="icon">warning</i>
+            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+              <i class="material-icons">close</i>
+            </button>
+            <span data-notify="message">
+              <b>Info:</b> No hay datos para los filtros seleccionados </span>
+
+          </div>
 
           <div class="table-responsive mat-elevation-z8" *ngIf="mostrartabla">
             <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
               <div *ngFor="let cabecera of cabeceras;let indice=index">
                 <ng-container matColumnDef="{{cabecera.nombrecampo}}">
                   <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecera.nombreetiqueta}}</mat-header-cell>
-                  <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]}}</mat-cell>
+                  <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]|arrayOne}}</mat-cell>
                 </ng-container>
 
               </div>
               <mat-header-row *matHeaderRowDef="cabecerasColumnas"></mat-header-row>
               <mat-row *matRowDef="let row; columns: cabecerasColumnas;"></mat-row>
             </mat-table>
-            <mat-paginator #paginator [pageSize]="50" [showFirstLastButtons]="true">
-            </mat-paginator>
+
           </div>
+
+          <div class="mb-2 ml-2 mt-2 bg-secondary text-white" *ngIf="mostrartabla">
+            <h4>
+                pagina actual : {{paginaactual}} de {{totalpaginas}}
+            </h4>
+          </div>
+          <mat-paginator *ngIf="mostrartabla" #paginator [pageSize]="itemsporpagina" [showFirstLastButtons]="true" [length]="totalitems" (page)="changePage($event)">
+          </mat-paginator>
 
 
         </div>

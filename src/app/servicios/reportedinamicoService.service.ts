@@ -21,7 +21,9 @@ export class ReportesServices {
     }
 
 
-
+    /**
+     * Metodo que consulta los campos de tipo input
+     */
     consultarCampos() {
         let token = "authorization=" + this.getToken();
         console.log(this.url + this.route + '/query');
@@ -36,7 +38,10 @@ export class ReportesServices {
             .pipe(map(res => res.json()));
     }
 
-
+    /**
+     * 
+     * @param nombretabla nombre del controlador(mismo que la tabla) donde se procedera hacer la consulta para generar un select dinamico 
+     */
     consultarCamposSelect(nombretabla) {
         let token = "authorization=" + this.getToken();
         console.log(this.url + "/" + nombretabla + '/query');
@@ -45,6 +50,10 @@ export class ReportesServices {
     }
 
 
+    /**
+     * 
+     * @param filtros array con parametros de filtros para la generacion de un reporte dinamico
+     */
     consultarDatosTablaConFiltros(filtros) {
         let token = "authorization=" + this.getToken();
         console.log(this.url + this.route + '/query');
@@ -55,7 +64,23 @@ export class ReportesServices {
 
     }
 
+    consultarDatosPaginadosConFiltros(page = null, filtros, nombretabla: string) {
+        let params = "authorization=" + this.getToken()+"&nombretabla="+nombretabla+"&filtros="+JSON.stringify(filtros);
+        if (page == null) {
+            page = 1;
+        }
 
+        return this._http.post(this.url + '/paginador/?page=' + page, params, { headers: this.headers })
+            .pipe(map(res => res.json()));
+
+    }
+
+
+    /**
+     * 
+     * @param fkidplaza id de la plaza para consultar por zonas el sector
+     * 
+     */
     consultarSectoresPorPlaza(fkidplaza) {
         let token = "authorization=" + this.getToken();
         const params = token + "&pkidplaza=" + fkidplaza;
@@ -63,16 +88,26 @@ export class ReportesServices {
             .pipe(map(res => res.json()));
     }
 
+    /**
+     * 
+     * @param filtros filtros para generar un pdf 
+     * genera un reporte PDF pasando al controlador de la api el nombre del reporte
+     */
     generarPDF(filtros) {
-        const nombrereporte = this.route.substring(1);
+        const nombrereporte = this.route.substring(1);//obteniendo el nombre de el reporte
         let token = "authorization=" + this.getToken();
         const params = token + "&nombrereporte=" + nombrereporte + "&filtros=" + JSON.stringify(filtros);
         return this._http.post(this.url + '/export/pdf', params, { responseType: ResponseContentType.Blob, headers: this.headers })
             .pipe(map(res => { return new Blob([res.blob()], { type: 'application/pdf' }) }));
     }
 
-    generarExcel(filtros){
-        const nombrereporte = this.route.substring(1);
+    /**
+     * 
+     * @param filtros filtros para generar un excel 
+     * genera un reporte Excel pasando al controlador de la api el nombre del reporte
+     */
+    generarExcel(filtros) {
+        const nombrereporte = this.route.substring(1);//obteniendo el nombre de el reporte
         let token = "authorization=" + this.getToken();
         const params = token + "&nombrereporte=" + nombrereporte + "&filtros=" + JSON.stringify(filtros);
         return this._http.post(this.url + '/export/excel', params, { responseType: ResponseContentType.Blob, headers: this.headers })
