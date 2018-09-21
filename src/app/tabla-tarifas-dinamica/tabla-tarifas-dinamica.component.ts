@@ -52,11 +52,14 @@ export class TablaTarifasDinamicaComponent implements OnInit {
         } else {//traemos los objetos de respuesta
           this.cabeceras = this.respuesta.cabeceras;//obtenemos las cabeceras con nombrecampo y nombreetiqueta
           this.datostabla = this.respuesta[this.url.substring(1)];
+          this.cabeceras.push({nombrecampo:'actions',nombreetiqueta:'Acciones'});
+
           this.cabeceras.map(
             (dato)=>{
               this.cabecerasColumnas.push(dato.nombrecampo);
             }
           );
+          //this.cabecerasColumnas.push('actions');
           this.dataSource = new MatTableDataSource(this.datostabla);
           this.dataSource.sort = this.sort;
           this.dataSource.paginator = this.paginator;

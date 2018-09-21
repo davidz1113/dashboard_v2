@@ -3,11 +3,27 @@
     tabla-tarifas-dinamica works!
     <div class="col-sm-12">
       <div class="table-responsive mat-elevation-z8" >
-        <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
+        <mat-table [dataSource]="dataSource" matSort>
           <div *ngFor="let cabecera of cabeceras;let indice=index">
-            <ng-container matColumnDef="{{cabecera.nombrecampo}}">
+            <ng-container *ngIf="cabecera.nombrecampo!='actions'" matColumnDef="{{cabecera.nombrecampo}}">
               <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecera.nombreetiqueta}}</mat-header-cell>
               <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]|arrayOne}}</mat-cell>
+            </ng-container>
+
+            <ng-container *ngIf="cabecera.nombrecampo=='actions'" matColumnDef="{{cabecera.nombrecampo}}" stickyEnd>
+              <mat-header-cell *matHeaderCellDef>Acciones</mat-header-cell>
+              <mat-cell *matCellDef="let element">
+
+                <button mat-icon-button matTooltip="Actualizar tarifa" matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                  class="example-button"> <i class="material-icons ">edit</i>
+                </button>
+                
+                <button mat-icon-button matTooltip="Desactivar tarifa" matTooltipClass="primary-tooltip" class="example-button"
+                  (click)="cambiarEstado(element)">
+                  <i class="material-icons ">not_interested</i>
+                </button>
+
+              </mat-cell>
             </ng-container>
 
           </div>
