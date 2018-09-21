@@ -64,6 +64,12 @@ export class ReportesServices {
 
     }
 
+    /**
+     * 
+     * @param page numero de la pagina a consultar, enviada por get
+     * @param filtros filtros, todos los campos select e imputs, llega como array
+     * @param nombretabla nombre de la tabla(controlador) donde se hara la consulta
+     */
     consultarDatosPaginadosConFiltros(page = null, filtros, nombretabla: string) {
         let params = "authorization=" + this.getToken()+"&nombretabla="+nombretabla+"&filtros="+JSON.stringify(filtros);
         if (page == null) {

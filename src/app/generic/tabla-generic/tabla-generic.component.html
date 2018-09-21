@@ -24,6 +24,11 @@
                 </mat-form-field>
               </div>
 
+               <!--Filtro boton  toggle inhabilidatos -->
+               <div class="col-sm-5">
+                <mat-slide-toggle class="mt-3" (change)="aplicarFiltro()" [(ngModel)]="toggleActDesc">Mostrar Activos</mat-slide-toggle>
+              </div>
+
             </div>
             <!--Mensaje de confirmacion-->
             <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">

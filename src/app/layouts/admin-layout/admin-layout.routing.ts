@@ -24,6 +24,7 @@ import { ConfiguracionComponent } from '../../configuracion/configuracion.compon
 import { EquiposComponent } from '../../equipos/equipos.component';
 import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamico.component';
 import { TokenGuard } from '../../servicios/guards/token-guard.guard';
+import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -93,6 +94,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/reporterecibopuestoeventual/:page', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/reporteauditoria', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/reporteauditoria/:page', component: ReporteDinamicoComponent },
+    { path: GLOBAL.urlBase + '/tarifaanimal', component: TarifaanimalComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/table-list', component: TableListComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },

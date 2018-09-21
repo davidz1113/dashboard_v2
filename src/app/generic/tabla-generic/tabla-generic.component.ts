@@ -112,7 +112,7 @@ public route;
 
   //Metodo que consulta los usuarios y los envia a la tabla
 
-
+  nuevaCadena;
 
   consultarUsuarios() {
     try {
@@ -176,11 +176,11 @@ public route;
 
 
             let cadena = this.router.url.substring(15);;
-            let nuevaCadena = cadena.replace('/','');
+             this.nuevaCadena = cadena.replace('/','');
 
             this.router.url
-            let valoresgen=Object["keys"](this.respuesta[nuevaCadena]);
-            let llavesgen=Object["values"](this.respuesta[nuevaCadena]);
+            let valoresgen=Object["keys"](this.respuesta[this.nuevaCadena]);
+            let llavesgen=Object["values"](this.respuesta[this.nuevaCadena]);
               //para aplicar a llaves fk
               /*let level =  0;
               for(var property in this.respuesta.users) {
@@ -201,7 +201,9 @@ public route;
             this.dataSource = new MatTableDataSource(llavesgen);
             this.dataSource.sort = this.sort;
             this.dataSource.paginator = this.paginator;
-            this.dataSource.filter=this.filtroGeneric;
+            this.aplicarFiltro();
+            this.setFilterDataTable();
+            //this.dataSource.filter=this.filtroGeneric;
 
             //console.log("rol: "+this.usuarios[0].getRoles().pkidrol);
             //Aplicamos el filtro de paginado, ordenamiento y filtros
@@ -228,6 +230,32 @@ public route;
   }
 
 
+  setFilterDataTable() {
+    try {
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        //console.log(this.filtroNombreCedula);
+        //console.log("holaaa");
+        try{
+          return ((data['nombre'+this.nuevaCadena].toLowerCase().indexOf(this.filtroGeneric) !== -1) && (data[this.nuevaCadena+"activo"] == true || this.toggleActDesc == true));
+
+        }catch(e){
+          return null;
+        }
+      };
+    } catch (e) {
+      const mensaje = e.message ? e.message : e.toString();
+      let funcion = "setFilterDataTable()"
+
+      const location = this.injector.get(LocationStrategy);
+      const url = location instanceof PathLocationStrategy
+        ? location.path() : '';
+      this.enviarExcepcion(mensaje, e, funcion, url);
+      //console.log("error asdasd a:" + e.stack);
+
+    }
+  }
 
 
   ngAfterViewInit() {
@@ -241,7 +269,7 @@ public route;
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    this.dataSource.filter = this.filtroGeneric;
+    this.dataSource.filter = this.filtroGeneric + (!this.toggleActDesc);
   }
 
 

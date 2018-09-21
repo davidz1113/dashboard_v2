@@ -2,11 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ReportesServices } from '../servicios/reportedinamicoService.service';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { FormControl, FormGroup } from '@angular/forms';
-import { log } from 'util';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ArrayOne } from '../generic/tabla-generic/arrayone.pipe';
-import { GLOBAL } from '../servicios/globales';
 
 @Component({
   selector: 'app-reporte-dinamico',
@@ -85,7 +83,7 @@ export class ReporteDinamicoComponent implements OnInit {
   totalpaginas: number = 0;
 
 
-  constructor(private _reporteService: ReportesServices, private datePipe: DatePipe, private router: Router, private _route: ActivatedRoute, ) {
+  constructor(private _reporteService: ReportesServices, private datePipe: DatePipe, private router: Router ) {
     this.route = this.router.url.substring(15);
 
   }

@@ -1,0 +1,21 @@
+<div class="main-content">
+  <div class="container-fluid">
+    tabla-tarifas-dinamica works!
+    <div class="col-sm-12">
+      <div class="table-responsive mat-elevation-z8" >
+        <mat-table [dataSource]="dataSource" matSort class="table table-full-width">
+          <div *ngFor="let cabecera of cabeceras;let indice=index">
+            <ng-container matColumnDef="{{cabecera.nombrecampo}}">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecera.nombreetiqueta}}</mat-header-cell>
+              <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]|arrayOne}}</mat-cell>
+            </ng-container>
+
+          </div>
+          <mat-header-row *matHeaderRowDef="cabecerasColumnas"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: cabecerasColumnas;"></mat-row>
+        </mat-table>
+
+      </div>
+    </div>
+  </div>
+</div>

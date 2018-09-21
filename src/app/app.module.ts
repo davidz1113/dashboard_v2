@@ -62,7 +62,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     AdminLayoutComponent,
     LoginComponent,
     DialogRegistroEquipo,
-    ReporteRecaudoEventualComponent
+    ReporteRecaudoEventualComponent,
   ],
   providers: [
     VerificaTokenService,
