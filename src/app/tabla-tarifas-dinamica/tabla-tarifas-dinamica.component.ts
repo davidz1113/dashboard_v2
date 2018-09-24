@@ -38,7 +38,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   filtros$: Observable<any[]>;
   constructor(private _tarifasServices: TarifasServices, private datePipe: DatePipe) { }
 
-  datos;
+  datos:any[]=[];
 
   ngOnInit() {
     this.consultarDatos();

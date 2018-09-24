@@ -36,14 +36,10 @@ export class TarifasServices {
     }
 
 
-    agregarFiltros(filtro:any={},nameatrib,value){
+    agregarFiltros(filtro:any={}){
         const index = this.filtros.indexOf(filtro);
         console.log(index);
         if (index > -1) this.filtros.splice(index, 1);
-        filtro = {
-            nombreatributo: nameatrib,
-            valor: value
-        };
         this.filtros.push(filtro);
         this.filtros$.next(this.filtros);
         console.log(this.filtros);

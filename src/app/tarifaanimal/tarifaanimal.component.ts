@@ -90,7 +90,11 @@ export class TarifaanimalComponent implements OnInit {
      */
     filtroplaza: any = {}
     guardarFiltroplaza(event) {
-        this._tarifasServices.agregarFiltros(this.filtroplaza,'pkidplaza',event.value);
+        this.filtroplaza={
+            nombreatributo:'pkidplaza',
+            valor:event.value
+        }
+        this._tarifasServices.agregarFiltros(this.filtroplaza);
     }
 
     /**
@@ -100,7 +104,11 @@ export class TarifaanimalComponent implements OnInit {
     filtrotipo: any = {};
     guardarFiltrotipo(event) {
 
-        this._tarifasServices.agregarFiltros(this.filtroplaza,'pkidtipoanimal',event.value);
+        this.filtrotipo={
+            nombreatributo:'pkidtipoanimal',
+            valor: event.value
+        }
+        this._tarifasServices.agregarFiltros(this.filtrotipo);
 
     }
 
