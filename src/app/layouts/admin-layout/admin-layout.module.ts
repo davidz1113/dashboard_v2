@@ -49,6 +49,7 @@ import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamic
 import { TablaTarifasDinamicaComponent } from '../../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
 import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
 import { TarifasComponent } from '../../tarifas/tarifas.component';
+import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
 
 
 
@@ -101,7 +102,8 @@ import { TarifasComponent } from '../../tarifas/tarifas.component';
     ReporteDinamicoComponent,
     TablaTarifasDinamicaComponent,
     TarifaanimalComponent,
-    TarifasComponent
+    TarifasComponent,
+    TarifaInteresComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,

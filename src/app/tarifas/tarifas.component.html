@@ -1,7 +1,7 @@
 <div class="main-content">
 
     <!-- Vista principal de todas las tarifas -->
-    <div class="container-fluid" *ngIf="oculta">
+    <div class="container-fluid" *ngIf="!oculta">
         <div class="col-sm-12">
             <div class="card ">
                 <div class="card-header card-header-danger">
@@ -363,7 +363,7 @@
     <!-- Fin Formulario de registro y edicion -->
 
     <!-- Tabla de visualizacion de tarifas de puesto eventual -->
-    <div class="container-fluid" *ngIf="!oculta">
+    <div class="container-fluid" *ngIf="oculta">
 
         <div class="col-sm-12">
             <div class="card ">

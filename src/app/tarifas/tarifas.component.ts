@@ -77,7 +77,9 @@ export class TarifasComponent implements OnInit {
    */
   active = false;
 
-
+  /**
+   * Archivo a subir
+   */
   selectedFile: File = null;
 
   url: any = '../' + GLOBAL.urlBase + '/assets/img/empleado.png';
