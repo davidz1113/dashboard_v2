@@ -118,13 +118,6 @@ export class TablaTarifasDinamicaComponent implements OnInit {
           }
         )
         
-        let cadena ='';
-        for(let i=0 ; i<ban.length;i++){
-          cadena += ban[i]+" && ";
-        }
-        cadena=cadena.substr(0,(cadena.length-3));
-        let cadena2 = cadena;
-        console.log(cadena);
         let contador =0 ;
         ban.map(
           (x)=>{
