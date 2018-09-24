@@ -5,7 +5,8 @@ import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Subject } from "rxjs/Subject";
 import { Observable } from "rxjs/Observable";
-
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import * as Rx from "rxjs";
 /**
  * Clase dinamica para generar consultas de las tablas de tarifas
  */
@@ -15,9 +16,11 @@ export class TarifasServices {
     public token;
     public headers;
 
-    private filtros$ = new Subject<any[]>();
-    filtros: any[]=[];
-    observableFiltros:Observable<any[]>;
+    
+
+    private filtros$ = new Rx.Subject<any[]>();
+    
+    //observableFiltros:Observable<any[]>;
     
     constructor(private _http: Http) {
         this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
@@ -36,13 +39,9 @@ export class TarifasServices {
     }
 
 
-    agregarFiltros(filtro:any={}){
-        const index = this.filtros.indexOf(filtro);
-        console.log(index);
-        if (index > -1) this.filtros.splice(index, 1);
-        this.filtros.push(filtro);
-        this.filtros$.next(this.filtros);
-        console.log(this.filtros);
+    agregarFiltros(filtros:any){
+        console.log(filtros);
+        this.filtros$.next(filtros);
     }
 
 

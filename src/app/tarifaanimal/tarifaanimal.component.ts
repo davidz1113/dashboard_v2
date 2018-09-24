@@ -4,6 +4,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TarifasServices } from '../servicios/tarifasdinamicosService.services';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { TablaTarifasDinamicaComponent } from '../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
 @Component({
     selector: 'app-tarifaanimal',
     templateUrl: './tarifaanimal.component.html',
@@ -22,20 +23,16 @@ export class TarifaanimalComponent implements OnInit {
     //mensaje de respuesta
     mensaje: string;
 
-
-    
-   
-
-    
+    @ViewChild(TablaTarifasDinamicaComponent) tablacomponent: TablaTarifasDinamicaComponent;
 
     constructor(private router: Router, private _tarifasServices: TarifasServices) {
     }
 
 
     ngOnInit(): void {
-        this.url = this.router.url.substring(15);
         this.consultarPlazas();
         this.consultarTiposAnimal();
+        this.url = this.router.url.substring(15);
     }
 
     /**
@@ -82,7 +79,7 @@ export class TarifaanimalComponent implements OnInit {
             }
         )
     }
-
+    filtros: any[]=[];
 
     /**
      * 
@@ -90,26 +87,37 @@ export class TarifaanimalComponent implements OnInit {
      */
     filtroplaza: any = {}
     guardarFiltroplaza(event) {
+        const index = this.filtros.indexOf(this.filtroplaza);
+        if (index > -1) this.filtros.splice(index, 1);
         this.filtroplaza={
             nombreatributo:'pkidplaza',
             valor:event.value
         }
-        this._tarifasServices.agregarFiltros(this.filtroplaza);
+        this.filtros.push(this.filtroplaza);
+        this.tablacomponent.recibirFiltros(this.filtros);
+        //this._tarifasServices.agregarFiltros(this.filtros);
     }
-
+    
     /**
-   //  * 
-   //  * @param event valor del filtro
-   //  */
-    filtrotipo: any = {};
-    guardarFiltrotipo(event) {
-
-        this.filtrotipo={
-            nombreatributo:'pkidtipoanimal',
-            valor: event.value
-        }
-        this._tarifasServices.agregarFiltros(this.filtrotipo);
+     //  * 
+     //  * @param event valor del filtro
+     //  */
+     filtrotipo: any = {};
+     guardarFiltrotipo(event) {
+         const index = this.filtros.indexOf(this.filtrotipo);
+         if (index > -1) this.filtros.splice(index, 1);
+         
+         this.filtrotipo={
+             nombreatributo:'pkidtipoanimal',
+             valor: event.value
+            }
+            this.filtros.push(this.filtrotipo);
+            this.tablacomponent.recibirFiltros(this.filtros);
+            
+            //this._tarifasServices.agregarFiltros(this.filtros);
 
     }
+
+   
 
 }

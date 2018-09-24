@@ -1,9 +1,10 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, Input, OnDestroy, OnChanges, SimpleChange } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { TarifasServices } from '../servicios/tarifasdinamicosService.services';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 
 
@@ -14,11 +15,13 @@ import { Observable } from 'rxjs/Observable';
   providers: [TarifasServices, DatePipe]
 })
 export class TablaTarifasDinamicaComponent implements OnInit {
+ 
+  
   //mensaje de respuesta
   public respuesta;
 
   @Input() url: string;//url del controlador, llega desde el router_link que llama al componente
-  //@Input() filtros: Observable<any[]>; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
+  filtros: any[]=[]; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
 
   //data source para la tabla 
   dataSource: MatTableDataSource<any>;
@@ -34,40 +37,25 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   //para mostrar solo las cabeceras
   cabecerasColumnas: string[] = [];
 
-
-  filtros$: Observable<any[]>;
   constructor(private _tarifasServices: TarifasServices, private datePipe: DatePipe) { }
 
   datos:any[]=[];
+ 
 
   ngOnInit() {
     this.consultarDatos();
-    this.filtros$ = this._tarifasServices.getObservableFiltros$();
-
-      this.filtros$.subscribe(
-        datos=>{
-          
-          this.datos = datos;
-        },
-        error=>{
-          
-          console.log('Error?');
-        }
-      );
-    
-      
-   //console.log(this.filtros);
-   console.log(this.datos);
-    
   }
 
-  metodo(){
+  recibirFiltros(filtros){
+    //console.log(filtros);
+    this.filtros=filtros;
+    this.aplicarFiltro();
   }
 
   /**
    * Metodo que consulta los datos de la api y construye el data source
    */
-  consultarDatos() {
+  private consultarDatos() {
     this._tarifasServices.consultarDatos(this.url).subscribe(
       response => {
         this.respuesta = response;
@@ -85,9 +73,8 @@ export class TablaTarifasDinamicaComponent implements OnInit {
           );
           //this.cabecerasColumnas.push('actions');
           this.dataSource = new MatTableDataSource(this.datostabla);
-          this.dataSource.sort = this.sort;
-          this.dataSource.paginator = this.paginator;
-
+          this.aplicarFiltro();
+          this.setFilterDataTable();
           console.log(response);
         }
       },
@@ -99,24 +86,68 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   }
 
 
-  aplicarFiltro() {
+  private aplicarFiltro() {
   
 
-    console.log(this.filtros$);
-    let filtrotext : string[] = [];
+    let filtrotext : string ='';
+    this.filtros.map(
+      (dato)=>{
+        filtrotext+=dato.valor;
+        //filtrotext.push(dato.valor);
+      }
+    );
 
-    // this.filtros.map(
-    //   (dato)=>{
-
-    //     //filtrotext.push(dato.valor);
-    //   }
-    // );
-
-    // console.log(filtrotext);
     
-    // this.dataSource.filteredData = filtrotext;
+    //console.log(filtrotext);
+    
+    this.dataSource.filter = filtrotext;
   }
 
 
+  setFilterDataTable() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    
+      this.dataSource.filterPredicate = (data: any, filter: string) => {
+        //console.log(this.filtros);
+        let ban2:boolean;
+        let ban:boolean[]=[];
+        this.filtros.map(
+          (campos)=>{
+            ban.push(data[campos.nombreatributo].toString().indexOf(campos.valor)!==-1);
+          }
+        )
+        
+        let cadena ='';
+        for(let i=0 ; i<ban.length;i++){
+          cadena += ban[i]+" && ";
+        }
+        cadena=cadena.substr(0,(cadena.length-3));
+        let cadena2 = cadena;
+        console.log(cadena);
+        let contador =0 ;
+        ban.map(
+          (x)=>{
+            if(x){
+              contador++;
+            }
+          }
 
+        )
+
+        if(contador==ban.length){
+          console.log('iguales');
+          ban2= true;
+        }else{
+          console.log('falsos');
+          ban2= false;
+        }
+
+      console.log(ban);
+      console.log("-----------");  
+      return ban2;
+      //return ((data.nombresector.toLowerCase().indexOf(this.filtroNombreSector) !== -1) && (data.sectoractivo == true || this.toggleActDesc == true) && (data.nombrezona.indexOf(this.zonaselect) !== -1));
+      }
+
+    }
 }
