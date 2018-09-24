@@ -3,6 +3,8 @@ import { Http, Response, Headers, ResponseContentType } from '@angular/http';
 import { GLOBAL } from "./globales";
 import { map } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { Subject } from "rxjs/Subject";
+import { Observable } from "rxjs/Observable";
 
 /**
  * Clase dinamica para generar consultas de las tablas de tarifas
@@ -13,7 +15,10 @@ export class TarifasServices {
     public token;
     public headers;
 
-
+    private filtros$ = new Subject<any[]>();
+    filtros: any[]=[];
+    observableFiltros:Observable<any[]>;
+    
     constructor(private _http: Http) {
         this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
@@ -31,6 +36,20 @@ export class TarifasServices {
     }
 
 
+    agregarFiltros(filtro:any={},nameatrib,value){
+        const index = this.filtros.indexOf(filtro);
+        console.log(index);
+        if (index > -1) this.filtros.splice(index, 1);
+        filtro = {
+            nombreatributo: nameatrib,
+            valor: value
+        };
+        this.filtros.push(filtro);
+        this.filtros$.next(this.filtros);
+        console.log(this.filtros);
+    }
+
+
     getToken() {
         let token = JSON.parse(localStorage.getItem('token'));
 
@@ -41,5 +60,11 @@ export class TarifasServices {
         }
         return this.token;
     }
+
+
+    getObservableFiltros$():Observable<any[]>{
+        return this.filtros$.asObservable();
+    }
+
 
 }

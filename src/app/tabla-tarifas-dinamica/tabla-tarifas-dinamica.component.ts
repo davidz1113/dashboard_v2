@@ -3,6 +3,7 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { TarifasServices } from '../servicios/tarifasdinamicosService.services';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs/Observable';
 
 
 
@@ -17,10 +18,10 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   public respuesta;
 
   @Input() url: string;//url del controlador, llega desde el router_link que llama al componente
-  @Input() filtros: any[] = []; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
+  //@Input() filtros: Observable<any[]>; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
 
   //data source para la tabla 
-  dataSource: any;
+  dataSource: MatTableDataSource<any>;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -33,11 +34,34 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   //para mostrar solo las cabeceras
   cabecerasColumnas: string[] = [];
 
+
+  filtros$: Observable<any[]>;
   constructor(private _tarifasServices: TarifasServices, private datePipe: DatePipe) { }
+
+  datos;
 
   ngOnInit() {
     this.consultarDatos();
+    this.filtros$ = this._tarifasServices.getObservableFiltros$();
 
+      this.filtros$.subscribe(
+        datos=>{
+          
+          this.datos = datos;
+        },
+        error=>{
+          
+          console.log('Error?');
+        }
+      );
+    
+      
+   //console.log(this.filtros);
+   console.log(this.datos);
+    
+  }
+
+  metodo(){
   }
 
   /**
@@ -74,6 +98,24 @@ export class TablaTarifasDinamicaComponent implements OnInit {
     );
   }
 
+
+  aplicarFiltro() {
+  
+
+    console.log(this.filtros$);
+    let filtrotext : string[] = [];
+
+    // this.filtros.map(
+    //   (dato)=>{
+
+    //     //filtrotext.push(dato.valor);
+    //   }
+    // );
+
+    // console.log(filtrotext);
+    
+    // this.dataSource.filteredData = filtrotext;
+  }
 
 
 

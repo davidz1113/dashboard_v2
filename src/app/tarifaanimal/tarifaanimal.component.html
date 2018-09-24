@@ -1,1 +1,51 @@
-<app-tabla-tarifas-dinamica [url]="url"></app-tabla-tarifas-dinamica>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header card-header-danger ">
+                    <h4 class="card-title text-center">Tarifa animal</h4>
+                </div>
+                <!--Mensaje de confirmacion-->
+                <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
+                    <i class="material-icons" data-notify="icon">warning</i>
+                    <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
+                        <i class="material-icons">close</i>
+                    </button>
+                    <span data-notify="message">
+                        <b>Info:</b> {{mensaje}} </span>
+                    <div class="col-sm-4">
+                        <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()" *ngIf="respuesta=='error'">Intentar
+                            nuevamente
+                        </button>
+                    </div>
+                </div>
+                <!--Fin mensaje confirmacion-->
+
+
+                <div class="card-body">
+                    <div class="row justify-content-center">
+                        <div class="col-sm-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Seleccione plaza" id="fkidplaza" (change)='guardarFiltroplaza($event)'>
+                                    <mat-option value=''>Todos</mat-option>
+                                    <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazasmercado">{{plaza.nombreplaza}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-3">
+                            <mat-form-field>
+                                <mat-select placeholder="Seleccione tipo de animal" id="fkidtipoanimal" (change)='guardarFiltrotipo($event)'>
+                                    <mat-option value=''>Todos</mat-option>
+                                    <mat-option [value]='tipo.pkidtipoanimal' *ngFor="let tipo of tiposanimal">{{tipo.nombretipoanimal}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+
+                    <app-tabla-tarifas-dinamica [url]="url"></app-tabla-tarifas-dinamica>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
