@@ -42,6 +42,9 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/icons', title: 'Reportes', icon: 'bubble_chart', class: '', valor: 230 },
     { path: '/' + GLOBAL.urlBase + '/notificacion', title: 'Notificaciones', icon: 'notifications', class: '', valor: 240 },
     { path: '/' + GLOBAL.urlBase + '/tareas', title: 'Tareas', icon: 'assignment', class: '', valor: 250 },
+
+
+    { path: '/' + GLOBAL.urlBase + '/tarifas', title: 'Tarifas', icon: 'attach_money', class: '', valor: 20 },
 ];
 
 @Component({

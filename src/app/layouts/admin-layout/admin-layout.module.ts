@@ -48,6 +48,10 @@ import { DialogRegistroEquipo } from '../../login/dialogo-registro-equipo/regist
 import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamico.component';
 import { TablaTarifasDinamicaComponent } from '../../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
 import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
+import { TarifasComponent } from '../../tarifas/tarifas.component';
+
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -96,7 +100,8 @@ import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component
     EquiposAgregarEditarComponent,
     ReporteDinamicoComponent,
     TablaTarifasDinamicaComponent,
-    TarifaanimalComponent
+    TarifaanimalComponent,
+    TarifasComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,
