@@ -26,6 +26,7 @@ import { ReporteDinamicoComponent } from '../../reporte-dinamico/reporte-dinamic
 import { TokenGuard } from '../../servicios/guards/token-guard.guard';
 import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
 import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.component';
+import { TarifasComponent } from '../../tarifas/tarifas.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -104,4 +105,12 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/notificacion', component: NotificationsComponent },
     { path: GLOBAL.urlBase + '/upgrade', component: UpgradeComponent },
     { path: GLOBAL.urlBase + '/tareas', component: TareasComponent },
+
+
+
+
+
+
+
+    { path: GLOBAL.urlBase + '/tarifas', component: TarifasComponent, canActivate: [TokenGuard] },
 ];

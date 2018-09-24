@@ -1,0 +1,403 @@
+<div class="main-content">
+
+    <!-- Vista principal de todas las tarifas -->
+    <div class="container-fluid" *ngIf="!oculta">
+        <div class="col-sm-12">
+            <div class="card ">
+                <div class="card-header card-header-danger">
+                    <h3 class="card-title text-center">Tarifas para el año {{currentDate | date: 'yyyy'}}</h3>
+                    <p class="card-category text-center">Tarifas correspondientes al año actual</p>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row mt-4">
+
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-primary">
+                                    <h3 class="card-title text-center">Puesto <i class="material-icons ">account_balance</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" oncl>
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-info">
+                                    <h3 class="card-title text-center">Puesto Eventual<i class="material-icons ">account_balance</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-warning">
+                                    <h3 class="card-title text-center">Interés <i class="material-icons ">attach_money</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-danger">
+                                    <h3 class="card-title text-center">Parqueadero <i class="material-icons ">commute</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-success ">
+                                    <h3 class="card-title text-center">Animal <i class="material-icons">pets</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-rose ">
+                                    <h3 class="card-title text-center">Pesaje <i class="material-icons ">save_alt</i></h3>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card card-chart">
+                                <div class="card-header card-header-warning ">
+                                    <span class="text-center">
+                                        <h3 class="card-title ">Vehiculo&nbsp;<i class="material-icons ">time_to_leave</i></h3>
+                                    </span>
+                                    <p class="card-category"></p>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-category text-justify">
+                                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat error natus
+                                        dolore tenetur
+                                        eaque nobis esse.
+                                    </p>
+                                    <br>
+                                    <h3 class="card-title text-center">Valor: &nbsp; $3000
+                                        <small>COP</small>
+                                    </h3>
+                                    <div class="row">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                            Editar <i class="material-icons">edit</i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="stats mx-auto">
+                                        <i class="material-icons">calendar_today</i> &nbsp; Tarifa 2018 &nbsp;-&nbsp;
+                                        Resolución
+                                        &nbsp;<span class="text-danger"> 892 </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Vista principal de todas las tarifas -->
+
+    <!-- Formulario de registro y edicion -->
+    <div class="container-fluid" *ngIf="oculta">
+
+        <div class="col-sm-12">
+            <div class="card ">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Tarifa NOMBRETARIFA para el año {{currentDate | date: 'yyyy'}}</h4>
+                    <p class="card-category"></p>
+                </div>
+
+                <div class="card-body">
+
+                    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="text-center">Seleccionar documento de resolución</h4>
+                        </div>
+                    </div>
+
+                    <div class="row px-5 my-3">
+                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()">
+                            Seleccionar
+                        </button>
+                    </div>
+                    <hr>
+                    <!-- Inicio Formulario -->
+                    <form [formGroup]="puestoEventualForm" (ngSubmit)="guardarCambios()" class="pl-4">
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col pr-4 mx-auto">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza"
+                                            formControlName="fkidplaza">
+                                            <mat-option *ngFor="let plaza of plazas" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="puestoEventualForm.get('fkidplaza').hasError('required')">
+                                            Seleccione al menos una <strong>Plaza</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col pr-4 mx-auto ">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual"
+                                            name="valortarifapuestoeventual" formControlName="valortarifapuestoeventual">
+                                        <mat-error *ngIf="puestoEventualForm.get('valortarifapuestoeventual').hasError('required')">
+                                            El nombre es <strong>requerido</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col pr-4 mx-auto ">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual"
+                                            name="numeroresoluciontarifapuestoeventual" formControlName="numeroresoluciontarifapuestoeventual">
+                                        <mat-error *ngIf="puestoEventualForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
+                                            El numero de resolución es <strong>requerido</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col pr-4 mx-auto mt-3">
+                                    <mat-slide-toggle (change)="cambiarEstadoForm()" formControlName="tarifapuestoeventualactivo">
+                                        Tarifa {{textActive}}
+                                    </mat-slide-toggle>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col pr-4 mx-auto ">
+                                    <mat-form-field>
+                                        <textarea matInput placeholder="Descripcion" formControlName="descripciontarifapuestoeventual"></textarea>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="form-row pr-4">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
+                                    [disabled]="!puestoEventualForm.valid">
+                                    Guardar
+                                </button>
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
+                                    (click)="cancelarEdicion()">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- Fin Formulario -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Formulario de registro y edicion -->
+
+    <!-- Tabla de visualizacion de tarifas de puesto eventual -->
+    <div class="container-fluid" *ngIf="oculta">
+
+        <div class="col-sm-12">
+            <div class="card ">
+                <div class="card-header card-header-danger">
+                    <h4 class="card-title">Tarifas de puesto eventual</h4>
+                    <p class="card-category"></p>
+                </div>
+
+                <div class="card-body">
+
+                    <!--Filtros  -->
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="buscar por plaza" [(ngModel)]="plazaselect" (change)="modificarFiltroPlaza()">
+                                    <mat-option value=''> Todos </mat-option>
+                                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="col-md-5">
+                            <mat-form-field>
+                                <mat-select placeholder="buscar por sector" [(ngModel)]="sectorselec" (change)="modificarFiltroSector()">
+                                    <mat-option value=''> Todos </mat-option>
+                                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Tabla de visualizacion de tarifas de puesto eventual -->
+</div>
