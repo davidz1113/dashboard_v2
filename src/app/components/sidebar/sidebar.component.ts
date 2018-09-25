@@ -45,7 +45,6 @@ export const ROUTES: RouteInfo[] = [
 
 
     { path: '/' + GLOBAL.urlBase + '/tarifas', title: 'Tarifas', icon: 'attach_money', class: '', valor: 20 },
-    { path: '/' + GLOBAL.urlBase + '/tarifainteres', title: 'Tarifa Interes', icon: 'attach_money', class: '', valor: 23 },
 ];
 
 @Component({

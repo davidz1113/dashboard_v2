@@ -60,7 +60,7 @@ export class VerificaTokenService {
                 map(
                     (resp: any) => {
                         const respuesta = JSON.parse(resp._body);
-                        console.log(respuesta.token_valido);
+                        // console.log(respuesta.token_valido);
                         return respuesta.token_valido;
                     }
                 )

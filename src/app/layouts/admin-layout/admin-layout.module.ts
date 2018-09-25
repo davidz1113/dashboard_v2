@@ -54,6 +54,11 @@ import { DatosPipe } from '../../servicios/pipes/pipedatostabla.pipe';
 
 
 
+
+import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
+
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -105,7 +110,8 @@ import { DatosPipe } from '../../servicios/pipes/pipedatostabla.pipe';
     TablaTarifasDinamicaComponent,
     TarifaanimalComponent,
     TarifasComponent,
-    TarifaInteresComponent
+    TarifaInteresComponent,
+    TarifaPuestoEventualComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,
