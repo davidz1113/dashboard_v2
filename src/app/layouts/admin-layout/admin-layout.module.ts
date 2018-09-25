@@ -50,6 +50,7 @@ import { TablaTarifasDinamicaComponent } from '../../tabla-tarifas-dinamica/tabl
 import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
 import { TarifasComponent } from '../../tarifas/tarifas.component';
 import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
+import { DatosPipe } from '../../servicios/pipes/pipedatostabla.pipe';
 
 
 
@@ -97,6 +98,7 @@ import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventua
     GenericAgregarEditarComponent,
     TablaGenericComponent,
     ArrayOne,
+    DatosPipe,
     PuestosComponent,
     PuertasComponent,
     DialogConfirmacionGenericComponent,
