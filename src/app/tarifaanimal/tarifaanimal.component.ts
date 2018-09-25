@@ -26,6 +26,11 @@ export class TarifaanimalComponent implements OnInit {
     //mensaje de respuesta
     mensaje: string;
 
+    /**
+     * Muestra u oculta la tabla de tarifas
+    */
+    oculta = false;
+
     @ViewChild(TablaTarifasDinamicaComponent) tablacomponent: TablaTarifasDinamicaComponent;
 
     constructor(private router: Router, private _tarifasServices: TarifasServices) {
@@ -137,6 +142,15 @@ export class TarifaanimalComponent implements OnInit {
         this.tablacomponent.recibirFiltros(this.filtros);
     }
 
+
+    /**
+     * 
+     * @param event objecto a editar que llega desde la tabla
+     */
+    llamarFormulario(event) {
+        console.log(event);
+        this.oculta = !this.oculta;
+    }
 
 
 }
