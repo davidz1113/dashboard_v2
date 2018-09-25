@@ -81,7 +81,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.datostabla);
           this.aplicarFiltro();
           this.setFilterDataTable();
-          console.log(response);
+          //console.log(response);
         }
       },
       error => {
@@ -96,7 +96,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
    */
   private aplicarFiltro() {
     let filtrotext: string = '';
-    if(this.filtros.length==0){
+    if(this.filtros.length==0){//significa que es la primera vez que carga la tabla, por lo tanto solo debe mostrar los que tengan el valor de true
       this.dataSource.filter = "true";
     }else{
       this.filtros.map(
@@ -118,9 +118,6 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   setFilterDataTable() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    console.log("aqui");
-    console.log(this.filtros.length);
-
     this.dataSource.filterPredicate = (data: any, filter: string) => {
       
       let ban2: boolean;
@@ -147,10 +144,10 @@ export class TablaTarifasDinamicaComponent implements OnInit {
         )
         //Si encuentra q todos los campos son de tipo true, significa que la fila corresponde a los filtros seleccionados
         if (contador == ban.length) {//va hasta ban.length, porque determina la longitud de los filtros boleanos, todos deben ser true
-          console.log('iguales');
+          //console.log('iguales');
           ban2 = true;
         } else {
-          console.log('falsos');
+          //console.log('falsos');
           ban2 = false;
         }
 

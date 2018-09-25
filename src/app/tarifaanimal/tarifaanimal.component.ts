@@ -131,7 +131,7 @@ export class TarifaanimalComponent implements OnInit {
         if (index > -1) this.filtros.splice(index, 1);
         this.filtrotogle = {
             nombreatributo: 'tarifaanimalactivo',
-            valor: !this.toggleActDesc
+            valor: !this.toggleActDesc //se envia la negacion del valor del togle que tenga actualmente
         }
         this.filtros.push(this.filtrotogle);
         this.tablacomponent.recibirFiltros(this.filtros);
