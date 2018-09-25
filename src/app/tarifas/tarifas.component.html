@@ -1,7 +1,7 @@
 <div class="main-content">
 
     <!-- Vista principal de todas las tarifas -->
-    <div class="container-fluid" *ngIf="oculta">
+    <div class="container-fluid">
         <div class="col-sm-12">
             <div class="card ">
                 <div class="card-header card-header-danger">
@@ -30,7 +30,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" oncl>
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -61,7 +61,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -94,7 +94,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirTarifaInteres()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -129,7 +129,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -161,7 +161,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -193,7 +193,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -233,7 +233,7 @@
                                         <small>COP</small>
                                     </h3>
                                     <div class="row">
-                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto">
+                                        <button mat-raised-button class="btn btn-outline-primary col-8 mx-auto" (click)="redirigirPuestoEventual()">
                                             Editar <i class="material-icons">edit</i>
                                         </button>
                                     </div>
@@ -255,149 +255,4 @@
     </div>
     <!-- Fin Vista principal de todas las tarifas -->
 
-    <!-- Formulario de registro y edicion -->
-    <div class="container-fluid" *ngIf="!oculta">
-
-        <div class="col-sm-12">
-            <div class="card ">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Tarifa NOMBRETARIFA para el año {{currentDate | date: 'yyyy'}}</h4>
-                    <p class="card-category"></p>
-                </div>
-
-                <div class="card-body">
-
-                    <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
-
-                    <div class="row">
-                        <div class="col-12">
-                            <h4 class="text-center">Seleccionar documento de resolución</h4>
-                        </div>
-                    </div>
-
-                    <div class="row px-5 my-3">
-                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()">
-                            Seleccionar
-                        </button>
-                    </div>
-                    <hr>
-                    <!-- Inicio Formulario -->
-                    <form [formGroup]="puestoEventualForm" (ngSubmit)="guardarCambios()" class="pl-4">
-
-                        <div class="form-group">
-                            <div class="form-row">
-                                <div class="col pr-4 mx-auto">
-                                    <mat-form-field>
-                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza"
-                                            formControlName="fkidplaza">
-                                            <mat-option *ngFor="let plaza of plazas" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
-                                        </mat-select>
-                                        <mat-error *ngIf="puestoEventualForm.get('fkidplaza').hasError('required')">
-                                            Seleccione al menos una <strong>Plaza</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col pr-4 mx-auto ">
-                                    <mat-form-field class="example-full-width">
-                                        <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual"
-                                            name="valortarifapuestoeventual" formControlName="valortarifapuestoeventual">
-                                        <mat-error *ngIf="puestoEventualForm.get('valortarifapuestoeventual').hasError('required')">
-                                            El nombre es <strong>requerido</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="form-row">
-                                <div class="col pr-4 mx-auto ">
-                                    <mat-form-field class="example-full-width">
-                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual"
-                                            name="numeroresoluciontarifapuestoeventual" formControlName="numeroresoluciontarifapuestoeventual">
-                                        <mat-error *ngIf="puestoEventualForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
-                                            El numero de resolución es <strong>requerido</strong>
-                                        </mat-error>
-                                    </mat-form-field>
-                                </div>
-
-                                <div class="col pr-4 mx-auto mt-3">
-                                    <mat-slide-toggle (change)="cambiarEstadoForm()" formControlName="tarifapuestoeventualactivo">
-                                        Tarifa {{textActive}}
-                                    </mat-slide-toggle>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="form-row">
-                                <div class="col pr-4 mx-auto ">
-                                    <mat-form-field>
-                                        <textarea matInput placeholder="Descripcion" formControlName="descripciontarifapuestoeventual"></textarea>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group">
-                            <div class="form-row pr-4">
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
-                                    [disabled]="!puestoEventualForm.valid">
-                                    Guardar
-                                </button>
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
-                                    (click)="cancelarEdicion()">
-                                    Cancelar
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- Fin Formulario -->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin Formulario de registro y edicion -->
-
-    <!-- Tabla de visualizacion de tarifas de puesto eventual -->
-    <div class="container-fluid" *ngIf="oculta">
-
-        <div class="col-sm-12">
-            <div class="card ">
-                <div class="card-header card-header-danger">
-                    <h4 class="card-title">Tarifas de puesto eventual</h4>
-                    <p class="card-category"></p>
-                </div>
-
-                <div class="card-body">
-
-                    <!--Filtros  -->
-                    <div class="row justify-content-center">
-
-                        <div class="col-md-5">
-                            <mat-form-field>
-                                <mat-select placeholder="buscar por plaza" [(ngModel)]="plazaselect" (change)="modificarFiltroPlaza()">
-                                    <mat-option value=''> Todos </mat-option>
-                                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-
-                        <div class="col-md-5">
-                            <mat-form-field>
-                                <mat-select placeholder="buscar por sector" [(ngModel)]="sectorselec" (change)="modificarFiltroSector()">
-                                    <mat-option value=''> Todos </mat-option>
-                                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Fin Tabla de visualizacion de tarifas de puesto eventual -->
 </div>

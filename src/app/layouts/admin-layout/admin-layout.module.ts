@@ -53,6 +53,11 @@ import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifaintere
 
 
 
+
+import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
+
+
+
 @NgModule({
   imports: [
     CommonModule,
@@ -103,7 +108,8 @@ import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifaintere
     TablaTarifasDinamicaComponent,
     TarifaanimalComponent,
     TarifasComponent,
-    TarifaInteresComponent
+    TarifaInteresComponent,
+    TarifaPuestoEventualComponent
   ],
   entryComponents: [
     DialogConfirmacionComponent,

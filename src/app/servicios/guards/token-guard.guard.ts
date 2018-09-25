@@ -23,12 +23,12 @@ export class TokenGuard implements CanActivate {
                         this.router.navigate(['/' + GLOBAL.urlBase + '/login', 1]);
                         resolve(false);
                     } else {
-                        console.log('entro al resolve');
+                        // console.log('entro al resolve');
                         resolve(true);
                     }
                 },
                 () => {
-                    console.log('entro al reject');
+                    // console.log('entro al reject');
                     reject(false);
                 }
             );
