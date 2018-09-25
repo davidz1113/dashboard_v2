@@ -74,7 +74,7 @@ import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifaintere
     SortingEmployeesPipe,
     TablaPaginadaComponent,
     UsuariosRolesComponent,
-    TablaUsuariosComponent,   
+    TablaUsuariosComponent,
     UserAgregarEditarComponent,
     DialogConfirmacionComponent,
     PlazasMercadoComponent,
@@ -111,7 +111,6 @@ import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifaintere
     DialogConfirmacionPlaza,
     DialogConfirmacionTipos,
     DialogConfirmacionGenericComponent,
-    
   ],
 })
 

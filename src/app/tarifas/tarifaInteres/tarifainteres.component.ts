@@ -7,9 +7,8 @@ import { PlazaMercado } from '../../modelos/plaza-mercado';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 @Component({
-    selector: 'app-nuevo',
-    templateUrl: './nuevo.component.html',
-    styleUrls: ['./nuevo.component.css'],
+    selector: 'app-tarifa-interes',
+    templateUrl: './tarifainteres.component.html',
     providers: [ExcepcionService, PlazaServices, TarifaInteresService]
 })
 export class TarifaInteresComponent implements OnInit {
@@ -22,6 +21,8 @@ export class TarifaInteresComponent implements OnInit {
      * Plazas de mercado en el sistema
      */
     plazas: PlazaMercado[] = [];
+
+    oculta = true;
 
     // ----------------------------------------------------------------------------------------------------------
     // Propiedades Formulario
@@ -44,6 +45,8 @@ export class TarifaInteresComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.inicializaForm();
+        this.consultarPlazas();
     }
     // ----------------------------------------------------------------------------------------------------------
     // Métodos

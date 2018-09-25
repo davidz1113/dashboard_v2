@@ -27,6 +27,7 @@ import { TokenGuard } from '../../servicios/guards/token-guard.guard';
 import { TarifaanimalComponent } from '../../tarifaanimal/tarifaanimal.component';
 import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.component';
 import { TarifasComponent } from '../../tarifas/tarifas.component';
+import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -113,4 +114,5 @@ export const AdminLayoutRoutes: Routes = [
 
 
     { path: GLOBAL.urlBase + '/tarifas', component: TarifasComponent, canActivate: [TokenGuard] },
+    { path: GLOBAL.urlBase + '/tarifainteres', component: TarifaInteresComponent, canActivate: [TokenGuard] },
 ];
