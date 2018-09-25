@@ -5,6 +5,8 @@ export class TarifaPuestoEventual {
         public tarifapuestoeventualactivo: boolean,
         public descripciontarifapuestoeventual: string,
         public fkidplaza: string,
-        public documentoresoluciontarifapuestoeventual?: string
+        public documentoresoluciontarifapuestoeventual?: string,
+        public pkidtarifapuestoeventual?: number,
+        public pkidplaza?: number
     ) { }
 }

@@ -92,6 +92,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
    */
   url: string;
 
+  tarifaEdit: TarifaPuestoEventual;
   // ----------------------------------------------------------------------------------------------------------
   // Propiedades Formulario
   // ----------------------------------------------------------------------------------------------------------
@@ -247,6 +248,23 @@ export class TarifaPuestoEventualComponent implements OnInit {
   }
 
   /**
+   * Inicializa el formulario de plazas
+   */
+  inicializaFormEdit() {
+
+    if (this.tarifaEdit !== undefined) {
+      console.log('Tarifa a editar:  ' + JSON.stringify(this.tarifaEdit));
+      this.puestoEventualForm = new FormGroup({
+        valortarifapuestoeventual: new FormControl(this.tarifaEdit.valortarifapuestoeventual, Validators.required),
+        numeroresoluciontarifapuestoeventual: new FormControl(this.tarifaEdit.numeroresoluciontarifapuestoeventual, Validators.required),
+        tarifapuestoeventualactivo: new FormControl(this.tarifaEdit.tarifapuestoeventualactivo),
+        descripciontarifapuestoeventual: new FormControl(this.tarifaEdit.descripciontarifapuestoeventual),
+        fkidplaza: new FormControl(this.tarifaEdit.pkidplaza, Validators.required)
+      });
+    }
+  }
+
+  /**
    * Lista todas las tarifas de puesto eventual registradas en el sistema
    */
   listarTarifasPuestoEventual() {
@@ -271,19 +289,44 @@ export class TarifaPuestoEventualComponent implements OnInit {
         this.puestoEventualForm.value.descripciontarifapuestoeventual,
         this.puestoEventualForm.value.fkidplaza
       );
-      const uploadData = new FormData();
-      if (this.selectedFile != null) {
 
-        uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
-        console.log(this.selectedFile.size);
+      if (this.tarifaEdit.pkidtarifapuestoeventual === null) {
+
+        const uploadData = new FormData();
+
+        if (this.selectedFile != null) {
+          uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
+          console.log(this.selectedFile.size);
+        }
+
+        this._tarifasServices.crearTarifa(nuevaTarifa, uploadData, this.url).subscribe(
+          resp => {
+            console.log(resp);
+            // this.mensaje = resp.msg + ' Tarifa : ' + resp.puerta.nombrepuerta;
+            this.mostrarMensaje(1);
+            this.mostrarOcultar();
+          }
+        );
+      } else {
+
+        nuevaTarifa.pkidtarifapuestoeventual = this.tarifaEdit.pkidtarifapuestoeventual;
+        const uploadData = new FormData();
+
+        if (this.selectedFile != null) {
+          uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
+          console.log(this.selectedFile.size);
+        }
+
+        this._tarifasServices.editarTarifa(nuevaTarifa, uploadData, this.url).subscribe(
+          resp => {
+            console.log(resp);
+            // this.mensaje = resp.msg + ' Tarifa : ' + resp.puerta.nombrepuerta;
+            this.mostrarMensaje(1);
+            this.mostrarOcultar();
+          }
+        );
       }
 
-
-      this._tarifasServices.crearTarifa(nuevaTarifa, uploadData,this.url).subscribe(
-        resp => {
-          console.log(resp);
-        }
-      );
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
       const funcion = 'guardarCambios()';
@@ -294,8 +337,26 @@ export class TarifaPuestoEventualComponent implements OnInit {
     }
   }
 
+  /**
+   * Muestra el mensaje de confirmación
+   * @param codeError Codigo de error
+   */
+  mostrarMensaje(codeError: number) {
+    if (codeError === 1) {
+      this.claseDinamic = 'alert alert-success alert-with-icon';
+      this.iconAlert = 'done';
+    } else if (codeError === 0) {
+      this.claseDinamic = 'alert alert-warning alert-with-icon';
+      this.iconAlert = 'warning';
+    }
+  }
+
+  /**
+   * Cancela una edición
+   */
   cancelarEdicion() {
     this.mostrarOcultar();
+    this.tarifaEdit = null;
   }
   /**
    * Cambia el estado de una puerta
@@ -333,14 +394,14 @@ export class TarifaPuestoEventualComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param event 
+   * llena el objeto para editar
+   * @param event Evento del emmiter
    */
-  llamarFormulario(event){
-    console.log(event.objeto);
-    
-    this.oculta = !this.oculta;
-
+  llamarFormulario(event) {
+    this.tarifaEdit = event.objeto;
+    console.log(this.tarifaEdit);
+    this.inicializaFormEdit();
+    this.mostrarOcultar();
   }
 
 
