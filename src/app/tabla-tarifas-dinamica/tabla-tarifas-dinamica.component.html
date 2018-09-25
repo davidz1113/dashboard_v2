@@ -6,7 +6,7 @@
           <div *ngFor="let cabecera of cabeceras;let indice=index">
             <ng-container *ngIf="cabecera.nombrecampo!='actions'" matColumnDef="{{cabecera.nombrecampo}}">
               <mat-header-cell *matHeaderCellDef mat-sort-header>{{cabecera.nombreetiqueta}}</mat-header-cell>
-              <mat-cell *matCellDef="let element">{{element[cabecera.nombrecampo]|arrayOne}}</mat-cell>
+              <mat-cell *matCellDef="let element" [ngClass]="{'table-danger': !element[url.substring(1)+'activo'] }"><span [outerHTML]="element[cabecera.nombrecampo] | DatosPipe"></span> </mat-cell>
             </ng-container>
 
             <ng-container *ngIf="cabecera.nombrecampo=='actions'" matColumnDef="{{cabecera.nombrecampo}}" stickyEnd>

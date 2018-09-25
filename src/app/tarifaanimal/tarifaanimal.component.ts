@@ -12,6 +12,9 @@ import { TablaTarifasDinamicaComponent } from '../tabla-tarifas-dinamica/tabla-t
 })
 export class TarifaanimalComponent implements OnInit {
 
+    //toggle filtro activos/descativados
+    toggleActDesc: boolean = false;
+
     //url o nombre del controlador
     url: string;
     //variables para los selectores
@@ -79,7 +82,7 @@ export class TarifaanimalComponent implements OnInit {
             }
         )
     }
-    filtros: any[]=[];
+    filtros: any[] = [];
 
     /**
      * 
@@ -89,35 +92,51 @@ export class TarifaanimalComponent implements OnInit {
     guardarFiltroplaza(event) {
         const index = this.filtros.indexOf(this.filtroplaza);
         if (index > -1) this.filtros.splice(index, 1);
-        this.filtroplaza={
-            nombreatributo:'pkidplaza',
-            valor:event.value
+        this.filtroplaza = {
+            nombreatributo: 'pkidplaza',
+            valor: event.value
         }
         this.filtros.push(this.filtroplaza);
         this.tablacomponent.recibirFiltros(this.filtros);
         //this._tarifasServices.agregarFiltros(this.filtros);
     }
-    
+
     /**
      //  * 
      //  * @param event valor del filtro
      //  */
-     filtrotipo: any = {};
-     guardarFiltrotipo(event) {
-         const index = this.filtros.indexOf(this.filtrotipo);
-         if (index > -1) this.filtros.splice(index, 1);
-         
-         this.filtrotipo={
-             nombreatributo:'pkidtipoanimal',
-             valor: event.value
-            }
-            this.filtros.push(this.filtrotipo);
-            this.tablacomponent.recibirFiltros(this.filtros);
-            
-            //this._tarifasServices.agregarFiltros(this.filtros);
+    filtrotipo: any = {};
+    guardarFiltrotipo(event) {
+        const index = this.filtros.indexOf(this.filtrotipo);
+        if (index > -1) this.filtros.splice(index, 1);
+
+        this.filtrotipo = {
+            nombreatributo: 'pkidtipoanimal',
+            valor: event.value
+        }
+        this.filtros.push(this.filtrotipo);
+        this.tablacomponent.recibirFiltros(this.filtros);
+
+        //this._tarifasServices.agregarFiltros(this.filtros);
 
     }
 
-   
+
+    /**
+     * Metodo que guarda el valor del toggle
+     */
+    filtrotogle: any = {};
+    guardarToggle() {
+        const index = this.filtros.indexOf(this.filtrotogle);
+        if (index > -1) this.filtros.splice(index, 1);
+        this.filtrotogle = {
+            nombreatributo: 'tarifaanimalactivo',
+            valor: !this.toggleActDesc
+        }
+        this.filtros.push(this.filtrotogle);
+        this.tablacomponent.recibirFiltros(this.filtros);
+    }
+
+
 
 }

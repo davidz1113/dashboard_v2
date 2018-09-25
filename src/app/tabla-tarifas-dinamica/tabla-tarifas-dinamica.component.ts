@@ -15,13 +15,13 @@ import { Subscription } from 'rxjs/Subscription';
   providers: [TarifasServices, DatePipe]
 })
 export class TablaTarifasDinamicaComponent implements OnInit {
- 
-  
+
+
   //mensaje de respuesta
   public respuesta;
 
   @Input() url: string;//url del controlador, llega desde el router_link que llama al componente
-  filtros: any[]=[]; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
+  filtros: any[] = []; //filtros para armar el filter del datasource, como arreglo porque puede ser uno o varios
 
   //data source para la tabla 
   dataSource: MatTableDataSource<any>;
@@ -39,16 +39,22 @@ export class TablaTarifasDinamicaComponent implements OnInit {
 
   constructor(private _tarifasServices: TarifasServices, private datePipe: DatePipe) { }
 
-  datos:any[]=[];
- 
+  datos: any[] = [];
+
 
   ngOnInit() {
+    //console.log(this.url);
+
     this.consultarDatos();
   }
 
-  recibirFiltros(filtros){
+  /**
+   * 
+   * @param filtros filtros que llegan desde el componente q lo llama
+   */
+  recibirFiltros(filtros) {
     //console.log(filtros);
-    this.filtros=filtros;
+    this.filtros = filtros;
     this.aplicarFiltro();
   }
 
@@ -64,10 +70,10 @@ export class TablaTarifasDinamicaComponent implements OnInit {
         } else {//traemos los objetos de respuesta
           this.cabeceras = this.respuesta.cabeceras;//obtenemos las cabeceras con nombrecampo y nombreetiqueta
           this.datostabla = this.respuesta[this.url.substring(1)];
-          this.cabeceras.push({nombrecampo:'actions',nombreetiqueta:'Acciones'});
+          this.cabeceras.push({ nombrecampo: 'actions', nombreetiqueta: 'Acciones' });
 
           this.cabeceras.map(
-            (dato)=>{
+            (dato) => {
               this.cabecerasColumnas.push(dato.nombrecampo);
             }
           );
@@ -85,62 +91,76 @@ export class TablaTarifasDinamicaComponent implements OnInit {
     );
   }
 
-
+  /**
+   * Metodo que especifica los valores a los cuales se les aplicara el filtro
+   */
   private aplicarFiltro() {
-  
+    let filtrotext: string = '';
+    if(this.filtros.length==0){
+      this.dataSource.filter = "true";
+    }else{
+      this.filtros.map(
+        (dato) => {
+          console.log(dato);
+          
+          filtrotext += dato.valor;
+        }
+      );
+      this.dataSource.filter = filtrotext;
+    }
 
-    let filtrotext : string ='';
-    this.filtros.map(
-      (dato)=>{
-        filtrotext+=dato.valor;
-        //filtrotext.push(dato.valor);
-      }
-    );
-
-    
-    //console.log(filtrotext);
-    
-    this.dataSource.filter = filtrotext;
-  }
+    }
 
 
+  /**
+   * personaliza el filter de la tabla para retornar los datos exactos
+   */
   setFilterDataTable() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    
-      this.dataSource.filterPredicate = (data: any, filter: string) => {
-        //console.log(this.filtros);
-        let ban2:boolean;
-        let ban:boolean[]=[];
+    console.log("aqui");
+    console.log(this.filtros.length);
+
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      
+      let ban2: boolean;
+      
+      if(this.filtros.length==0){
+        
+        ban2 = data[this.url.substring(1)+'activo']==true;
+
+      }else{
+        let ban: boolean[] = [];//llenado de un arreglo de booleanos para saber el campo exacto donde encuentre la igualdad
         this.filtros.map(
-          (campos)=>{
-            ban.push(data[campos.nombreatributo].toString().indexOf(campos.valor)!==-1);
+          (campos) => {
+            ban.push(data[campos.nombreatributo].toString().indexOf(campos.valor) !== -1);//llenamos los booleanos comparando el campo con el valor 
           }
         )
-        
-        let contador =0 ;
+        let contador = 0;//contador para saber cuantos booleanos true encontrara
         ban.map(
-          (x)=>{
-            if(x){
+          (x) => {
+            if (x) {//si es igual a true, se suma 1 el contador
               contador++;
             }
           }
-
+  
         )
-
-        if(contador==ban.length){
+        //Si encuentra q todos los campos son de tipo true, significa que la fila corresponde a los filtros seleccionados
+        if (contador == ban.length) {//va hasta ban.length, porque determina la longitud de los filtros boleanos, todos deben ser true
           console.log('iguales');
-          ban2= true;
-        }else{
+          ban2 = true;
+        } else {
           console.log('falsos');
-          ban2= false;
+          ban2 = false;
         }
 
-      console.log(ban);
-      console.log("-----------");  
-      return ban2;
-      //return ((data.nombresector.toLowerCase().indexOf(this.filtroNombreSector) !== -1) && (data.sectoractivo == true || this.toggleActDesc == true) && (data.nombrezona.indexOf(this.zonaselect) !== -1));
       }
 
+
+      //console.log(ban);
+      //console.log("-----------");
+      return ban2;
     }
+
+  }
 }
