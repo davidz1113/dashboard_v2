@@ -2,8 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { TarifasServices } from '../servicios/tarifasdinamicosService.services';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { TablaTarifasDinamicaComponent } from '../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
 @Component({
     selector: 'app-tarifaanimal',
@@ -31,9 +30,19 @@ export class TarifaanimalComponent implements OnInit {
     */
     oculta = false;
 
+    //objeto de tipo tarifa
+    public tarifa: any = null;
+
+    //objeto de formgroup para obtener los datos del formulario
+    nuevoTarifaForm: FormGroup;
+
+    //variable que valida si esta por actualizar o guardar un nuevo
+    isUpdate = false;
+
+    //instancia del componente hijo para el envio de paramtreos y/o llamads de funciones
     @ViewChild(TablaTarifasDinamicaComponent) tablacomponent: TablaTarifasDinamicaComponent;
 
-    constructor(private router: Router, private _tarifasServices: TarifasServices) {
+    constructor(private router: Router, private _tarifasServices: TarifasServices, private nuevoForm: FormBuilder) {
     }
 
 
@@ -142,14 +151,27 @@ export class TarifaanimalComponent implements OnInit {
         this.tablacomponent.recibirFiltros(this.filtros);
     }
 
-
     /**
      * 
      * @param event objecto a editar que llega desde la tabla
      */
     llamarFormulario(event) {
-        console.log(event);
-        this.oculta = !this.oculta;
+        this.oculta = !this.oculta;//ocultamos la tabla o el formulario respectivamente
+
+        this.tarifa = event != null ? event.objecto : null; //validamos q sea diferente de null
+        this.isUpdate = event != null ? true : false; // si es actualizar o nuevo
+
+        if(!this.oculta){
+            this.nuevoTarifaForm = this.nuevoForm.group({
+                valor:[this.tarifa!=null?this.tarifa.valortarifaanimal:'',Validators.required],
+                descripcion:[this.tarifa!=null?this.tarifa.descripciontarifaanimal:''],
+                numero:[this.tarifa!=null?this.tarifa.numeroresoluciontarifaanimal:'',Validators.required],
+                fkiplaza:[this.tarifa!=null?this.tarifa.fkiplaza:'',Validators.required],
+                fkidtipoanimal:[this.tarifa!=null?this.tarifa.fkidtipoanimal:'',Validators.required]
+            });
+        }
+
+        console.log(this.tarifa);
     }
 
 

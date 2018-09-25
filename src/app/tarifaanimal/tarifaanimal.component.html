@@ -5,23 +5,6 @@
                 <div class="card-header card-header-danger ">
                     <h4 class="card-title text-center">Tarifa animal</h4>
                 </div>
-                <!--Mensaje de confirmacion-->
-                <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
-                    <i class="material-icons" data-notify="icon">warning</i>
-                    <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
-                        <i class="material-icons">close</i>
-                    </button>
-                    <span data-notify="message">
-                        <b>Info:</b> {{mensaje}} </span>
-                    <div class="col-sm-4">
-                        <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()" *ngIf="respuesta=='error'">Intentar
-                            nuevamente
-                        </button>
-                    </div>
-                </div>
-                <!--Fin mensaje confirmacion-->
-
-
                 <div class="card-body">
                     <div class="row justify-content-center">
                         <div class="col-sm-3">
@@ -47,6 +30,27 @@
                         </div>
                         <!--Fin Filtro boton toggle -->
 
+                    </div>
+                    <hr>
+                    <!--Mensaje de confirmacion-->
+                    <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
+                        <i class="material-icons" data-notify="icon">warning</i>
+                        <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
+                            <i class="material-icons">close</i>
+                        </button>
+                        <span data-notify="message">
+                            <b>Info:</b> {{mensaje}} </span>
+                        <div class="col-sm-4">
+                            <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()" *ngIf="respuesta=='error'">Intentar
+                                nuevamente
+                            </button>
+                        </div>
+                    </div>
+                    <!--Fin mensaje confirmacion-->
+                    <div class="row px-4">
+                        <button mat-raised-button class="btn btn-outline-primary col-sm-8 col-md-6 col-lg-6 mx-auto" (click)="llamarFormulario(null)">
+                            Nueva Tarifa
+                        </button>
                     </div>
                     <app-tabla-tarifas-dinamica [url]="url" (editarTarifa)="llamarFormulario($event)"></app-tabla-tarifas-dinamica>
                 </div>
@@ -81,7 +85,7 @@
                     </div>
                     <hr>
                     <!-- Inicio Formulario -->
-                    <form [formGroup]="puestoEventualForm" (ngSubmit)="guardarCambios()" class="pl-4">
+                    <form [formGroup]="nuevoTarifaForm" (ngSubmit)="guardarCambios()" class="pl-4">
 
                         <div class="form-group">
                             <div class="form-row">
@@ -90,7 +94,7 @@
                                         <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza" formControlName="fkidplaza">
                                             <mat-option *ngFor="let plaza of plazas" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
                                         </mat-select>
-                                        <mat-error *ngIf="puestoEventualForm.get('fkidplaza').hasError('required')">
+                                        <mat-error *ngIf="nuevoTarifaForm.get('fkidplaza').hasError('required')">
                                             Seleccione al menos una <strong>Plaza</strong>
                                         </mat-error>
                                     </mat-form-field>
@@ -100,7 +104,7 @@
                                     <mat-form-field class="example-full-width">
                                         <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual" name="valortarifapuestoeventual"
                                             formControlName="valortarifapuestoeventual">
-                                        <mat-error *ngIf="puestoEventualForm.get('valortarifapuestoeventual').hasError('required')">
+                                        <mat-error *ngIf="nuevoTarifaForm.get('valortarifapuestoeventual').hasError('required')">
                                             El nombre es <strong>requerido</strong>
                                         </mat-error>
                                     </mat-form-field>
@@ -115,17 +119,17 @@
                                     <mat-form-field class="example-full-width">
                                         <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual" name="numeroresoluciontarifapuestoeventual"
                                             formControlName="numeroresoluciontarifapuestoeventual">
-                                        <mat-error *ngIf="puestoEventualForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
+                                        <mat-error *ngIf="nuevoTarifaForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
                                             El numero de resolución es <strong>requerido</strong>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
 
                                 <div class="col pr-4 mx-auto mt-3">
-                                    <mat-slide-toggle (change)="cambiarEstadoForm()" formControlName="tarifapuestoeventualactivo">
-                                        Tarifa {{textActive}}
+                                    <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">sector {{textActive}}
                                     </mat-slide-toggle>
-                                </div>
+                                  </div>
+
                             </div>
                         </div>
 
@@ -142,7 +146,7 @@
 
                         <div class="form-group">
                             <div class="form-row pr-4">
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!puestoEventualForm.valid">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoTarifaForm.valid">
                                     Guardar
                                 </button>
                                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="cancelarEdicion()">
