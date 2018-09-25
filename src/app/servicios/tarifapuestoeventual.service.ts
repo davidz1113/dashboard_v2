@@ -48,13 +48,16 @@ export class TarifaPuestoEventualService {
    * Crea una nueva Tarifa puesto eventual en la base de datos del sistema
    * @param pTarifa - Tarifa puesto eventual a agregar
    */
-  crearTarifaPuestoEventual(pTarifa: TarifaPuestoEventual) {
+  crearTarifaPuestoEventual(pTarifa: TarifaPuestoEventual, uploadData: FormData) {
     const json = JSON.stringify(pTarifa);
-    const params = 'json=' + json + '&authorization=' + this.token;
+    uploadData.append('json', json);
+    uploadData.append('authorization', this.token);
+
+    //const params = 'json=' + json + '&authorization=' + this.token;
 
     // console.log(params);
 
-    return this._http.post(this.url + '/tarifapuestoeventual/new', params, { headers: this.headers })
+    return this._http.post(this.url + '/tarifapuestoeventual/new', uploadData)
       .pipe(
         map(
           resp => {

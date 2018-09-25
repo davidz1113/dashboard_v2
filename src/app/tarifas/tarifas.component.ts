@@ -167,8 +167,15 @@ export class TarifasComponent implements OnInit {
         this.puestoEventualForm.value.descripciontarifapuestoeventual,
         this.puestoEventualForm.value.fkidplaza
       );
+      const uploadData = new FormData();
+      if (this.selectedFile != null) {
 
-      this._tarifaPuestoEventualService.crearTarifaPuestoEventual(nuevaTarifa).subscribe(
+        uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
+        console.log(this.selectedFile.size);
+      }
+
+
+      this._tarifaPuestoEventualService.crearTarifaPuestoEventual(nuevaTarifa,uploadData).subscribe(
         resp => {
           console.log(resp);
         }

@@ -1,7 +1,7 @@
 <div class="main-content">
 
     <!-- Vista principal de todas las tarifas -->
-    <div class="container-fluid" *ngIf="!oculta">
+    <div class="container-fluid" *ngIf="oculta">
         <div class="col-sm-12">
             <div class="card ">
                 <div class="card-header card-header-danger">
@@ -256,7 +256,7 @@
     <!-- Fin Vista principal de todas las tarifas -->
 
     <!-- Formulario de registro y edicion -->
-    <div class="container-fluid" *ngIf="oculta">
+    <div class="container-fluid" *ngIf="!oculta">
 
         <div class="col-sm-12">
             <div class="card ">
