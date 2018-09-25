@@ -279,7 +279,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
       }
 
 
-      this._tarifaPuestoEventualService.crearTarifaPuestoEventual(nuevaTarifa, uploadData).subscribe(
+      this._tarifasServices.crearTarifa(nuevaTarifa, uploadData,this.url).subscribe(
         resp => {
           console.log(resp);
         }
@@ -331,6 +331,18 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
     }
   }
+
+  /**
+   * 
+   * @param event 
+   */
+  llamarFormulario(event){
+    console.log(event.objeto);
+    
+    this.oculta = !this.oculta;
+
+  }
+
 
   /**
    * Consulta las plazas que existen en el sistema

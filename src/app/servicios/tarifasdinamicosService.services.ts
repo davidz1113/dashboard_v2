@@ -16,14 +16,9 @@ export class TarifasServices {
     public token;
     public headers;
 
-    
-
-    private filtros$ = new Rx.Subject<any[]>();
-    
-    //observableFiltros:Observable<any[]>;
-    
     constructor(private _http: Http) {
-        this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
+        //this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
+        this.url = GLOBAL.url;
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     }
 
@@ -32,16 +27,32 @@ export class TarifasServices {
      * @param url url del controlador donde se quiere hacer la peticion(llega del _router)
      * Metodo que consulta las cabeceras de la consulta de tarifas asi como los datos para mostrar en su respectiva columna 
      */
-    consultarDatos(url:string){
-        let params = "authorization="+this.getToken();
+    consultarDatos(url: string) {
+        let params = "authorization=" + this.getToken();
         return this._http.post(this.url + url + '/query', params, { headers: this.headers })
-        .pipe(map(res => res.json()));
+            .pipe(map(res => res.json()));
     }
 
 
-    agregarFiltros(filtros:any){
-        console.log(filtros);
-        this.filtros$.next(filtros);
+    /**
+     * Para crea cuqluier tarifa 
+     * @param pTarifa 
+     * @param uploadData 
+     * @param url 
+     */
+    crearTarifa(pTarifa: any, uploadData: FormData, url: string) {
+        const json = JSON.stringify(pTarifa);
+        uploadData.append('json', json);
+        uploadData.append('authorization', this.token);
+        return this._http.post(this.url + url + '/new', uploadData)
+            .pipe(
+                map(
+                    resp => {
+                        // console.log(resp)
+                        return resp.json();
+                    }
+                )
+            );
     }
 
 
@@ -55,11 +66,5 @@ export class TarifasServices {
         }
         return this.token;
     }
-
-
-    getObservableFiltros$():Observable<any[]>{
-        return this.filtros$.asObservable();
-    }
-
 
 }
