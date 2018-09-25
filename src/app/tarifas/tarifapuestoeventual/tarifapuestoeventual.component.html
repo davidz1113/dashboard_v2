@@ -127,7 +127,13 @@
                                     <mat-option value=''> Todos </mat-option>
                                     <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
                                 </mat-select>
-                            </mat-form-field>
+                            </mat-form-field>                            
+                        </div>
+                        
+                        <div class="col-md-5">
+                            <mat-slide-toggle (change)="guardarFiltroActivo()" class="mt-3" [(ngModel)]="estadoToggle">
+                                Mostrar tarifas desactivadas
+                            </mat-slide-toggle>
                         </div>
 
                         <!-- <div class="col-md-5">
