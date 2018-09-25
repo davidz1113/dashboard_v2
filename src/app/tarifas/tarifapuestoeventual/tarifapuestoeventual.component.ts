@@ -38,6 +38,11 @@ export class TarifaPuestoEventualComponent implements OnInit {
   filtroplaza: any = {}
 
   /**
+   * Filtro activo/inactivo
+   */
+  filtroactivo: any = {}
+
+  /**
    * Plazas de mercado en el sistema
    */
   plazas: PlazaMercado[] = [];
@@ -46,6 +51,11 @@ export class TarifaPuestoEventualComponent implements OnInit {
    * Muestra u oculta la tabla de tarifas
    */
   oculta = false;
+
+  /**
+   * Estado de filtro activo/inactivo
+   */
+  estadoToggle = false;
 
   /**
    * Fecha actual
@@ -161,6 +171,24 @@ export class TarifaPuestoEventualComponent implements OnInit {
       valor: event.value
     }
     this.filtros.push(this.filtroplaza);
+    this.tablacomponent.recibirFiltros(this.filtros);
+  }
+
+  /**
+   * Guarda el filtro por activo o inactivo
+   */
+  guardarFiltroActivo() {
+    const index = this.filtros.indexOf(this.filtroactivo);
+    if (index > -1) {
+      this.filtros.splice(index, 1)
+    }
+
+    this.filtroactivo = {
+      nombreatributo: 'tarifapuestoeventualactivo',
+      valor: !this.estadoToggle
+    }
+    this.filtros.push(this.filtroactivo);
+    console.log(this.filtros);
     this.tablacomponent.recibirFiltros(this.filtros);
   }
 
