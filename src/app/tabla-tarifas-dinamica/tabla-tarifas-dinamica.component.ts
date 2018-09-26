@@ -73,7 +73,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
         } else {//traemos los objetos de respuesta
           this.cabeceras = this.respuesta.cabeceras;//obtenemos las cabeceras con nombrecampo y nombreetiqueta
           this.datostabla = this.respuesta[this.url.substring(1)];
-          console.log(this.datostabla);
+          // console.log(this.datostabla);
 
           this.cabeceras.push({ nombrecampo: 'actions', nombreetiqueta: 'Acciones' });
 
@@ -86,7 +86,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.datostabla);
           this.aplicarFiltro();
           this.setFilterDataTable();
-          console.log(response);
+          // console.log(response);
         }
       },
       error => {
@@ -108,12 +108,12 @@ export class TablaTarifasDinamicaComponent implements OnInit {
       //filtrotext = "true";
       this.filtros.map(
         (dato) => {
-          console.log(dato);
+          // console.log(dato);
 
           this.filtrotext += dato.valor;
         }
       );
-      console.log(this.filtrotext);
+      // console.log(this.filtrotext);
 
       if (this.filtrotext === "") {
         this.dataSource.filter = "true"; //solo los verdaderos

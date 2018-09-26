@@ -11,6 +11,27 @@
 
                 <div class="card-body">
 
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <!--Mensaje de confirmacion-->
+                            <div data-notify="container" *ngIf="mensajeForm" class="alert alert-danger alert-with-icon">
+                                <i class="material-icons" data-notify="icon">{{iconAlert}}</i>
+                                <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialogForm()">
+                                    <i class="material-icons">close</i>
+                                </button>
+                                <span data-notify="message">
+                                    <b>Info:</b> {{mensajeForm}} 
+                                </span>
+                                <!-- <div class="col-sm-4">
+                                    <button mat-raised-button class="btn btn-outline-danger mb-3" (click)="consultarPlazas()"
+                                        *ngIf="respuesta=='error'">Intentar
+                                        de nuevo
+                                    </button>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+
                     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
 
                     <div class="row">
@@ -19,8 +40,20 @@
                         </div>
                     </div>
 
+                    <div class="row" *ngIf="urlDocumento">
+                        <div class="col-12">
+                            <h4 class="text-center">{{ urlDocumento }}</h4>
+                        </div>
+                    </div>
+
+
+                    <div *ngIf="barraProgresoForm">
+                        <!-- Cargando Tarifas -->
+                        <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
+                    </div>
+
                     <div class="row px-5 my-3">
-                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()">
+                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()" [disabled]="barraProgresoForm===true">
                             Seleccionar
                         </button>
                     </div>
@@ -89,11 +122,11 @@
                         <div class="form-group">
                             <div class="form-row pr-4">
                                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
-                                    [disabled]="!puestoEventualForm.valid">
+                                    [disabled]="!puestoEventualForm.valid || barraProgresoForm===true">
                                     Guardar
                                 </button>
                                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
-                                    (click)="cancelarEdicion()">
+                                    (click)="cancelarEdicion()" [disabled]="barraProgresoForm===true">
                                     Cancelar
                                 </button>
                             </div>
@@ -127,23 +160,15 @@
                                     <mat-option value=''> Todos </mat-option>
                                     <mat-option [value]='plaza.pkidplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
                                 </mat-select>
-                            </mat-form-field>                            
+                            </mat-form-field>
                         </div>
-                        
+
                         <div class="col-md-5">
                             <mat-slide-toggle (change)="guardarFiltroActivo()" class="mt-3" [(ngModel)]="estadoToggle">
                                 Mostrar tarifas desactivadas
                             </mat-slide-toggle>
                         </div>
 
-                        <!-- <div class="col-md-5">
-                            <mat-form-field>
-                                <mat-select placeholder="buscar por sector" [(ngModel)]="sectorselec" (change)="modificarFiltroSector()">
-                                    <mat-option value=''> Todos </mat-option>
-                                    <mat-option [value]='plaza.nombreplaza' *ngFor="let plaza of plazas">{{plaza.nombreplaza}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div> -->
                     </div>
                     <!-- FIN FILTROS -->
                     <hr>
@@ -159,26 +184,30 @@
                                 </button>
                                 <span data-notify="message">
                                     <b>Info:</b> {{mensaje}} </span>
-                                <!-- <div class="col-sm-4">
-                                    <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="()"
+                                <div class="col-sm-4">
+                                    <button mat-raised-button class="btn btn-outline-danger mb-3" (click)="consultarPlazas()"
                                         *ngIf="respuesta=='error'">Intentar
                                         de nuevo
                                     </button>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row px-4 mb-5">
                         <button mat-raised-button class="btn btn-outline-primary col-sm-8 col-md-6 col-lg-6 mx-auto"
-                            (click)="mostrarOcultar()">
+                            (click)="nuevaTarifa()">
                             Nueva Tarifa
                         </button>
                     </div>
 
-                    
-                    <app-tabla-tarifas-dinamica [url]="url"   (editarTarifa)="llamarFormulario($event)"></app-tabla-tarifas-dinamica>
-                    
+                    <div *ngIf="respuesta==null">
+                        Cargando Tarifas
+                        <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
+                    </div>
+
+                    <app-tabla-tarifas-dinamica [url]="url" (editarTarifa)="llamarFormularioEditar($event)"></app-tabla-tarifas-dinamica>
+
                 </div>
             </div>
         </div>
