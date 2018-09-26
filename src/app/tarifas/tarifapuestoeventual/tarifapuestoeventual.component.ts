@@ -2,8 +2,6 @@ import { Component, OnInit, Injector, ViewChild } from '@angular/core';
 import { LocationStrategy, PathLocationStrategy } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ExcepcionService } from '../../servicios/excepcionServices.services';
-import { PlazaServices } from '../../servicios/plazaServices.services';
-import { TarifaPuestoEventualService } from '../../servicios/tarifapuestoeventual.service';
 import { TarifaPuestoEventual } from '../../modelos/tarifaPuestoEventual';
 import { PlazaMercado } from '../../modelos/plaza-mercado';
 import { GLOBAL } from '../../servicios/globales';
@@ -14,7 +12,7 @@ import { TablaTarifasDinamicaComponent } from '../../tabla-tarifas-dinamica/tabl
 @Component({
   selector: 'app-tarifa-puesto-eventual',
   templateUrl: './tarifapuestoeventual.component.html',
-  providers: [ExcepcionService, PlazaServices, TarifaPuestoEventualService, TarifasServices]
+  providers: [ExcepcionService, TarifasServices]
 })
 export class TarifaPuestoEventualComponent implements OnInit {
 
@@ -137,6 +135,11 @@ export class TarifaPuestoEventualComponent implements OnInit {
    */
   urlDocumento: any;
 
+  /**
+   * Link al documento
+   */
+  linkDocumento: any;
+
   barraProgresoForm = false;
 
   // url: any = '../' + GLOBAL.urlBase + '/assets/img/empleado.png';
@@ -145,7 +148,6 @@ export class TarifaPuestoEventualComponent implements OnInit {
   // ----------------------------------------------------------------------------------------------------------
 
   constructor(
-    private _plazaService: PlazaServices,
     private _exceptionService: ExcepcionService,
     private injector: Injector,
     private router: Router,
@@ -279,7 +281,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
    */
   inicializaFormEdit() {
 
-    if (this.tarifaEdit !== undefined) {
+    if (this.tarifaEdit !== undefined || this.tarifaEdit !== null) {
       // console.log('Tarifa a editar:  ' + JSON.stringify(this.tarifaEdit));
       this.puestoEventualForm = new FormGroup({
         valortarifapuestoeventual: new FormControl(this.tarifaEdit.valortarifapuestoeventual, Validators.required),
@@ -288,6 +290,9 @@ export class TarifaPuestoEventualComponent implements OnInit {
         descripciontarifapuestoeventual: new FormControl(this.tarifaEdit.descripciontarifapuestoeventual),
         fkidplaza: new FormControl(this.tarifaEdit.pkidplaza, Validators.required)
       });
+
+      this.linkDocumento = (GLOBAL.urlImagen + this.tarifaEdit.documentoresoluciontarifapuestoeventual.substring(3));
+      this.urlDocumento = this.tarifaEdit.documentoresoluciontarifapuestoeventual.substring(18);
     }
   }
 
@@ -331,11 +336,14 @@ export class TarifaPuestoEventualComponent implements OnInit {
             this.mensaje = resp.msg;
             this.mostrarMensaje(1);
             this.barraProgresoForm = false;
+            this.selectedFile = null;
+            this.urlDocumento = '';
 
           }, error => {
             this.mostrarMensaje(0);
             this.mensajeForm = 'Error en el servidor';
             this.barraProgresoForm = false;
+            this.selectedFile = null;
           }
         );
       } else {
@@ -399,6 +407,8 @@ export class TarifaPuestoEventualComponent implements OnInit {
    * Cancela una edición
    */
   cancelarEdicion() {
+    this.selectedFile = null;
+    this.urlDocumento = '';
     this.tarifaEdit = null;
     this.mostrarOcultar();
   }
