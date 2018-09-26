@@ -83,6 +83,11 @@ export class TarifaPuestoEventualComponent implements OnInit {
   public mensaje: string;
 
   /**
+   * Mensaje de error en el formulario
+   */
+  public mensajeForm: string;
+
+  /**
    * captura de la respuesta del servidor global
    */
   public respuesta;
@@ -127,6 +132,13 @@ export class TarifaPuestoEventualComponent implements OnInit {
    */
   selectedFile: File = null;
 
+  /**
+   * Url de documento
+   */
+  urlDocumento: any;
+
+  barraProgresoForm = false;
+
   // url: any = '../' + GLOBAL.urlBase + '/assets/img/empleado.png';
   // ----------------------------------------------------------------------------------------------------------
   // Constructores
@@ -136,7 +148,6 @@ export class TarifaPuestoEventualComponent implements OnInit {
     private _plazaService: PlazaServices,
     private _exceptionService: ExcepcionService,
     private injector: Injector,
-    private _tarifaPuestoEventualService: TarifaPuestoEventualService,
     private router: Router,
     private _tarifasServices: TarifasServices
   ) { }
@@ -189,7 +200,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
       valor: !this.estadoToggle
     }
     this.filtros.push(this.filtroactivo);
-    console.log(this.filtros);
+    // console.log(this.filtros);
     this.tablacomponent.recibirFiltros(this.filtros);
   }
 
@@ -200,6 +211,12 @@ export class TarifaPuestoEventualComponent implements OnInit {
     this.mensaje = '';
   }
 
+  /**
+   * Cierra el dialogo del mensaje
+   */
+  closeDialogForm() {
+    this.mensajeForm = '';
+  }
 
   /**
    * Consulta los datos
@@ -210,11 +227,12 @@ export class TarifaPuestoEventualComponent implements OnInit {
     this._tarifasServices.consultarDatos('/' + nombrecontrolador).subscribe(
       response => {
         this.respuesta = response;
+        console.log(this.respuesta);
         if (this.respuesta.length <= 1) {
           this.mensaje = 'Ocurrio un error, intentelo nuevamente';
           console.log('Ocurrio un error, intentelo nuevamente');
         } else {
-          console.log(this.respuesta[nombrecontrolador]);
+          // console.log(this.respuesta[nombrecontrolador]);
           if (numero === 1) { // si es numero 1 se llena las plazas de mercado
             this.plazas = this.respuesta[nombrecontrolador];
           } else if (numero === 2) {
@@ -228,6 +246,15 @@ export class TarifaPuestoEventualComponent implements OnInit {
         this.respuesta = null;
       }
     )
+  }
+
+  /**
+   * Método llamado cuando se va a crear una nueva tarifa
+   */
+  nuevaTarifa() {
+    this.tarifaEdit = null;
+    this.inicializaForm();
+    this.mostrarOcultar();
   }
 
   // ----------------------------------------------------------------------------------------------------------
@@ -253,7 +280,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
   inicializaFormEdit() {
 
     if (this.tarifaEdit !== undefined) {
-      console.log('Tarifa a editar:  ' + JSON.stringify(this.tarifaEdit));
+      // console.log('Tarifa a editar:  ' + JSON.stringify(this.tarifaEdit));
       this.puestoEventualForm = new FormGroup({
         valortarifapuestoeventual: new FormControl(this.tarifaEdit.valortarifapuestoeventual, Validators.required),
         numeroresoluciontarifapuestoeventual: new FormControl(this.tarifaEdit.numeroresoluciontarifapuestoeventual, Validators.required),
@@ -268,12 +295,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
    * Lista todas las tarifas de puesto eventual registradas en el sistema
    */
   listarTarifasPuestoEventual() {
-    this._tarifaPuestoEventualService.consultarTarifaPuestoEventual().subscribe(
-      (resp: any) => {
-        this.tarifasPuestoEventual = resp.tarifapuestoeventual;
-        console.log(this.tarifasPuestoEventual);
-      }
-    );
+    this.consultarDatos('tarifapuestoeventual', 2);
   }
 
   /**
@@ -290,26 +312,37 @@ export class TarifaPuestoEventualComponent implements OnInit {
         this.puestoEventualForm.value.fkidplaza
       );
 
-      if (this.tarifaEdit.pkidtarifapuestoeventual === null) {
-
+      if (this.tarifaEdit === null || this.tarifaEdit === undefined) {
+        this.selectedFile = null;
+        // console.log('Entro al nuevo:  ' + nuevaTarifa);
+        this.inicializaForm();
         const uploadData = new FormData();
 
         if (this.selectedFile != null) {
           uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
-          console.log(this.selectedFile.size);
+          // console.log(this.selectedFile.size);
         }
+
+        this.barraProgresoForm = true;
 
         this._tarifasServices.crearTarifa(nuevaTarifa, uploadData, this.url).subscribe(
           resp => {
-            console.log(resp);
-            // this.mensaje = resp.msg + ' Tarifa : ' + resp.puerta.nombrepuerta;
-            this.mostrarMensaje(1);
+            // console.log(resp);
             this.mostrarOcultar();
+            this.mensaje = resp.msg;
+            this.mostrarMensaje(1);
+            this.barraProgresoForm = false;
+
+          }, error => {
+            this.mostrarMensaje(0);
+            this.mensajeForm = 'Error en el servidor';
+            this.barraProgresoForm = false;
           }
         );
       } else {
 
         nuevaTarifa.pkidtarifapuestoeventual = this.tarifaEdit.pkidtarifapuestoeventual;
+        // = this.tarifaEdit.documentoresoluciontarifapuestoeventual;
         const uploadData = new FormData();
 
         if (this.selectedFile != null) {
@@ -319,10 +352,20 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
         this._tarifasServices.editarTarifa(nuevaTarifa, uploadData, this.url).subscribe(
           resp => {
-            console.log(resp);
-            // this.mensaje = resp.msg + ' Tarifa : ' + resp.puerta.nombrepuerta;
-            this.mostrarMensaje(1);
-            this.mostrarOcultar();
+            // console.log(resp);
+            if (resp.status === 'error') {
+              this.mostrarMensaje(0);
+              this.mensajeForm = resp.msg;
+              this.barraProgresoForm = false;
+            } else {
+              this.mostrarMensaje(1);
+              this.mostrarOcultar();
+              this.mensaje = resp.msg;
+            }
+          }, error => {
+            this.mostrarMensaje(0);
+            this.mensajeForm = 'Error en el servidor';
+            this.barraProgresoForm = false;
           }
         );
       }
@@ -355,8 +398,8 @@ export class TarifaPuestoEventualComponent implements OnInit {
    * Cancela una edición
    */
   cancelarEdicion() {
-    this.mostrarOcultar();
     this.tarifaEdit = null;
+    this.mostrarOcultar();
   }
   /**
    * Cambia el estado de una puerta
@@ -374,10 +417,13 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
       if (event.target.files && event.target.files[0]) {
         const reader = new FileReader();
-        this.selectedFile = event.target.files[0]
+        this.selectedFile = event.target.files[0];
         reader.readAsDataURL(event.target.files[0]); // read file as data url
+        if (this.selectedFile !== null) {
+          this.urlDocumento = this.selectedFile.name;
+        }
         reader.onload = () => { // called once readAsDataURL is completed
-          // this.url = reader.result;
+          // this.urlDocumento = reader.result;
         }
       }
     } catch (e) {
@@ -394,40 +440,20 @@ export class TarifaPuestoEventualComponent implements OnInit {
   }
 
   /**
-   * llena el objeto para editar
+   * llama el formulario de editar con el objeto respectivo
    * @param event Evento del emmiter
    */
-  llamarFormulario(event) {
+  llamarFormularioEditar(event) {
     this.tarifaEdit = event.objeto;
-    console.log(this.tarifaEdit);
     this.inicializaFormEdit();
     this.mostrarOcultar();
   }
-
 
   /**
    * Consulta las plazas que existen en el sistema
    */
   consultarPlazas() {
-
     this.consultarDatos('plaza', 1);
-    // try {
-
-    //   this._plazaService.consultarTodasPlazas().subscribe(
-    //     (resp: any) => {
-    //       this.plazas = resp.plaza;
-    //       // console.log(this.plazas);
-    //     }
-    //   );
-
-    // } catch (e) {
-    //   const mensaje = e.message ? e.message : e.toString();
-    //   const funcion = 'consultarPlazas()';
-
-    //   const location = this.injector.get(LocationStrategy);
-    //   const url = location instanceof PathLocationStrategy ? location.path() : '';
-    //   this.enviarExcepcion(mensaje, e, funcion, url);
-    // }
   }
 
   /**

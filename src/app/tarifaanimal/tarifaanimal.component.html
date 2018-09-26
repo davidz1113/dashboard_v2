@@ -26,7 +26,8 @@
 
                         <!--Filtro boton  toggle inhabilidatos -->
                         <div class="col-sm-5 mt-3">
-                            <mat-slide-toggle (change)="guardarToggle()" [(ngModel)]="toggleActDesc">Mostrar Tarifas desactivados</mat-slide-toggle>
+                            <mat-slide-toggle (change)="guardarToggle()" [(ngModel)]="toggleActDesc">Mostrar Tarifas
+                                desactivados</mat-slide-toggle>
                         </div>
                         <!--Fin Filtro boton toggle -->
 
@@ -41,14 +42,16 @@
                         <span data-notify="message">
                             <b>Info:</b> {{mensaje}} </span>
                         <div class="col-sm-4">
-                            <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()" *ngIf="respuesta=='error'">Intentar
+                            <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()"
+                                *ngIf="respuesta=='error'">Intentar
                                 nuevamente
                             </button>
                         </div>
                     </div>
                     <!--Fin mensaje confirmacion-->
                     <div class="row px-4">
-                        <button mat-raised-button class="btn btn-outline-primary col-sm-8 col-md-6 col-lg-6 mx-auto" (click)="llamarFormulario(null)">
+                        <button mat-raised-button class="btn btn-outline-primary col-sm-8 col-md-6 col-lg-6 mx-auto"
+                            (click)="llamarFormulario(null)">
                             Nueva Tarifa
                         </button>
                     </div>
@@ -91,7 +94,8 @@
                             <div class="form-row">
                                 <div class="col pr-4 mx-auto">
                                     <mat-form-field>
-                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza" formControlName="fkidplaza">
+                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza"
+                                            formControlName="fkidplaza">
                                             <mat-option *ngFor="let plaza of plazas" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="nuevoTarifaForm.get('fkidplaza').hasError('required')">
@@ -102,8 +106,8 @@
 
                                 <div class="col pr-4 mx-auto ">
                                     <mat-form-field class="example-full-width">
-                                        <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual" name="valortarifapuestoeventual"
-                                            formControlName="valortarifapuestoeventual">
+                                        <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual"
+                                            name="valortarifapuestoeventual" formControlName="valortarifapuestoeventual">
                                         <mat-error *ngIf="nuevoTarifaForm.get('valortarifapuestoeventual').hasError('required')">
                                             El nombre es <strong>requerido</strong>
                                         </mat-error>
@@ -117,8 +121,8 @@
                             <div class="form-row">
                                 <div class="col pr-4 mx-auto ">
                                     <mat-form-field class="example-full-width">
-                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual" name="numeroresoluciontarifapuestoeventual"
-                                            formControlName="numeroresoluciontarifapuestoeventual">
+                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual"
+                                            name="numeroresoluciontarifapuestoeventual" formControlName="numeroresoluciontarifapuestoeventual">
                                         <mat-error *ngIf="nuevoTarifaForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
                                             El numero de resolución es <strong>requerido</strong>
                                         </mat-error>
@@ -126,9 +130,10 @@
                                 </div>
 
                                 <div class="col pr-4 mx-auto mt-3">
-                                    <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">sector {{textActive}}
+                                    <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">sector
+                                        {{textActive}}
                                     </mat-slide-toggle>
-                                  </div>
+                                </div>
 
                             </div>
                         </div>
@@ -146,10 +151,12 @@
 
                         <div class="form-group">
                             <div class="form-row pr-4">
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoTarifaForm.valid">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
+                                    [disabled]="!nuevoTarifaForm.valid">
                                     Guardar
                                 </button>
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="cancelarEdicion()">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
+                                    (click)="cancelarEdicion()">
                                     Cancelar
                                 </button>
                             </div>
