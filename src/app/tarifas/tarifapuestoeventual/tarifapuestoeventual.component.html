@@ -48,12 +48,12 @@
 
 
                     <div *ngIf="barraProgresoForm">
-                        Cargando Tarifas
+                        <!-- Cargando Tarifas -->
                         <mat-progress-bar mode="indeterminate" class="mt-2 mb-4"></mat-progress-bar>
                     </div>
 
                     <div class="row px-5 my-3">
-                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()">
+                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()" [disabled]="barraProgresoForm===true">
                             Seleccionar
                         </button>
                     </div>
@@ -122,11 +122,11 @@
                         <div class="form-group">
                             <div class="form-row pr-4">
                                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
-                                    [disabled]="!puestoEventualForm.valid">
+                                    [disabled]="!puestoEventualForm.valid || barraProgresoForm===true">
                                     Guardar
                                 </button>
                                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
-                                    (click)="cancelarEdicion()">
+                                    (click)="cancelarEdicion()" [disabled]="barraProgresoForm===true">
                                     Cancelar
                                 </button>
                             </div>

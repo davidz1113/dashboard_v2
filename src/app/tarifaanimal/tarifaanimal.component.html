@@ -34,17 +34,17 @@
                     </div>
                     <hr>
                     <!--Mensaje de confirmacion-->
-                    <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
-                        <i class="material-icons" data-notify="icon">warning</i>
-                        <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
+                    <!--Mensaje de confirmacion-->
+                    <div data-notify="container" *ngIf="mensaje" [class]="claseDinamic">
+                        <i class="material-icons" data-notify="icon">{{iconAlert}}</i>
+                        <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje=''">
                             <i class="material-icons">close</i>
                         </button>
                         <span data-notify="message">
                             <b>Info:</b> {{mensaje}} </span>
                         <div class="col-sm-4">
-                            <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarDatos()"
-                                *ngIf="respuesta=='error'">Intentar
-                                nuevamente
+                            <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarSectores()" *ngIf="respuesta=='error'">Intentar
+                                de nuevo
                             </button>
                         </div>
                     </div>
@@ -73,11 +73,24 @@
 
                 <div class="card-body">
 
+                    <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
+                        <i class="material-icons" data-notify="icon">warning</i>
+                        <button mat-button type="button" class="close" aria-label="Close" (click)="msg=''">
+                            <i class="material-icons">close</i>
+                        </button>
+                        <span data-notify="message">
+                            <b>Info:</b> {{msg}} </span>
+                    </div>
+
+
                     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
 
                     <div class="row">
                         <div class="col-12">
-                            <h4 class="text-center">Seleccionar documento de resolución</h4>
+                            <h4 class="text-center">
+                                <a *ngIf="urldocumento" [href]="urldocumento" target="_blank">{{documento}} </a>
+                                <a *ngIf="urldocumento==''">{{documento}} </a>
+                            </h4>
                         </div>
                     </div>
 
@@ -86,17 +99,17 @@
                             Seleccionar
                         </button>
                     </div>
+                    <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandotarifa"></mat-progress-bar>
                     <hr>
                     <!-- Inicio Formulario -->
-                    <form [formGroup]="nuevoTarifaForm" (ngSubmit)="guardarCambios()" class="pl-4">
+                    <form [formGroup]="nuevoTarifaForm" (ngSubmit)="guardarActualizarCambios()" class="pl-4">
 
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col pr-4 mx-auto">
                                     <mat-form-field>
-                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza"
-                                            formControlName="fkidplaza">
-                                            <mat-option *ngFor="let plaza of plazas" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
+                                        <mat-select placeholder="Seleccione la plaza" id="fkidplaza" name="fkidplaza" formControlName="fkidplaza">
+                                            <mat-option *ngFor="let plaza of plazasmercado" [value]="plaza.pkidplaza">{{plaza.nombreplaza}}</mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="nuevoTarifaForm.get('fkidplaza').hasError('required')">
                                             Seleccione al menos una <strong>Plaza</strong>
@@ -104,59 +117,58 @@
                                     </mat-form-field>
                                 </div>
 
-                                <div class="col pr-4 mx-auto ">
-                                    <mat-form-field class="example-full-width">
-                                        <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual"
-                                            name="valortarifapuestoeventual" formControlName="valortarifapuestoeventual">
-                                        <mat-error *ngIf="nuevoTarifaForm.get('valortarifapuestoeventual').hasError('required')">
-                                            El nombre es <strong>requerido</strong>
+                                <div class="col pr-4 mx-auto">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Seleccione tipo de animal" id="fkidtipoanimal" name="fkidtipoanimal" formControlName="fkidtipoanimal">
+                                            <mat-option *ngFor="let tipo of tiposanimal" [value]="tipo.pkidtipoanimal">{{tipo.nombretipoanimal}}</mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="nuevoTarifaForm.get('fkidtipoanimal').hasError('required')">
+                                            Seleccione al menos un <strong>Tipo</strong>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="form-group">
                             <div class="form-row">
+
                                 <div class="col pr-4 mx-auto ">
                                     <mat-form-field class="example-full-width">
-                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numeroresoluciontarifapuestoeventual"
-                                            name="numeroresoluciontarifapuestoeventual" formControlName="numeroresoluciontarifapuestoeventual">
-                                        <mat-error *ngIf="nuevoTarifaForm.get('numeroresoluciontarifapuestoeventual').hasError('required')">
+                                        <input matInput type="number" placeholder="Digite Valor" id="valor" name="valor" formControlName="valor">
+                                        <mat-error *ngIf="nuevoTarifaForm.get('valor').hasError('required')">
+                                            El valor es <strong>requerido</strong>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col pr-4 mx-auto ">
+                                    <mat-form-field class="example-full-width">
+                                        <input matInput type="text" placeholder="Digite Numero de Resolución" id="numero" name="numero" formControlName="numero">
+                                        <mat-error *ngIf="nuevoTarifaForm.get('numero').hasError('required')">
                                             El numero de resolución es <strong>requerido</strong>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-
-                                <div class="col pr-4 mx-auto mt-3">
-                                    <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">sector
-                                        {{textActive}}
-                                    </mat-slide-toggle>
-                                </div>
-
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="form-row">
+                                <div class="col pr-4 mx-auto mt-3">
+                                    <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">Tarifa {{textActive}}
+                                    </mat-slide-toggle>
+                                </div>
                                 <div class="col pr-4 mx-auto ">
                                     <mat-form-field>
-                                        <textarea matInput placeholder="Descripcion" formControlName="descripciontarifapuestoeventual"></textarea>
+                                        <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>
                                     </mat-form-field>
                                 </div>
                             </div>
                         </div>
-
-
                         <div class="form-group">
                             <div class="form-row pr-4">
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit"
-                                    [disabled]="!nuevoTarifaForm.valid">
-                                    Guardar
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoTarifaForm.valid || creandotarifa">
+                                    {{mensajeBoton}}
                                 </button>
-                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button"
-                                    (click)="cancelarEdicion()">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormulario(null)">
                                     Cancelar
                                 </button>
                             </div>

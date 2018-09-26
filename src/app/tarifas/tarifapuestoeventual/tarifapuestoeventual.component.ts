@@ -314,7 +314,6 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
       if (this.tarifaEdit === null || this.tarifaEdit === undefined) {
         this.selectedFile = null;
-        // console.log('Entro al nuevo:  ' + nuevaTarifa);
         this.inicializaForm();
         const uploadData = new FormData();
 
@@ -349,6 +348,8 @@ export class TarifaPuestoEventualComponent implements OnInit {
           uploadData.append('fichero_usuario', this.selectedFile, this.selectedFile.name);
           console.log(this.selectedFile.size);
         }
+
+        this.barraProgresoForm = true;
 
         this._tarifasServices.editarTarifa(nuevaTarifa, uploadData, this.url).subscribe(
           resp => {
