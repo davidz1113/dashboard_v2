@@ -3,11 +3,11 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header card-header-danger ">
-                        <h4 class="card-title text-center">Tarifa Interes</h4>
+                        <h4 class="card-title text-center">Tarifa vehiculo</h4>
                     </div>
                     <div class="card-body">
                         <div class="row justify-content-center">
-                            <div class="col-sm-5">
+                            <div class="col-sm-3">
                                 <mat-form-field>
                                     <mat-select placeholder="Seleccione plaza" id="fkidplaza" (change)='guardarFiltroplaza($event)'>
                                         <mat-option value=''>Todos</mat-option>
@@ -15,7 +15,14 @@
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                        
+                            <div class="col-sm-3">
+                                <mat-form-field>
+                                    <mat-select placeholder="Seleccione tipo de vehiculo" id="fkidtipovehiculo" (change)='guardarFiltrotipo($event)'>
+                                        <mat-option value=''>Todos</mat-option>
+                                        <mat-option [value]='tipo.pkidtipovehiculo' *ngFor="let tipo of tiposvehiculo">{{tipo.nombretipovehiculo}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
     
                             <!--Filtro boton  toggle inhabilidatos -->
                             <div class="col-sm-5 mt-3">
@@ -113,21 +120,30 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
-                                    <div class="col pr-4 mx-auto ">
-                                            <mat-form-field class="example-full-width">
-                                                <input matInput type="number" placeholder="Digite Valor" id="valor" name="valor" formControlName="valor">
-                                                <mat-error *ngIf="nuevoTarifaForm.get('valor').hasError('required')">
-                                                    El valor es <strong>requerido</strong>
-                                                </mat-error>
-                                            </mat-form-field>
-                                        </div>
-                                   
+    
+                                    <div class="col pr-4 mx-auto">
+                                        <mat-form-field>
+                                            <mat-select placeholder="Seleccione tipo de vehiculo" id="fkidtipovehiculo" name="fkidtipovehiculo" formControlName="fkidtipovehiculo">
+                                                <mat-option *ngFor="let tipo of tiposvehiculo" [value]="tipo.pkidtipovehiculo">{{tipo.nombretipovehiculo}}</mat-option>
+                                            </mat-select>
+                                            <mat-error *ngIf="nuevoTarifaForm.get('fkidtipovehiculo').hasError('required')">
+                                                Seleccione al menos un <strong>Tipo</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-row">
     
-                                  
+                                    <div class="col pr-4 mx-auto ">
+                                        <mat-form-field class="example-full-width">
+                                            <input matInput type="number" placeholder="Digite Valor" id="valor" name="valor" formControlName="valor">
+                                            <mat-error *ngIf="nuevoTarifaForm.get('valor').hasError('required')">
+                                                El valor es <strong>requerido</strong>
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
                                     <div class="col pr-4 mx-auto ">
                                         <mat-form-field class="example-full-width">
                                             <input matInput type="text" placeholder="Digite Numero de Resolución" id="numero" name="numero" formControlName="numero">
@@ -136,16 +152,14 @@
                                             </mat-error>
                                         </mat-form-field>
                                     </div>
-
-                                    <div class="col pr-4 mx-auto mt-3">
-                                            <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">Tarifa {{textActive}}
-                                            </mat-slide-toggle>
-                                        </div>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="form-row">
-                                    
+                                    <div class="col pr-4 mx-auto mt-3">
+                                        <mat-slide-toggle (change)="activarDesactivarTarifa()" [checked]="active">Tarifa {{textActive}}
+                                        </mat-slide-toggle>
+                                    </div>
                                     <div class="col pr-4 mx-auto ">
                                         <mat-form-field>
                                             <textarea matInput placeholder="Descripcion" formControlName="descripcion"></textarea>

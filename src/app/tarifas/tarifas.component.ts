@@ -48,4 +48,8 @@ export class TarifasComponent implements OnInit {
     this.router.navigate([GLOBAL.urlBase + '/tarifainteres']);
   }
 
+
+  redirigirVehiculo(){
+    this.router.navigate([GLOBAL.urlBase + '/tarifavehiculo']);
+  }
 }

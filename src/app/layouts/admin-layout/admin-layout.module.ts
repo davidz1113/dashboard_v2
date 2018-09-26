@@ -56,6 +56,7 @@ import { DatosPipe } from '../../servicios/pipes/pipedatostabla.pipe';
 
 
 import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
+import { TarifavehiculoComponent } from '../../tarifas/tarifavehiculo/tarifavehiculo.component';
 
 
 
@@ -111,7 +112,9 @@ import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventua
     TarifaanimalComponent,
     TarifasComponent,
     TarifaInteresComponent,
-    TarifaPuestoEventualComponent
+    TarifaPuestoEventualComponent,
+    TarifavehiculoComponent
+
   ],
   entryComponents: [
     DialogConfirmacionComponent,

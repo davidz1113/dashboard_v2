@@ -29,6 +29,7 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
 import { TarifasComponent } from '../../tarifas/tarifas.component';
 import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
 import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
+import { TarifavehiculoComponent } from '../../tarifas/tarifavehiculo/tarifavehiculo.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -100,6 +101,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/reporteauditoria', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/reporteauditoria/:page', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/tarifaanimal', component: TarifaanimalComponent },
+    { path: GLOBAL.urlBase + '/tarifavehiculo', component: TarifavehiculoComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/tablapaginada', component: TablaPaginadaComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },
