@@ -92,6 +92,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/configuracion', component: ConfiguracionComponent },
     { path: GLOBAL.urlBase + '/actividadcomercial', component: GenericComponent },
     { path: GLOBAL.urlBase + '/estadoinfraestructura', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/beneficiario', component: GenericComponent },
     { path: GLOBAL.urlBase + '/especieanimal', component: EspecieAnimalComponent },
     { path: GLOBAL.urlBase + '/equipo', component: EquiposComponent },
     { path: GLOBAL.urlBase + '/reporterecibopuestoeventual', component: ReporteDinamicoComponent },

@@ -83,11 +83,15 @@
 
                     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
 
-                    <div class="row">
+                    <div class="row ">
                         <div class="col-12">
                             <h4 class="text-center">
-                                <a *ngIf="urldocumento" [href]="urldocumento" target="_blank">{{documento}} </a>
+                                <a *ngIf="urldocumento" [href]="urldocumento" target="_blank"> {{documento}} </a>
                                 <a *ngIf="urldocumento==''">{{documento}} </a>
+                                <!--<i class="material-icons mr-3">person_outline</i>-->
+                                <button (click)="selectedFile=null;documento='Seleccionar documento de resolución';urldocumento=''" *ngIf="urldocumento || documento!='Seleccionar documento de resolución'" mat-raised-button type="button" matTooltip="Eliminar documento" [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                    <i class="material-icons">close</i>
+                                </button>
                             </h4>
                         </div>
                     </div>
