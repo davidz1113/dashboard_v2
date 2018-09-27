@@ -37,6 +37,7 @@ export const ROUTES: RouteInfo[] = [
     { path: '/' + GLOBAL.urlBase + '/tarifaanimal', title: 'Tarifa animal', icon: 'description', class: '', valor: 20},
     { path: '/' + GLOBAL.urlBase + '/beneficiario', title: 'Beneficiario', icon: 'assignment_ind', class: '', valor: 22},
     { path: '/' + GLOBAL.urlBase + '/recaudoanimal', title: 'Recaudo Animal', icon: 'gavel', class: '', valor: 23},
+    { path: '/' + GLOBAL.urlBase + '/categoriaanimal', title: 'Categoria de animales', icon: 'pets', class: '', valor: 26},
     { path: '/' + GLOBAL.urlBase + '', title: '', icon: '', class: '', valor: 4 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 200 },
     { path: '/' + GLOBAL.urlBase + '/tablapaginada', title: 'Tabla paginjadadasdasd', icon: 'content_paste', class: '', valor: 210 },

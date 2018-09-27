@@ -15,7 +15,8 @@ export class ReportesServices {
 
 
     constructor(private _http: Http, private router: Router) {
-        this.url = 'http://contalentosas.com/SistemaRecaudoBackend1/web/app_dev.php';
+        //this.url = 'http://192.168.1.21/SistemaRecaudoBackend/web/app_dev.php';
+        this.url = GLOBAL.url;
         this.route = this.router.url.substring(15);
         this.headers = new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
     }

@@ -58,6 +58,7 @@ import { DatosPipe } from '../../servicios/pipes/pipedatostabla.pipe';
 import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
 import { TarifavehiculoComponent } from '../../tarifas/tarifavehiculo/tarifavehiculo.component';
 import { RecaudoAnimalComponent } from '../../recaudo-animal/recaudo-animal.component';
+import { TarifaPuestoComponent } from '../../tarifas/tarifaPuesto/tarifapuesto.component';
 
 
 
@@ -115,7 +116,8 @@ import { RecaudoAnimalComponent } from '../../recaudo-animal/recaudo-animal.comp
     TarifaInteresComponent,
     TarifaPuestoEventualComponent,
     TarifavehiculoComponent,
-    RecaudoAnimalComponent
+    RecaudoAnimalComponent,
+    TarifaPuestoComponent
 
   ],
   entryComponents: [

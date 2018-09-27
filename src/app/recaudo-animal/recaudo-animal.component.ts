@@ -8,11 +8,7 @@ import { DatePipe } from '@angular/common';
   providers:[DatePipe]
 })
 export class RecaudoAnimalComponent implements OnInit{
-     DATOS:any[] = [
-        {categoria:'HEMBRA BOVINA 0-3 MESES', cantidad:2},
-        {categoria:'HEMBRA BOVINA 2-3 AÑOS', cantidad:1},
-        {categoria:'MACHO BOVINO 1-2 AÑOS', cantidad:1},
-    ]
+     DATOS=[{}];
 
   
     date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -34,6 +30,11 @@ export class RecaudoAnimalComponent implements OnInit{
         this.departamento= 'Nariño';
         this.municipio= 'Pasto';
         this.nombre= 'Pepito Perez';
+        this.DATOS = [
+            {categoria:'HEMBRA BOVINA 0-3 MESES', cantidad:2},
+            {categoria:'HEMBRA BOVINA 2-3 AÑOS', cantidad:1},
+            {categoria:'MACHO BOVINO 1-2 AÑOS', cantidad:1},
+        ]
     }
 
 
