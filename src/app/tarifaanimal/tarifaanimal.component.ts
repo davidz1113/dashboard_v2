@@ -207,7 +207,6 @@ export class TarifaanimalComponent implements OnInit {
         if(this.tarifa!=null){//validacion para mostrar el documento o url
             if(this.tarifa.documentoresoluciontarifaanimal!='sin documento'){
                 this.urldocumento = (GLOBAL.urlImagen+this.tarifa.documentoresoluciontarifaanimal.substring(3));
-                this.cargarArchivodeUrl(this.urldocumento);
                 this.documento = this.tarifa.documentoresoluciontarifaanimal.substring(18);
             }else{
                 this.documento = 'Seleccionar documento de resolución';
@@ -360,24 +359,4 @@ export class TarifaanimalComponent implements OnInit {
             }
         }
     }
-
-    cargarArchivodeUrl(url) {
-        console.log(url);
-        
-        var blob = null;
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
-        xhr.setRequestHeader('Access-Control-Allow-Origin','*');
-        xhr.responseType = "blob";//force the HTTP response, response-type header to be blob
-        xhr.onload = function () {
-            blob = xhr.response;//xhr.response is now a blob object
-        }
-        xhr.send();
-        this.selectedFile = <File>blob;
-        
-        //return blob;
-    }
-
-
-
 }

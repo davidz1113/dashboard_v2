@@ -30,6 +30,7 @@ import { TarifasComponent } from '../../tarifas/tarifas.component';
 import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
 import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
 import { TarifavehiculoComponent } from '../../tarifas/tarifavehiculo/tarifavehiculo.component';
+import { RecaudoAnimalComponent } from '../../recaudo-animal/recaudo-animal.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -110,6 +111,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/notificacion', component: NotificationsComponent },
     { path: GLOBAL.urlBase + '/upgrade', component: UpgradeComponent },
     { path: GLOBAL.urlBase + '/tareas', component: TareasComponent },
+    { path: GLOBAL.urlBase + '/recaudoanimal', component: RecaudoAnimalComponent },
 
 
 

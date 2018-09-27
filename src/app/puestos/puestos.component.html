@@ -85,8 +85,7 @@
 
             <div class="row px-4 mb-3">
               <button mat-raised-button class="btn btn-outline-primary col-md-6 mx-auto" type="submit" (click)="llamarFormularioAgregarPuesto()"
-                [disabled]="botonBloqueo">Nuevo
-                Puesto
+                [disabled]="botonBloqueo">Nuevo Puesto
               </button>
             </div>
 
@@ -147,18 +146,18 @@
                   <mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </mat-header-cell>
                   <mat-cell *matCellDef="let element ; let i=index">
 
-                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red"
-                      aria-label="Button that shows a red tooltip" class="example-button" (click)="llamarFormularioAgregarPuesto(element)">
+                    <button mat-icon-button matTooltip="Editar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="llamarFormularioAgregarPuesto(element)">
                       <i class="material-icons ">edit</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red"
-                      aria-label="Button that shows a red tooltip" class="example-button" (click)="openDialog(element)">
+                    <button mat-icon-button matTooltip="Eliminar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="openDialog(element)">
                       <i class="material-icons ">delete</i>
                     </button>
 
-                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red"
-                      aria-label="Button that shows a red tooltip" class="example-button" (click)="cambiarEstadoPuesto(element)">
+                    <button mat-icon-button matTooltip="Desactivar sector " matTooltipClass="example-tooltip-red" aria-label="Button that shows a red tooltip"
+                      class="example-button" (click)="cambiarEstadoPuesto(element)">
                       <i class="material-icons ">not_interested</i>
                     </button>
 
@@ -225,16 +224,14 @@
             <div class="form-row">
               <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite codigo de el puesto " id="codigopuesto" name="codigopuesto"
-                    formControlName="codigopuesto">
+                  <input matInput type="text" placeholder="Digite codigo de el puesto " id="codigopuesto" name="codigopuesto" formControlName="codigopuesto">
                 </mat-form-field>
               </div>
 
 
               <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="text" placeholder="Digite numero de el puesto " id="numeropuesto" name="numeropuesto"
-                    formControlName="numeropuesto">
+                  <input matInput type="text" placeholder="Digite numero de el puesto " id="numeropuesto" name="numeropuesto" formControlName="numeropuesto">
                   <mat-error *ngIf="nuevoPuestoForm.get('numeropuesto').hasError('required')">
                     El número es <strong>requerido</strong>
                   </mat-error>
@@ -247,14 +244,12 @@
 
               <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite alto de el puesto " id="alto" name="alto"
-                    formControlName="alto">
+                  <input matInput type="number" placeholder="Digite alto de el puesto " id="alto" name="alto" formControlName="alto">
                 </mat-form-field>
               </div>
               <div class="col pr-4">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite ancho de el puesto " id="ancho" name="ancho"
-                    formControlName="ancho">
+                  <input matInput type="number" placeholder="Digite ancho de el puesto " id="ancho" name="ancho" formControlName="ancho">
                 </mat-form-field>
               </div>
             </div>
@@ -274,8 +269,7 @@
 
               <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona"
-                    (change)="buscarSectorPorZonaForm($event)">
+                  <mat-select placeholder="Seleccione Zona" id="pkidzona" name="pkidzona" formControlName="pkidzona" (change)="buscarSectorPorZonaForm($event)">
                     <mat-option [value]='zona.pkidzona' *ngFor="let zona of zonasform"> {{zona.nombrezona}}</mat-option>
                   </mat-select>
                   <mat-hint *ngIf="nuevoPuestoForm.get('pkidplaza').value==''">Primero debe seleccionar una <strong>plaza</strong></mat-hint>
@@ -308,8 +302,7 @@
 
               <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado"
-                    formControlName="pkidestado">
+                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado" formControlName="pkidestado">
                     <mat-option [value]='estado.pkidestado' *ngFor="let estado of estados"> {{estado.nombreestado}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoPuestoForm.get('pkidestado').hasError('required')">
@@ -336,8 +329,7 @@
 
               <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione tipo de puesto" id="pkidtipopuesto" name="pkidtipopuesto"
-                    formControlName="pkidtipopuesto">
+                  <mat-select placeholder="Seleccione tipo de puesto" id="pkidtipopuesto" name="pkidtipopuesto" formControlName="pkidtipopuesto">
                     <mat-option [value]='tipo.pkidtipopuesto' *ngFor="let tipo of tipos"> {{tipo.nombretipopuesto}}</mat-option>
                   </mat-select>
                   <mat-error *ngIf="nuevoPuestoForm.get('pkidtipopuesto').hasError('required')">

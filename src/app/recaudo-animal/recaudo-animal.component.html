@@ -1,0 +1,237 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header card-header-warning">
+                        <h4 class="card-title">Recaudo animal</h4>
+                        <p class="card-category">Ganado mayor</p>
+                    </div>
+
+                    <div class="card-body ">
+                        <mat-form-field class="col-md-4 size-fiel" >
+                            <input matInput placeholder="Nº Recibo"  readonly value="10578561247">
+                            <mat-icon matSuffix>line_style</mat-icon>
+                        </mat-form-field>
+
+                        <mat-form-field class="col-md-4">
+                            <input matInput placeholder="Fecha" readonly [value]="date">
+                            <mat-icon matSuffix>date_range</mat-icon>
+                        </mat-form-field>
+                        <hr>
+
+                        <!--
+                            Vendedor
+                        -->
+                        <div class="card">
+                            <div class="row">
+                                <div class="card-header card-header-success col-md-4 mx-4">
+                                    <div class="row">
+                                        <i class="material-icons col-sm-1">assignment_ind</i>
+                                        <h4 class="card-title col-sm-10 mx-1 text-sm-left">Vendedor</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="mt-4">
+
+                                <mat-form-field appearance="outline" class="col-md-6" (focusout)="onBlurMethod()">
+                                    <mat-label>Cédula</mat-label>
+                                    <input type="number" matInput placeholder="Digite cédula">
+                                    <mat-icon matSuffix>payment</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Nombre</mat-label>
+                                    <input type="text" matInput placeholder="Digite nombre" [value]='nombre'>
+                                    <mat-icon matSuffix>perm_identity</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+
+                        </div>
+
+                        <!--
+                            fin Vendedor
+                        -->
+
+
+                        <!--
+                            Guia ICa
+                        -->
+                        <div class="card">
+                            <div class="row">
+                                <div class="card-header card-header-danger col-md-4 mx-4">
+                                    <div class="row">
+                                        <i class="material-icons col-sm-1">payment</i>
+                                        <h4 class="card-title col-sm-10 mx-1 text-sm-left">Guía Ica</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <p class="mt-4">
+                                <mat-form-field appearance="outline" class="col-md-6 size-fiel">
+                                    <mat-label>Nº Guia</mat-label>
+                                    <input matInput  value="108-487-10545" readonly>
+                                    <mat-icon matSuffix>line_style</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Departamento</mat-label>
+                                    <input type="text" matInput placeholder="Digite Departamento" [value]="departamento">
+                                    <mat-icon matSuffix>location_city</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Municipios</mat-label>
+                                    <input type="text" matInput placeholder="Digite Municipios" [value]="municipio">
+                                    <mat-icon matSuffix>location_city</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+
+                            <div class="tableFixHead mx-2">
+                                <table class="table table-hover">
+                                    <thead class="text-primary">
+                                        <tr>
+                                            <th>Categoria</th>
+                                            <th>Cantidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let dato of DATOS">
+                                            <td>{{dato.categoria}}</td>
+                                            <td>{{dato.cantidad}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+
+                        </div>
+                        <!--
+                            Fin Guia Ica
+                        -->
+
+
+                        <!--
+                            Comprador
+                        -->
+                        <div class="card">
+                            <div class="row">
+                                <div class="card-header card-header-primary col-md-4 mx-4">
+                                    <div class="row">
+                                        <i class="material-icons col-sm-1">people</i>
+                                        <h4 class="card-title col-sm-10 mx-1 text-sm-left">Comprador</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="mt-4">
+
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Cédula</mat-label>
+                                    <input type="number" matInput placeholder="Digite cédula">
+                                    <mat-icon matSuffix>payment</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Número</mat-label>
+                                    <input type="number" matInput placeholder="Digite número">
+                                    <mat-icon matSuffix>payment</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Destino</mat-label>
+                                    <input type="text" matInput placeholder="Digite destino">
+                                    <mat-icon matSuffix>subdirectory_arrow_right</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+
+                        </div>
+
+                        <!--
+                                fin Comprador
+                            -->
+                        <!--
+                            Venta
+                        -->
+                        <div class="card">
+                            <div class="row">
+                                <div class="card-header card-header-info col-md-4 mx-4">
+                                    <div class="row">
+                                        <i class="material-icons col-sm-1">people</i>
+                                        <h4 class="card-title col-sm-10 mx-1 text-sm-left">Ventas</h4>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="mt-4">
+
+                                <mat-form-field class="col-md-6">
+                                    <mat-select placeholder="Categoria">
+                                        <mat-option [value]='dato.cantidad' *ngFor="let dato of DATOS">{{dato.categoria}}</mat-option>
+                                    </mat-select>
+                                    <mat-icon matSuffix>payment</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+                            <p>
+                                <mat-form-field appearance="outline" class="col-md-6">
+                                    <mat-label>Cantidad</mat-label>
+                                    <input type="number" matInput placeholder="Digite número">
+                                    <mat-icon matSuffix>payment</mat-icon>
+                                </mat-form-field>
+                            </p>
+
+
+
+
+                        </div>
+
+                        <!--
+                                fin Venta
+                            -->
+
+                        <!--
+                                Botones guardar cancelar
+                            -->
+                        <div class="form-group">
+                            <div class="form-row pr-4">
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto">
+                                    Guardar
+                                </button>
+                                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" >
+                                    Cancelar
+                                </button>
+                            </div>
+                        </div>
+
+
+
+                        <!--
+                                fin botones 
+                            -->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
