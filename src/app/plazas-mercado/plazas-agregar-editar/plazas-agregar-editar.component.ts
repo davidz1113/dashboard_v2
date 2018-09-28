@@ -26,8 +26,8 @@ export class PlazasAgregarEditarComponent implements OnInit {
   nPlaza = true;
 
   //actvar Plaza, desactivar Plaza
-  active = false;
-  textActive = "Desactivado";
+  active = true;
+  textActive = "Activado";
 
 
   //respuesta del servidor
@@ -102,7 +102,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al crear una plaza, intentelo nuevamente';
             console.log('Error en el servidor'+ error);
           }
 
@@ -127,6 +127,10 @@ export class PlazasAgregarEditarComponent implements OnInit {
               }
             }
           },
+          error => {
+            this.msg = 'Error en el servidor al actualizar una plaza, intentelo nuevamente';
+            console.log('Error en el servidor'+ error);
+          }
         );
 
       }
@@ -168,7 +172,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
       }
 
       this.nuevoPlazaForm = this.nuevoForm.group({
-        codigoplaza: [this.plaza != null ? this.plaza.getCodigoplaza() : '', Validators.required],
+        codigoplaza: [this.plaza != null ? this.plaza.getCodigoplaza() : ''],
         nombreplaza: [this.plaza != null ? this.plaza.getNombreplaza() : '', Validators.required],
         pkidtiporecaudo: [this.plaza != null ? this.valueSelect : '', Validators.required]
       });
@@ -203,7 +207,7 @@ export class PlazasAgregarEditarComponent implements OnInit {
 
         },
         error => {
-          this.msg = 'Error en el servidor al consultar los permisos';
+          this.msg = 'Error en el servidor al consultar los tipos de recaudo';
           console.log('Error en el servidor al consultar los permisos(tabla modulos)');
         }
 

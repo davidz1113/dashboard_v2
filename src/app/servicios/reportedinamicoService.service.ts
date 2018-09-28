@@ -105,7 +105,7 @@ export class ReportesServices {
         let token = "authorization=" + this.getToken();
         const params = token + "&nombrereporte=" + nombrereporte + "&filtros=" + JSON.stringify(filtros);
         return this._http.post(this.url + '/export/pdf', params, { responseType: ResponseContentType.Blob, headers: this.headers })
-            .pipe(map(res => { return new Blob([res.blob()], { type: 'application/pdf' }) }));
+            .pipe(map(res => { return new Blob([res.blob()], { type: 'application/pdf' }) } ));
     }
 
     /**

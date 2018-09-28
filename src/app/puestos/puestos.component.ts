@@ -28,7 +28,7 @@ export class PuestosComponent implements OnInit {
   //variable de entrada de texto del imput buscar(nombre sector )
   filtroNombrePuesto: string = '';
   //varible de mostrar desctivados
-  toggleActDesc: boolean = false;
+  toggleActDesc: boolean = true;
 
   puesto: Puesto[];
   //variable puesto interface
@@ -104,6 +104,10 @@ export class PuestosComponent implements OnInit {
     this.puestointer = [];
     try {
       this.respuesta = null;
+      this.plazaselect = '';
+      this.sectorselect = '';
+      this.filtroNombrePuesto = '';
+      this.toggleActDesc=false;
       this._puestoService.consultarTodosPuestos().subscribe(
         response => {
           this.respuesta = response;
@@ -155,7 +159,7 @@ export class PuestosComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar los puestos, intentelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor: ' + error);
@@ -193,7 +197,7 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar las plazas, intentelo nuevamente';
           this.respuesta = 'error al consultar las plazas de mercado';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -232,7 +236,7 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar sectores, intentelo nuevamente';
           this.respuesta = 'error al consultar las plazas de mercado';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -309,7 +313,7 @@ export class PuestosComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al cambiar el estado, intentelo nuevamente';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
         }
@@ -424,7 +428,7 @@ export class PuestosComponent implements OnInit {
           pkidtipopuesto: [this.puesto2 != null ? this.puesto2.fkidtipopuesto : '', Validators.required],
         });
       }
-      this.active = this.puesto2 != null ? Boolean(this.puesto2.puestoactivo) : false;
+      this.active = this.puesto2 != null ? Boolean(this.puesto2.puestoactivo) : true;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.puesto2 == null ? "Guardar" : "Actualizar";
@@ -501,7 +505,7 @@ export class PuestosComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al crear un puesto, intentelo nuevamente';
             console.log('Error en el servidor' + error);
           }
         );
@@ -532,7 +536,7 @@ export class PuestosComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al actualizar el puesto, intentelo nuevamente';
             console.log('Error en el servidor' + error);
           }
         );
@@ -575,9 +579,8 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error al consultar las plazas de mercado';
-          this.mostrarMensaje(0);
+          this.mensaje = 'Error en el servidor al consultar los estados de infraestructura';
+          this.respuesta = 'error al consultar los estados de infraestructura';
           console.log('Error en el servidor');
         }
 
@@ -618,8 +621,8 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error al consultar las plazas de mercado';
+          this.mensaje = 'Error en el servidor al consultar la actividad comercial';
+          this.respuesta = 'error al consultar la actividad comercial';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
         }
@@ -661,8 +664,8 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error al consultar las plazas de mercado';
+          this.mensaje = 'Error en el servidor al consultar los tipos de puesto';
+          this.respuesta = 'error al consultar  los tipos de puesto';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
         }
@@ -705,9 +708,8 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error';
-          this.mostrarMensaje(0);
+          this.mensaje = 'Error en el servidor al buscar un sector por la plaza, intentelo nuevamente';
+          this.respuesta = 'Error en el servidor al buscar un sector por la plaza, intentelo nuevamente';
           console.log('Error en el servidor');
         }
 
@@ -763,8 +765,8 @@ export class PuestosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error';
+          this.mensaje = 'Error en el servidor al buscar la zona por la plaza';
+          this.respuesta = 'error en el servidor al buscar la zona por la plaza';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
         }

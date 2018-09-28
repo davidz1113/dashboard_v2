@@ -66,8 +66,8 @@ export class ParqueaderoComponent implements OnInit {
   //formulario reactive
   nuevoParqueaderoForm: FormGroup;
   //actvar zonas, desactivar zonas
-  active = false;
-  textActive = "Desactivado";
+  active = true;
+  textActive = "true";
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
   parqueadero2: ParqueaderoInterface;
@@ -384,13 +384,13 @@ export class ParqueaderoComponent implements OnInit {
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormParqueadero) {
         this.nuevoParqueaderoForm = this.nuevoForm.group({
-          codigoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.codigoparqueadero : '', Validators.required],
+          codigoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.codigoparqueadero : ''],
           numeroparqueadero: [this.parqueadero2 != null ? this.parqueadero2.numeroparqueadero : '', Validators.required],
           pkidplaza: [this.parqueadero2 != null ? this.parqueadero2.fkidplaza : '', Validators.required],
           pkidtipoparqueadero: [this.parqueadero2 != null ? this.parqueadero2.fkidtipoparqueadero : '', Validators.required],
         });
       }
-      this.active = this.parqueadero2 != null ? this.parqueadero2.parqueaderoactivo : false;
+      this.active = this.parqueadero2 != null ? this.parqueadero2.parqueaderoactivo : true;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el parqueadero es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.parqueadero2 == null ? "Guardar" : "Actualizar";

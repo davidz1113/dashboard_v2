@@ -355,7 +355,7 @@
 
               <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoPuestoForm.valid">{{mensajeBoton}}
               </button>
-              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarPuesto(null)">Cancelar</button>
+              <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarPuesto(null);consultarPuestos();">Cancelar</button>
             </div>
           </div>
 

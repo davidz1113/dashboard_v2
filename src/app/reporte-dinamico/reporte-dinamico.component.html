@@ -20,7 +20,7 @@
           <!--Mensaje de confirmacion-->
           <div data-notify="container" *ngIf="mensaje" class="alert alert-warning alert-with-icon">
             <i class="material-icons" data-notify="icon">warning</i>
-            <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje==''">
+            <button mat-button type="button" class="close" aria-label="Close" (click)="mensaje=''">
               <i class="material-icons">close</i>
             </button>
             <span data-notify="message">
@@ -145,7 +145,7 @@
           <!--mensaje en caso q los datos sean nullos-->
           <div data-notify="container" *ngIf="datosvacios" class="alert alert-warning alert-with-icon">
             <i class="material-icons" data-notify="icon">warning</i>
-            <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog()">
+            <button mat-button type="button" class="close" aria-label="Close" (click)="datosvacios=false">
               <i class="material-icons">close</i>
             </button>
             <span data-notify="message">

@@ -84,11 +84,11 @@ export class PlazasMercadoComponent implements OnInit {
 
           }
           this.mensaje = event.mensaje;
-          this.consultarPlazas();
         } else {
           this.mensaje = null;
         }
       }
+      this.consultarPlazas();
     }
     this.tablaplaza = !this.tablaplaza;
     this.formplaza = !this.formplaza;
@@ -99,6 +99,8 @@ export class PlazasMercadoComponent implements OnInit {
     try {
       //throw new Error('Im errorn');
       this.respuesta = null;
+      this.toggleActDesc = false;
+      this.filtroNombre = '';
 
       this._plazaService.consultarTodasPlazas().subscribe(
         response => {
@@ -128,7 +130,7 @@ export class PlazasMercadoComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar plazas, intentelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -258,7 +260,7 @@ export class PlazasMercadoComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al cambiar el estado, intentelo nuevamente';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
         }

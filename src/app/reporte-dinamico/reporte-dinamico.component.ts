@@ -136,7 +136,7 @@ export class ReporteDinamicoComponent implements OnInit {
 
       },
       error => {
-        this.mensaje = 'Error en el servidor';
+        this.mensaje = 'Error en el servidor al consultar el reporte';
         console.log('Error en el servidor');
 
       }
@@ -249,7 +249,7 @@ export class ReporteDinamicoComponent implements OnInit {
 
       },
       error => {
-        this.mensaje = 'Error en el servidor';
+        this.mensaje = 'Error en el servidor al generar el reporte';
         console.log('Error en el servidor');
         this.respuesta = null;
       }
@@ -327,9 +327,7 @@ export class ReporteDinamicoComponent implements OnInit {
         },
         error => {
           console.log(<any>error);
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = null;
-
+          this.mensaje = 'Error en el servidor al generar el reporte, intentelo nuevamente';
         }
       );
     //});
@@ -367,9 +365,8 @@ export class ReporteDinamicoComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar sectores, intentelo nuevamente';
           console.log('Error en el servidor');
-          this.respuesta = null;
         }
 
       );
@@ -382,12 +379,18 @@ export class ReporteDinamicoComponent implements OnInit {
   generarPDF() {
     this._reporteService.generarPDF(this.datos).subscribe(
       response => {
-        console.log(response);
-        var fileURL = URL.createObjectURL(response);
-        window.open(fileURL);
+        if(response.size<=59){
+          this.mensaje = 'No se pudo generar el pdf correctamente, intente nuevamente' 
+        }else{
+          console.log(response);
+          var fileURL = URL.createObjectURL(response);
+          window.open(fileURL);
+        }
+    
       },
       error => {
-
+        this.mensaje = 'Error en el servidor al generar el PDF, intentelo nuevamente';
+        console.log('Error en el servidor');
       }
     );
   }
@@ -395,12 +398,18 @@ export class ReporteDinamicoComponent implements OnInit {
   generarEXCEL() {
     this._reporteService.generarExcel(this.datos).subscribe(
       response => {
-        console.log(response);
-        var fileURL = URL.createObjectURL(response);
-        window.open(fileURL);
+        if(response.size<=59){
+          this.mensaje = 'No se pudo generar el Excel correctamente, intente nuevamente' 
+        }else{
+          console.log(response);
+          var fileURL = URL.createObjectURL(response);
+          window.open(fileURL);
+        }
+    
       },
       error => {
-
+        this.mensaje = 'Error en el servidor al generar el Excel, intentelo nuevamente';
+        console.log('Error en el servidor');
       }
     );
   }
