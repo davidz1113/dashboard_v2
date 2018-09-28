@@ -42,8 +42,8 @@ export class DialogConfirmacionComponent implements DialogData {
             respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {
-                    this.respuesta = 'Error en el servidor';
-                    console.log('Error en el servidor');
+                    this.respuesta = 'Error en el servidor, al eliminar un usuario';
+                    console.log('Error en el servidor, al eliminar un usuario');
                 }else{
                     this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
                     

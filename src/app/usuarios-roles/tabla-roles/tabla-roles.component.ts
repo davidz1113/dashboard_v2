@@ -87,8 +87,8 @@ export class TablaRolesComponent implements OnInit {
       response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al consultar roles';
+          console.log('Error en el servidor, al consultar roles');
           this.mostrarMensaje(0);
         } else {
 
@@ -111,7 +111,7 @@ export class TablaRolesComponent implements OnInit {
         }
       },
       error => {
-        this.mensaje = 'Error en el servidor';
+        this.mensaje = 'Error en el servidor, al consultar roles';
         this.respuesta = 'error';
         this.mostrarMensaje(0);
         console.log('Error en el servidor: '+error);
@@ -209,8 +209,8 @@ export class TablaRolesComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al cambiar el estado del rol';
+            console.log('Error en el servidor, al cambiar el estado del rol');
             this.mostrarMensaje(0);
           } else {
             this.mensaje = "El cambio de estado del rol " + rol.getNombreRol() + " : " + this.respuesta.msg;
@@ -222,8 +222,8 @@ export class TablaRolesComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al cambiar el estado del rol';
+          console.log('Error en el servidor, al cambiar el estado del rol');
           this.mostrarMensaje(0);
         }
       );

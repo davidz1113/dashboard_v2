@@ -236,7 +236,7 @@ export class RolesAgregarEditarComponent implements OnInit {
       }
 
       this.nuevoRolForm = this.nuevoForm.group({
-        codigorol: [this.rol != null ? this.rol.getCodigoRol() : '', Validators.required],
+        codigorol: [this.rol != null ? this.rol.getCodigoRol() : ''],
         nombrerol: [this.rol != null ? this.rol.getNombreRol() : '', Validators.required],
         descripcionrol: [this.rol != null ? this.rol.getDescripcionRol() : '', Validators.required],
         pkidmodulo: [this.rol != null ? this.valueSelect : '', Validators.required]

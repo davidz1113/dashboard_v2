@@ -102,8 +102,8 @@ export class TipoSectorComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar tipos de sectores';
+            console.log('Error en el servidor, al consultar tipos de sectores');
             this.mostrarMensaje(0);
           } else {
 
@@ -126,7 +126,7 @@ export class TipoSectorComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, al consultar tipos de sectores';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor: ' + error);
@@ -186,8 +186,8 @@ export class TipoSectorComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al cambiar estado tipo sector';
+            console.log('Error en el servidor, al cambiar estado tipo sector');
             this.mostrarMensaje(0);
           } else {
             this.mensaje = "El cambio de estado del tipo sector " + tiposector.getNombretiposector() + " : " + this.respuesta.msg;
@@ -199,8 +199,8 @@ export class TipoSectorComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al cambiar estado tipo sector';
+          console.log('Error en el servidor, al cambiar estado tipo sector');
           this.mostrarMensaje(0);
         }
       );
@@ -276,7 +276,7 @@ export class TipoSectorComponent implements OnInit {
       //validamos el formulario solo en caso que este este visible
       if (this.mostrarFormTipo) {
         this.nuevoTipoForm = this.nuevoForm.group({
-          codigotiposector: [this.tipo != null ? this.tipo.getCodigotiposector() : '', Validators.required],
+          codigotiposector: [this.tipo != null ? this.tipo.getCodigotiposector() : ''],
           nombretiposector: [this.tipo != null ? this.tipo.getNombretiposector() : '', Validators.required],
           descripciontiposector: [this.tipo != null ? this.tipo.getDescripciontiposector() : '', Validators.required]
         });
@@ -332,8 +332,8 @@ export class TipoSectorComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al crear tipo sector';
+              console.log('Error en el servidor, al crear tipo sector');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandotipo = false;
@@ -352,8 +352,8 @@ export class TipoSectorComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, al crear tipo sector';
+            console.log('Error en el servidor, al crear tipo sector' + error);
           }
         );
 
@@ -364,8 +364,8 @@ export class TipoSectorComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, actualizar tipo sector';
+              console.log('Error en el servidor, actualizar tipo sector');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandotipo = false;
@@ -384,8 +384,8 @@ export class TipoSectorComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, actualizar tipo sector';
+            console.log('Error en el servidor, actualizar tipo sector' + error);
           }
         );
 

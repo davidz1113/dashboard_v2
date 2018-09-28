@@ -70,14 +70,14 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 respose => {
                     this.respuesta = respose;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar tipo sector';
+                        console.log('Error en el servidor, al eliminar tipo sector');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 },
                 error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar tipo sector, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
@@ -88,8 +88,8 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 respose => {
                     this.respuesta = respose;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar zona';
+                        console.log('Error en el servidor, al eliminar zona');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
 
@@ -97,7 +97,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
 
                 },
                 error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar zona, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
 
                 }
@@ -107,8 +107,8 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
             this._sectoresServices.eliminarSector(this.id).subscribe(respose => {
                 this.respuesta = respose;
                 if (this.respuesta.length <= 1) {
-                    this.respuesta = 'Error en el servidor';
-                    console.log('Error en el servidor');
+                    this.respuesta = 'Error en el servidor, al eliminar sector';
+                    console.log('Error en el servidor, al eliminar sector');
                 } else {
                     this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
 
@@ -116,7 +116,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
 
             },
                 error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar sector, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
 
                 });
@@ -125,15 +125,15 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar parqueadero';
+                        console.log('Error en el servidor, al eliminar parqueadero');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
 
                     }
                 },
                 error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar parqueadero, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
@@ -142,15 +142,15 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar puesto';
+                        console.log('Error en el servidor, al eliminar puesto');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
 
                     }
                 },
                 error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar puesto, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
@@ -160,13 +160,13 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 resp => {
                     this.respuesta = resp;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar puerta';
+                        console.log('Error en el servidor, al eliminar puerta');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar puerta, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
@@ -176,13 +176,13 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 resp => {
                     this.respuesta = resp;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, al eliminar especie animal';
+                        console.log('Error en el servidor, al eliminar especie animal');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar especie animal, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
@@ -191,13 +191,13 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                 resp => {
                     this.respuesta = resp;
                     if (this.respuesta.length <= 1) {
-                        this.respuesta = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.respuesta = 'Error en el servidor, eliminar equipo';
+                        console.log('Error en el servidor, eliminar equipo');
                     } else {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
-                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
+                    this.dialogRef.close({respuesta:'error al eliminar equipo, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
