@@ -278,8 +278,8 @@ export class TarifaanimalComponent implements OnInit {
                 response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
-                        this.msg = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.msg = 'Error en el servidor, al crear tarifa';
+                        console.log('Error en el servidor, al crear tarifa');
                     } else {
                         this.creandotarifa = false;
                         if (this.respuesta.status == "Exito") {//Si lo creo, mostramos el mensaje en la pantalla princiapl
@@ -297,8 +297,8 @@ export class TarifaanimalComponent implements OnInit {
                 },
                 error => {
                     this.creandotarifa=false;
-                    this.msg = 'Error en el servidor'; //se muestra el mensaje en el formualrio
-                    console.log('Error en el servidor');
+                    this.msg = 'Error en el servidor, al crear tarifa'; //se muestra el mensaje en el formualrio
+                    console.log('Error en el servidor, al crear tarifa');
                 }
 
             );
@@ -308,8 +308,8 @@ export class TarifaanimalComponent implements OnInit {
                 response => {
                     this.respuesta = response;
                     if (this.respuesta.length <= 1) {
-                        this.msg = 'Error en el servidor';
-                        console.log('Error en el servidor');
+                        this.msg = 'Error en el servidor, al editar tarifa';
+                        console.log('Error en el servidor, al editar tarifa');
                     } else {
                         this.creandotarifa = false;
                         if (this.respuesta.status == "Exito") {//Si lo creo, mostramos el mensaje en la pantalla princiapl
@@ -328,8 +328,8 @@ export class TarifaanimalComponent implements OnInit {
                 },
                 error => {
                     this.creandotarifa=false;
-                    this.msg = 'Error en el servidor'; //se muestra el mensaje en el formualrio
-                    console.log('Error en el servidor');
+                    this.msg = 'Error en el servidor, al editar tarifa'; //se muestra el mensaje en el formualrio
+                    console.log('Error en el servidor, al editar tarifa');
                 }
             )
 

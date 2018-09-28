@@ -173,8 +173,8 @@ export class UserAgregarEditarComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al crear un nuevo usuario';
+              console.log('Error en el servidor, al crear un nuevo usuario');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandoUsuario = false;
@@ -202,8 +202,8 @@ export class UserAgregarEditarComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al actualizar usuario';
+              console.log('Error en el servidor, al actualizar usuario');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandoUsuario = false;
@@ -218,8 +218,8 @@ export class UserAgregarEditarComponent implements OnInit {
           },
           error => {
             this.creandoUsuario = false;
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.msg = 'Error en el servidor, al actualizar usuario';
+            console.log('Error en el servidor, al actualizar usuario');
 
           }
 
@@ -341,15 +341,15 @@ export class UserAgregarEditarComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.msg = 'Error en el servidor, al consultar roles';
+            console.log('Error en el servidor, al consultar roles');
           } else {
             this.roles = plainToClass(Rol, this.respuesta.roles);
           }
         },
         error => {
-          this.msg = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.msg = 'Error en el servidor, al consultar roles';
+          console.log('Error en el servidor, al consultar roles');
         }
       );
     } catch (e) {

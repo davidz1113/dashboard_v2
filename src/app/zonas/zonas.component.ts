@@ -119,8 +119,8 @@ export class ZonasComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar zonas de sectores';
+            console.log('Error en el servidor, al consultar zonas de sectores');
             this.mostrarMensaje(0);
           } else {
 
@@ -163,8 +163,8 @@ export class ZonasComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          this.respuesta = 'error';
+          this.mensaje = 'Error en el servidor, al consultar zonas de sectores';
+          this.respuesta = 'error al consultar zonas de sectores';
           this.mostrarMensaje(0);
           console.log('Error en el servidor: ' + error);
         }
@@ -212,8 +212,8 @@ export class ZonasComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar plazas de mercado';
+            console.log('Error en el servidor, al consultar plazas de mercado');
             this.mostrarMensaje(0);
           } else {
             //conversion del json de plazas a la clase plazas 
@@ -223,10 +223,10 @@ export class ZonasComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, al consultar plazas de mercado';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
-          console.log('Error en el servidor');
+          console.log('Error en el servidor, al consultar plazas de mercado');
         }
 
       );
@@ -267,8 +267,8 @@ export class ZonasComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al cambiar el estado de la zona';
+            console.log('Error en el servidor, al cambiar el estado de la zona');
             this.mostrarMensaje(0);
           } else {
             this.mensaje = "El cambio de estado Zona  " + zona.getNombrezona() + " : " + this.respuesta.msg;
@@ -280,8 +280,8 @@ export class ZonasComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al cambiar el estado de la zona';
+          console.log('Error en el servidor, al cambiar el estado de la zona');
           this.mostrarMensaje(0);
         }
       );
@@ -403,8 +403,8 @@ export class ZonasComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar usuarios';
+            console.log('Error en el servidor, al consultar usuarios');
             this.mostrarMensaje(0);
           } else {
             this.selectusuarios = this.respuesta.users;
@@ -444,8 +444,8 @@ export class ZonasComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar plazas de mercado no asignadas';
+            console.log('Error en el servidor, al consultar plazas de mercado no asignadas');
             this.mostrarMensaje(0);
           } else {
             this.selectplazas = this.respuesta.plaza;
@@ -502,8 +502,8 @@ export class ZonasComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al crear zona';
+              console.log('Error en el servidor, al crear zona');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandozona = false;
@@ -523,8 +523,8 @@ export class ZonasComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, al crear zona';
+            console.log('Error en el servidor, al crear zona' + error);
           }
         );
 
@@ -533,8 +533,8 @@ export class ZonasComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, actualizar zona';
+              console.log('Error en el servidor, actualizar zona');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandozona = false;
@@ -554,8 +554,8 @@ export class ZonasComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, actualizar zona';
+            console.log('Error en el servidor, actualizar zona' + error);
           }
         );
 

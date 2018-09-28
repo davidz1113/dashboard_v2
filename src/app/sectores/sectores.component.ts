@@ -110,8 +110,8 @@ export class SectoresComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar sectores';
+            console.log('Error en el servidor, al consultar sectores');
             this.mostrarMensaje(0);
           } else {
 
@@ -127,7 +127,7 @@ export class SectoresComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, al consultar sectores';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor: ' + error);
@@ -155,8 +155,8 @@ export class SectoresComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar plazas asignadas';
+            console.log('Error en el servidor, al consultar plazas asignadas');
             this.mostrarMensaje(0);
           } else {
             this.plazasmercado = plainToClass(PlazaMercado, this.respuesta.plaza);
@@ -164,7 +164,7 @@ export class SectoresComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, al consultar plazas asignadas';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -203,8 +203,8 @@ export class SectoresComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.mensaje = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.mensaje = 'Error en el servidor, al consultar zonas por plaza';
+              console.log('Error en el servidor, al consultar zonas por plaza');
               this.mostrarMensaje(0);
             } else {
               this.zonas = this.respuesta.zonas;
@@ -212,7 +212,7 @@ export class SectoresComponent implements OnInit {
 
           },
           error => {
-            this.mensaje = 'Error en el servidor';
+            this.mensaje = 'Error en el servidor, al consultar zonas por plaza';
             this.respuesta = 'error';
             this.mostrarMensaje(0);
             console.log('Error en el servidor');
@@ -252,8 +252,8 @@ export class SectoresComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al cambiar estado sector';
+            console.log('Error en el servidor, al cambiar estado sector');
             this.mostrarMensaje(0);
           } else {
             this.mensaje = "El cambio de estado del Sector " + sector.nombresector + " : " + this.respuesta.msg;
@@ -265,8 +265,8 @@ export class SectoresComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al cambiar estado sector';
+          console.log('Error en el servidor, al cambiar estado sector');
           this.mostrarMensaje(0);
         }
       );
@@ -393,8 +393,8 @@ export class SectoresComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al crear sector';
+              console.log('Error en el servidor, al crear sector');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandosector = false;
@@ -414,8 +414,8 @@ export class SectoresComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, al crear sector';
+            console.log('Error en el servidor, al crear sector' + error);
           }
         );
 
@@ -424,8 +424,8 @@ export class SectoresComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.msg = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.msg = 'Error en el servidor, al actualizar sector';
+              console.log('Error en el servidor, al actualizar sector');
             } else {
               //this.msg = this.respuesta.msg;
               this.creandosector = false;
@@ -445,8 +445,8 @@ export class SectoresComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
-            console.log('Error en el servidor' + error);
+            this.msg = 'Error en el servidor, al actualizar sector';
+            console.log('Error en el servidor, al actualizar sector' + error);
           }
         );
 
@@ -479,8 +479,8 @@ export class SectoresComponent implements OnInit {
           response => {
             this.respuesta = response;
             if (this.respuesta.length <= 1) {
-              this.mensaje = 'Error en el servidor';
-              console.log('Error en el servidor');
+              this.mensaje = 'Error en el servidor, al consultar zonas por plaza';
+              console.log('Error en el servidor, al consultar zonas por plaza');
               this.mostrarMensaje(0);
             } else {
               this.zonasform = this.respuesta.zonas;
@@ -488,10 +488,10 @@ export class SectoresComponent implements OnInit {
 
           },
           error => {
-            this.mensaje = 'Error en el servidor';
+            this.mensaje = 'Error en el servidor, al consultar zonas por plaza';
             this.respuesta = 'error';
             this.mostrarMensaje(0);
-            console.log('Error en el servidor');
+            console.log('Error en el servidor, al consultar zonas por plaza');
           }
 
         );
@@ -526,15 +526,15 @@ export class SectoresComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al consultar tipos de sector';
+            console.log('Error en el servidor, al consultar tipos de sector');
           } else {
             //seteamos el valor de los roles en el objeto tipo sector
             this.tiposectores = plainToClass(TipoSector, this.respuesta.tiposector);
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, al consultar tipos de sector';
           this.respuesta = 'error';
           console.log('Error en el servidor: ' + error);
         }

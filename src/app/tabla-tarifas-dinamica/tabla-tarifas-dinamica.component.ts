@@ -71,7 +71,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
       response => {
         this.respuesta = response;
         if (this.respuesta.length <= 1) {
-          console.log('Error en el servidor');
+          console.log('Error en el servidor, al consultar datos');
         } else {//traemos los objetos de respuesta
           this.cabeceras = this.respuesta.cabeceras;//obtenemos las cabeceras con nombrecampo y nombreetiqueta
           this.datostabla = this.respuesta[this.url.substring(1)];

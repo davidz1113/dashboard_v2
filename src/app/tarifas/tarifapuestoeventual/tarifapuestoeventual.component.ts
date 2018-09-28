@@ -345,7 +345,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
           }, error => {
             this.mostrarMensaje(0);
-            this.mensajeForm = 'Error en el servidor';
+            this.mensajeForm = 'Error en el servidor, al crear tarifa';
             this.barraProgresoForm = false;
           }
         );
@@ -383,7 +383,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
             }
           }, error => {
             this.mostrarMensaje(0);
-            this.mensajeForm = 'Error en el servidor';
+            this.mensajeForm = 'Error en el servidor, al editar tarifa';
             this.barraProgresoForm = false;
           }
         );

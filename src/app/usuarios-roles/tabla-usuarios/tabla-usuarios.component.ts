@@ -99,8 +99,8 @@ export class TablaUsuariosComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, consultar usuarios';
+            console.log('Error en el servidor, consultar usuarios');
             this.mostrarMensaje(0);
           } else {
             //cabeceras
@@ -132,15 +132,15 @@ export class TablaUsuariosComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor, consultar usuarios';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
-          console.log('Error en el servidor');
+          console.log('Error en el servidor, consultar usuarios');
         }
       );
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "constultarUsuario()"
+      let funcion = "consultarUsuario()"
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
       ? location.path() : '';
@@ -264,8 +264,8 @@ export class TablaUsuariosComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor';
-            console.log('Error en el servidor');
+            this.mensaje = 'Error en el servidor, al cambiar el estado del usuario';
+            console.log('Error en el servidor, al cambiar el estado del usuario');
             this.mostrarMensaje(0);
           } else {
             this.mensaje = "El cambio de estado del usuario " + usuario.getNombreUsuario() + " : " + this.respuesta.msg;
@@ -277,8 +277,8 @@ export class TablaUsuariosComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
-          console.log('Error en el servidor');
+          this.mensaje = 'Error en el servidor, al cambiar el estado del usuario';
+          console.log('Error en el servidor, al cambiar el estado del usuario');
           this.mostrarMensaje(0);
         }
       );
