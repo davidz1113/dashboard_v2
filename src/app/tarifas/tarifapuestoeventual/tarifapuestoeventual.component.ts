@@ -170,6 +170,8 @@ export class TarifaPuestoEventualComponent implements OnInit {
    */
   mostrarOcultar() {
     this.oculta = !this.oculta;
+    console.log('edit:   ' + this.tarifaEdit);
+
   }
 
   /**
@@ -319,6 +321,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
 
       if (this.tarifaEdit === null || this.tarifaEdit === undefined) {
         this.selectedFile = null;
+        this.urlDocumento = '';
         this.inicializaForm();
         const uploadData = new FormData();
 
@@ -327,7 +330,7 @@ export class TarifaPuestoEventualComponent implements OnInit {
           // console.log(this.selectedFile.size);
         }
 
-        this.barraProgresoForm = true;
+        // this.barraProgresoForm = true;
 
         this._tarifasServices.crearTarifa(nuevaTarifa, uploadData, this.url).subscribe(
           resp => {
@@ -337,13 +340,13 @@ export class TarifaPuestoEventualComponent implements OnInit {
             this.mostrarMensaje(1);
             this.barraProgresoForm = false;
             this.selectedFile = null;
+            this.linkDocumento = '';
             this.urlDocumento = '';
 
           }, error => {
             this.mostrarMensaje(0);
             this.mensajeForm = 'Error en el servidor';
             this.barraProgresoForm = false;
-            this.selectedFile = null;
           }
         );
       } else {
@@ -366,10 +369,17 @@ export class TarifaPuestoEventualComponent implements OnInit {
               this.mostrarMensaje(0);
               this.mensajeForm = resp.msg;
               this.barraProgresoForm = false;
+              this.selectedFile = null;
+              this.linkDocumento = '';
+              this.urlDocumento = '';
             } else {
               this.mostrarMensaje(1);
               this.mostrarOcultar();
               this.mensaje = resp.msg;
+              this.barraProgresoForm = false;
+              this.selectedFile = null;
+              this.linkDocumento = '';
+              this.urlDocumento = '';
             }
           }, error => {
             this.mostrarMensaje(0);
