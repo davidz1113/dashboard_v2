@@ -6,6 +6,7 @@ import { ExcepcionService } from '../servicios/excepcionServices.services';
 import { EspecieAnimalService } from '../servicios/especieanimalService.services';
 import { PathLocationStrategy, LocationStrategy } from '@angular/common';
 import { DialogConfirmacionTipos } from '../tipos/dialogTipo.confirm.component';
+import { filter } from 'rxjs/operator/filter';
 @Component({
   selector: 'app-especie-animal',
   templateUrl: './especie-animal.component.html',
@@ -57,8 +58,8 @@ export class EspecieAnimalComponent implements OnInit {
   //formulario reactive
   nuevoEspecieForm: FormGroup;
   //actvar especies, desactivar especies
-  active = false;
-  textActive = "Desactivado";
+  active = true;
+  textActive = "Activado";
   //mensaje del boton actulizar guardar
   mensajeBoton: string;
   especie2: EspecieAnimalInterface;
@@ -88,6 +89,9 @@ export class EspecieAnimalComponent implements OnInit {
     try {
       this.respuesta = null;
       this.especieanimalinter = [];
+      this.filtroNombreEspecie = '';
+      this.tipoanimalselect = '';
+      this.toggleActDesc = false;
       this._especieanimalSerice.consultarTodosEspecieAnimal().subscribe(
         response => {
           this.respuesta = response;
@@ -119,13 +123,13 @@ export class EspecieAnimalComponent implements OnInit {
 
             this.botonBloqueo = false;
             this.aplicarFiltro();
-            this.setFilterDataTable();
+            //this.setFilterDataTable();
 
           }
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar especies de animales, intente nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -168,7 +172,7 @@ export class EspecieAnimalComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar tipos de animales, intente nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -193,8 +197,10 @@ export class EspecieAnimalComponent implements OnInit {
 
   //Método para aplicar el filtro en la tabla
   aplicarFiltro() {
-    //console.log(this.tipoanimalselect);
+    //this.dataSource.filter = '';
     this.dataSource.filter = this.filtroNombreEspecie + (!this.toggleActDesc) + this.tipoanimalselect;
+    this.setFilterDataTable();
+    console.log(this.dataSource.filter);
   }
 
   setFilterDataTable() {
@@ -232,7 +238,7 @@ export class EspecieAnimalComponent implements OnInit {
     //console.log(especies);
     try {
       let active = especies.especieanimalactivo;
-      console.log("Active: " + active);
+      //console.log("Active: " + active);
 
       this._especieanimalSerice.cambiarEstadoEspecieAnimal(especies.pkidespecieanimal, !active, "tespecieanimal").subscribe(
         response => {
@@ -250,7 +256,7 @@ export class EspecieAnimalComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al cambiar el estado';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
         }
@@ -258,7 +264,7 @@ export class EspecieAnimalComponent implements OnInit {
 
     } catch (e) {
       const mensaje = e.message ? e.message : e.toString();
-      let funcion = "cambiarEstadoZona()"
+      let funcion = "cambiarEstadoEspecie()"
 
       const location = this.injector.get(LocationStrategy);
       const url = location instanceof PathLocationStrategy
@@ -335,7 +341,7 @@ export class EspecieAnimalComponent implements OnInit {
           pkidtipoanimal: [this.especie2 != null ? this.especie2.fkidtipoanimal : '', Validators.required],
         });
       }
-      this.active = this.especie2 != null ? this.especie2.especieanimalactivo: false;
+      this.active = this.especie2 != null ? this.especie2.especieanimalactivo: true;
       this.textActive = this.active ? "Activado" : "Desactivado";
       //si el zona es nullo, significa que entra por un nuevo objeto
       this.mensajeBoton = this.especie2 == null ? "Guardar" : "Actualizar";

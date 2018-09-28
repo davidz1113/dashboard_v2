@@ -17,7 +17,7 @@ export class EquiposComponent implements OnInit {
 
   //Cabeceras de las columnas
   //cabecerasColumnas: string[] = [];
-  cabecerasColumnas: string[] = ['identificacionequipo', 'nombrequipo', 'descripcionequipo', 'nombreusuario', 'equipoactivo','actions'];
+  cabecerasColumnas: string[] = ['identificacionequipo', 'nombrequipo', 'descripcionequipo', 'nombreusuario', 'equipoactivo', 'actions'];
 
   //variable de entrada de texto del imput buscar(cedula o nombre)
   filtroNombreEquipo: string = '';
@@ -65,7 +65,9 @@ export class EquiposComponent implements OnInit {
   consultarEquipos() {
     try {
       this.respuesta = null;
-      this.equipo=[];
+      this.equipo = [];
+      this.toggleActDesc = false;
+      this.filtroNombreEquipo='';
       this._equipoService.consultarTodosEquipo().subscribe(
         response => {
           this.respuesta = response;
@@ -75,17 +77,17 @@ export class EquiposComponent implements OnInit {
             this.mostrarMensaje(0);
           } else {
             this.respuesta.equipos.map((x) => {
-              let equi: EquiposInterface={
-                codigoequipo:'',descripcionequipo:'',equipoactivo:false,identificacion:null,identificacionequipo:'',nombrequipo:'',nombreusuario:'',pkidequipo:null,fkidusuario:null
+              let equi: EquiposInterface = {
+                codigoequipo: '', descripcionequipo: '', equipoactivo: false, identificacion: null, identificacionequipo: '', nombrequipo: '', nombreusuario: '', pkidequipo: null, fkidusuario: null
               }
-              equi.pkidequipo= x.pkidequipo;
+              equi.pkidequipo = x.pkidequipo;
               equi.identificacionequipo = x.identificacionequipo;
               equi.nombrequipo = x.nombrequipo;
               equi.codigoequipo = x.codigoequipo;
               equi.descripcionequipo = x.descripcionequipo;
               equi.equipoactivo = x.equipoactivo;
               equi.fkidusuario = x['usuario'].pkidusuario;
-              equi.identificacion= x['usuario'].identificacion;
+              equi.identificacion = x['usuario'].identificacion;
               equi.nombreusuario = x['usuario'].nombreusuario;
               this.equipo.push(equi);
 
@@ -99,7 +101,7 @@ export class EquiposComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar los equipos, intentelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -128,7 +130,7 @@ export class EquiposComponent implements OnInit {
     this.aplicarFiltro();
   }
 
-  
+
   closeDialog() {
     this.mensaje = '';
   }
@@ -180,7 +182,7 @@ export class EquiposComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al cambiar el estado, intentelo nuevamente';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
         }
@@ -202,7 +204,7 @@ export class EquiposComponent implements OnInit {
 
   openDialog(equipo: EquiposInterface) {
     try {
-      this.mensaje='';
+      this.mensaje = '';
       let nombreequipo = equipo.nombrequipo;
       let idequipo = equipo.pkidequipo;
 
@@ -248,16 +250,18 @@ export class EquiposComponent implements OnInit {
         console.log("cancel");
         //el mensaje pasa a null en caso que solo sea cancelar
         if (event.mensaje != null) {
-          if(event.status=="Exito"){
+          if (event.status == "Exito") {
             this.mostrarMensaje(1)
-          }else{
+          } else {
             this.mostrarMensaje(0)
           }
           this.mensaje = event.mensaje;
-          this.consultarEquipos();
         } else {
           this.mensaje = null;
         }
+        //reiniciamos variables
+        this.consultarEquipos();
+      
       }
     }
     this.formequipo = !this.formequipo;
@@ -281,7 +285,7 @@ MEtodo que asigna de manera dinamica el estilo de agregado y alerta
 
   //Mwtodo que recibe el equipo y la envia al componente para editar
   enviarEquipo(element) {
-    console.log(element);
+    //console.log(element);
     this.equipoEdit = element;
     this.ocultarTablaEquipo(null);
   }

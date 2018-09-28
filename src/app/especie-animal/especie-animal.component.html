@@ -49,11 +49,11 @@
                 </button>
                 <span data-notify="message">
                   <b>Info:</b> {{mensaje}} </span>
-                <div class="col-sm-4">
-                  <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="consultarZonaes()" *ngIf="respuesta=='error'">Intentar
+                <!-- <div class="col-sm-4">
+                  <button mat-raised-button class="btn btn-outline-primary mb-3" (click)="" *ngIf="respuesta=='error'">Intentar
                     de nuevo
                   </button>
-                </div>
+                </div> -->
               </div>
               <!--
                   <mat-progress-bar mode="indeterminate" class="mt-2 mb-4" [hidden]="!creandoUsuario"></mat-progress-bar>
@@ -73,6 +73,9 @@
                     Especie de animal
                   </button>
                 </div>
+              
+
+
               </div>
   
               <div class="table-responsive mat-elevation-z8">
@@ -214,7 +217,7 @@
   
                 <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="submit" [disabled]="!nuevoEspecieForm.valid">{{mensajeBoton}}
                 </button>
-                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarEspecie(null)">Cancelar</button>
+                <button mat-button class="btn btn-outline-danger col-sm-4 mx-auto" type="button" (click)="llamarFormularioAgregarEspecie(null);consultarEspeciesAnimal();">Cancelar</button>
               </div>
             </div>
   

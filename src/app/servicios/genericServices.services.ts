@@ -114,7 +114,7 @@ export class GenericServices {
     cambiarEstadoUsuario(pkidusuario: number, active: boolean, nombre_tabla: string,pkname:string) {
         let enviarDatos = {};
         enviarDatos['pkid']=pkidusuario;
-        enviarDatos['active']=String(active);
+        enviarDatos['active']=(active);
         enviarDatos['nombretabla']=nombre_tabla;
         let json = JSON.stringify(enviarDatos);
         console.log(enviarDatos);

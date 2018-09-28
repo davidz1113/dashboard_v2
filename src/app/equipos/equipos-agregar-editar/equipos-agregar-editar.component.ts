@@ -25,8 +25,8 @@ export class EquiposAgregarEditarComponent implements OnInit {
    nEquipo = true;
  
    //actvar Equipo, desactivar Equipo
-   active = false;
-   textActive = "Desactivado";
+   active = true;
+   textActive = "Activado";
  
  
    //respuesta del servidor
@@ -104,7 +104,7 @@ export class EquiposAgregarEditarComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al agregar un nuevo equipo, intentelo nuevamente';
             console.log('Error en el servidor'+ error);
           }
 
@@ -129,6 +129,10 @@ export class EquiposAgregarEditarComponent implements OnInit {
               }
             }
           },
+          error => {
+            this.msg = 'Error en el servidor al actualizar un nuevo equipo, intentelo nuevamente';
+            console.log('Error en el servidor'+ error);
+          }
         );
 
       }
@@ -155,19 +159,19 @@ export class EquiposAgregarEditarComponent implements OnInit {
 
          this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.msg = 'Error en el servidor al consultar los permisos';
-            console.log('Error en el servidor al consultar los permisos');
+            this.msg = 'Error en el servidor al consultar los usuarios';
+            console.log('Error en el servidor al consultar los usuarios');
           } else {
             this.usuarios = plainToClass(Usuario, this.respuesta.users)//recupero los tipos de recuado
             //console.log(this.tiporecaudos);
 
-            //console.log(this.permisos[1].getIcono().length);
+            //console.log(this.usuarios[1].getIcono().length);
           }
 
         },
         error => {
-          this.msg = 'Error en el servidor al consultar los permisos';
-          console.log('Error en el servidor al consultar los permisos(tabla modulos)');
+          this.msg = 'Error en el servidor al consultar los usuarios';
+          console.log('Error en el servidor al consultar los usuarios(tabla modulos)');
         }
       );
 

@@ -343,6 +343,8 @@ public route;
   cambiarEstado(usuario:any ) {
     try {
       let active:boolean = usuario[this.genericActive];
+  console.log(this.genericActive);
+        
       console.log("Active: " + active);
 
       this._genericService.cambiarEstadoUsuario(usuario[this.primaryKey], !active, "t"+this.route.substring(1),this.primaryKey).subscribe(

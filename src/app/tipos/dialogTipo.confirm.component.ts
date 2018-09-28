@@ -77,6 +77,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     }
                 },
                 error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
@@ -96,6 +97,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
 
                 },
                 error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
 
                 }
@@ -114,6 +116,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
 
             },
                 error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
 
                 });
@@ -130,6 +133,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     }
                 },
                 error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
@@ -146,6 +150,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                     }
                 },
                 error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
@@ -161,11 +166,12 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
 
             );
-        } else if (this.tipoIdentifi == 7) {
+        } else if (this.tipoIdentifi == 7) {//especies de animales
             this._especieanimalServices.eliminarEspecieAnimal(this.id).subscribe(
                 resp => {
                     this.respuesta = resp;
@@ -176,6 +182,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
@@ -190,6 +197,7 @@ export class DialogConfirmacionTipos implements DialogDataTipo {
                         this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     }
                 }, error => {
+                    this.dialogRef.close({respuesta:'error al eliminar, intentelo nuevamente',status:'error'});
                     console.log("Error de conexion");
                 }
             );
