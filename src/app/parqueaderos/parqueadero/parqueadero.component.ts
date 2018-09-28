@@ -99,10 +99,14 @@ export class ParqueaderoComponent implements OnInit {
    * MEtodo que consulta todos los parqueaderos, los transforma a la interfaz para el datasource y tambien para ordenamiento 
    */
   consultarParqueaderos() {
-    this.parqueaderoInterface = [];
-
+    
     try {
       this.respuesta = null;
+      this.parqueaderoInterface = [];
+      this.filtronumeroParqueadero = '';
+      this.plazaselect = '';
+      this.tipoparqueselect = '';
+      this.toggleActDesc = false;
       this._parqueaderoService.consultarTodosParqueaderos().subscribe(
         response => {
           this.respuesta = response;
@@ -151,7 +155,7 @@ export class ParqueaderoComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al consultar los parqueaderos, intentelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor: ' + error);
@@ -189,7 +193,7 @@ export class ParqueaderoComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor al consultar las plazas';
+          this.mensaje = 'Error en el servidor al consultar las plazas, intetelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor');
@@ -217,7 +221,7 @@ export class ParqueaderoComponent implements OnInit {
         response => {
           this.respuesta = response;
           if (this.respuesta.length <= 1) {
-            this.mensaje = 'Error en el servidor al consultar las plazas';
+            this.mensaje = 'Error en el servidor al los tipos de parqueadero';
             console.log('Error en el servidor');
             this.mostrarMensaje(0);
           } else {
@@ -228,7 +232,7 @@ export class ParqueaderoComponent implements OnInit {
 
         },
         error => {
-          this.mensaje = 'Error en el servidor al consultar los tipos de parqueadero';
+          this.mensaje = 'Error en el servidor al consultar los tipos de parqueadero, intentelo nuevamente';
           this.respuesta = 'error';
           this.mostrarMensaje(0);
           console.log('Error en el servidor ' + error);
@@ -306,7 +310,7 @@ export class ParqueaderoComponent implements OnInit {
           }
         },
         error => {
-          this.mensaje = 'Error en el servidor';
+          this.mensaje = 'Error en el servidor al cambiar el estado, intentelo nuevamente';
           console.log('Error en el servidor');
           this.mostrarMensaje(0);
         }
@@ -338,8 +342,8 @@ export class ParqueaderoComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje = result.respuesta + " Nombre parqueadero : " + numeroparqueadero;
         if (result != null) {
+          this.mensaje = result.respuesta + " Nombre parqueadero : " + numeroparqueadero;
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
@@ -457,7 +461,7 @@ export class ParqueaderoComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al crear , intentelo nuevamente';
             console.log('Error en el servidor' + error);
           }
         );
@@ -487,7 +491,7 @@ export class ParqueaderoComponent implements OnInit {
             }
           },
           error => {
-            this.msg = 'Error en el servidor';
+            this.msg = 'Error en el servidor al actualizar, intetelo nuevamente';
             console.log('Error en el servidor' + error);
           }
         );

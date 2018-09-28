@@ -231,6 +231,11 @@ export class TarifaanimalComponent implements OnInit {
         this.textActive = this.active ? "Activado" : "Desactivado";
     }
 
+    deleteFile(){
+        this.selectedFile=null;this.documento='Seleccionar documento de resolución';this.urldocumento=''
+        this.tarifa['documentoresolucion' + this.tablatarifa]=false;
+    }
+
     /**
      * Metodo que guarda o actualiza los cambios de una tarifa
      */
@@ -246,7 +251,10 @@ export class TarifaanimalComponent implements OnInit {
           
         } 
 
+        if(this.urldocumento=''){
+        }
         
+       
         this.tarifa['valor' + this.tablatarifa] = this.nuevoTarifaForm.get('valor').value;
         this.tarifa['descripcion' + this.tablatarifa] = this.nuevoTarifaForm.get('descripcion').value;
         this.tarifa['numeroresolucion' + this.tablatarifa] = this.nuevoTarifaForm.get('numero').value;
