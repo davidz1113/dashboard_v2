@@ -95,6 +95,10 @@ export class ReporteDinamicoComponent implements OnInit {
     }
   }
 
+  closeDialog() {
+    this.datosvacios = false;
+  }
+
   /**
    * metodo que consulta los filtros para armar los select y los inputs
    */
