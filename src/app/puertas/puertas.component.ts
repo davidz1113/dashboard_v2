@@ -265,6 +265,7 @@ export class PuertasComponent implements OnInit {
             this.mostrarMensaje(1)
             this.estadoToggle = false;
             this.listarPuertas();
+            console.log('LISTANDO PUERTAS');
 
           }
         }
@@ -365,7 +366,7 @@ export class PuertasComponent implements OnInit {
     this.puertasForm = new FormGroup({
       codigopuerta: new FormControl(null),
       nombrepuerta: new FormControl(null, Validators.required),
-      puertaactivo: new FormControl(false),
+      puertaactivo: new FormControl(true),
       fkidplaza: new FormControl(null, Validators.required)
     });
   }
