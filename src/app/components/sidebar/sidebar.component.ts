@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Modulo } from '../../modelos/modulo';
 import { GLOBAL } from '../../servicios/globales';
 import { plainToClass } from 'class-transformer';
+import { Router } from '@angular/router';
 
 
 declare const $: any;
@@ -33,11 +34,11 @@ export const ROUTES: RouteInfo[] = [
     //{ path: '/' + GLOBAL.urlBase + '/configuracion', title: 'Configuración', icon: 'settings', class: '', valor: 17 },
     { path: '/' + GLOBAL.urlBase + '/equipo', title: 'Equipos', icon: 'computer', class: '', valor: 18 },
     { path: '/' + GLOBAL.urlBase + '/reporterecibopuestoeventual', title: 'Reporte puesto eventual', icon: 'credit_card', class: '', valor: 21 },
-    { path: '/' + GLOBAL.urlBase + '/reporteauditoria', title: 'Reporte Auditoria', icon: 'description', class: '', valor: 21},
-    { path: '/' + GLOBAL.urlBase + '/tarifaanimal', title: 'Tarifa animal', icon: 'description', class: '', valor: 20},
-    { path: '/' + GLOBAL.urlBase + '/beneficiario', title: 'Beneficiario', icon: 'assignment_ind', class: '', valor: 22},
-    { path: '/' + GLOBAL.urlBase + '/recaudoanimal', title: 'Recaudo Animal', icon: 'gavel', class: '', valor: 23},
-    { path: '/' + GLOBAL.urlBase + '/categoriaanimal', title: 'Categoria de animales', icon: 'pets', class: '', valor: 26},
+    { path: '/' + GLOBAL.urlBase + '/reporteauditoria', title: 'Reporte Auditoria', icon: 'description', class: '', valor: 21 },
+    { path: '/' + GLOBAL.urlBase + '/tarifaanimal', title: 'Tarifa animal', icon: 'description', class: '', valor: 20 },
+    { path: '/' + GLOBAL.urlBase + '/beneficiario', title: 'Beneficiario', icon: 'assignment_ind', class: '', valor: 22 },
+    { path: '/' + GLOBAL.urlBase + '/recaudoanimal', title: 'Recaudo Animal', icon: 'gavel', class: '', valor: 23 },
+    { path: '/' + GLOBAL.urlBase + '/categoriaanimal', title: 'Categoria de animales', icon: 'pets', class: '', valor: 26 },
     { path: '/' + GLOBAL.urlBase + '', title: '', icon: '', class: '', valor: 4 },
     { path: '/' + GLOBAL.urlBase + '/user-profile', title: 'Plazas De Mercado', icon: 'person', class: '', valor: 200 },
     { path: '/' + GLOBAL.urlBase + '/tablapaginada', title: 'Tabla paginjadadasdasd', icon: 'content_paste', class: '', valor: 210 },
@@ -64,14 +65,16 @@ export class SidebarComponent implements OnInit {
     modulos: Modulo[];
 
 
-    constructor() {
+    constructor(
+        public router: Router
+    ) {
         this.identity = this.getIdentity();
         if (this.identity.rutaimagen != null) {
             let imagen: string = this.identity.rutaimagen;
             this.urlimagen = GLOBAL.urlImagen + (imagen.substring(3));
         }
 
-       
+
         this.nombreUsuario = this.identity.name + " " + this.identity.surname;
     }
 
@@ -101,7 +104,7 @@ export class SidebarComponent implements OnInit {
 
         });
         console.log(nuevosRoutes);
-        
+
         this.menuItems = nuevosRoutes.filter(menuItem => menuItem);
         //this.menuItems = ROUTES.filter(menuItem => menuItem);
 
@@ -117,6 +120,27 @@ export class SidebarComponent implements OnInit {
             this.identity = null;
         }
         return this.identity;
+    }
+
+    /**
+     * Cierra la sesión cuando se encuentra en la vista movil
+     */
+    cerrarSesion() {
+        this.router.navigate(['/' + GLOBAL.urlBase + '/login', 1]);
+    }
+
+    /**
+     * Redirige al usuario al menú de configuracion cuando se encuentra en la vista movil
+     */
+    configuracion() {
+        this.router.navigate(['/' + GLOBAL.urlBase + '/configuracion']);
+    }
+
+    /**
+     * Redirige al usuario al dashboard cuando se encuentra en la vista movil
+     */
+    dashboard() {
+        this.router.navigate(['/' + GLOBAL.urlBase + '/dashboard']);
     }
 
 }

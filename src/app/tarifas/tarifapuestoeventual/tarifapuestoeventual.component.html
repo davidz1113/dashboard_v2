@@ -20,7 +20,7 @@
                                     <i class="material-icons">close</i>
                                 </button>
                                 <span data-notify="message">
-                                    <b>Info:</b> {{mensajeForm}} 
+                                    <b>Info:</b> {{mensajeForm}}
                                 </span>
                                 <!-- <div class="col-sm-4">
                                     <button mat-raised-button class="btn btn-outline-danger mb-3" (click)="consultarPlazas()"
@@ -34,15 +34,28 @@
 
                     <input style="display: none" type="file" (change)="onFileChanged($event)" #fileInput>
 
-                    <div class="row">
+                    <div class="row" *ngIf="!urlDocumento">
                         <div class="col-12">
                             <h4 class="text-center">Seleccionar documento de resolución</h4>
                         </div>
                     </div>
 
-                    <div class="row" *ngIf="urlDocumento">
+                    <div class="row" *ngIf="urlDocumento && !linkDocumento">
                         <div class="col-12">
                             <h4 class="text-center">{{ urlDocumento }}</h4>
+                        </div>
+                    </div>
+
+                    <div class="row" *ngIf="urlDocumento && linkDocumento">
+                        <div class="col-12 justify-content-center">
+                            <h4 class="text-center">
+                                <a [href]="linkDocumento" target="_blank">{{ urlDocumento }}</a>
+                                <button (click)="selectedFile=null;urlDocumento='';linkDocumento=''" *ngIf="linkDocumento"
+                                    mat-raised-button type="button" matTooltip="Eliminar documento"
+                                    [matTooltipPosition]="'above'" class="btn btn-danger btn-link btn-sm btn-just-icon">
+                                    <i class="material-icons">close</i>
+                                </button>
+                            </h4>
                         </div>
                     </div>
 
@@ -53,7 +66,8 @@
                     </div>
 
                     <div class="row px-5 my-3">
-                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()" [disabled]="barraProgresoForm===true">
+                        <button mat-button class="btn btn-outline-primary col-sm-6 mx-auto" (click)="fileInput.click()"
+                            [disabled]="barraProgresoForm===true">
                             Seleccionar
                         </button>
                     </div>
@@ -80,7 +94,7 @@
                                         <input matInput type="number" placeholder="Digite Valor" id="valortarifapuestoeventual"
                                             name="valortarifapuestoeventual" formControlName="valortarifapuestoeventual">
                                         <mat-error *ngIf="puestoEventualForm.get('valortarifapuestoeventual').hasError('required')">
-                                            El nombre es <strong>requerido</strong>
+                                            El valor es <strong>requerido</strong>
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
