@@ -237,6 +237,10 @@ export class PuertasComponent implements OnInit {
     this.puertaEdit = new Puerta('', false, '', '', '');
     this.inicializaForm();
     this.muestraTabla = !this.muestraTabla;
+    this.mensaje = '';
+    this.filtroNombre = '';
+    this.estadoToggle = false;
+    this.plazaselect = '';
   }
 
 
@@ -406,6 +410,10 @@ export class PuertasComponent implements OnInit {
             // console.log(resp);
             this.mensaje = resp.msg + ' Nombre Puerta : ' + resp.puerta.nombrepuerta;
             this.mostrarMensaje(1);
+
+            this.filtroNombre = '';
+            this.estadoToggle = false;
+            this.plazaselect = '';
           }
         );
       } else {
@@ -425,6 +433,10 @@ export class PuertasComponent implements OnInit {
             // console.log(resp);
             this.mensaje = resp.msg + ' Nombre Puerta : ' + resp.puerta.nombrepuerta;
             this.mostrarMensaje(1);
+
+            this.filtroNombre = '';
+            this.estadoToggle = false;
+            this.plazaselect = '';
           }
         );
       }

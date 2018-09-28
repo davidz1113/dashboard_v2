@@ -344,7 +344,7 @@ export class SectoresComponent implements OnInit {
         
 
         this.nuevoSectorForm = this.nuevoForm.group({
-          codigosector: [this.sectoredit != null ? this.sectoredit.codigosector : '', Validators.required],
+          codigosector: [this.sectoredit != null ? this.sectoredit.codigosector : ''],
           nombresector: [this.sectoredit != null ? this.sectoredit.nombresector : '', Validators.required],
           pkidplaza: [this.sectoredit != null ? this.sectoredit.fkidplaza : ''],
           pkidzona: [this.sectoredit != null ? this.sectoredit.fkidzona : '', Validators.required],
