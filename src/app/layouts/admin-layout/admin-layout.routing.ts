@@ -29,6 +29,8 @@ import { TablaPaginadaComponent } from '../../tabla-paginada/tabla-paginada.comp
 import { TarifasComponent } from '../../tarifas/tarifas.component';
 import { TarifaInteresComponent } from '../../tarifas/tarifaInteres/tarifainteres.component';
 import { TarifaPuestoEventualComponent } from '../../tarifas/tarifapuestoeventual/tarifapuestoeventual.component';
+import { TarifavehiculoComponent } from '../../tarifas/tarifavehiculo/tarifavehiculo.component';
+import { RecaudoAnimalComponent } from '../../recaudo-animal/recaudo-animal.component';
 
 
 export const AdminLayoutRoutes: Routes = [
@@ -92,14 +94,14 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/configuracion', component: ConfiguracionComponent },
     { path: GLOBAL.urlBase + '/actividadcomercial', component: GenericComponent },
     { path: GLOBAL.urlBase + '/estadoinfraestructura', component: GenericComponent },
+    { path: GLOBAL.urlBase + '/categoriaanimal', component: GenericComponent },
     { path: GLOBAL.urlBase + '/beneficiario', component: GenericComponent },
     { path: GLOBAL.urlBase + '/especieanimal', component: EspecieAnimalComponent },
     { path: GLOBAL.urlBase + '/equipo', component: EquiposComponent },
     { path: GLOBAL.urlBase + '/reporterecibopuestoeventual', component: ReporteDinamicoComponent },
-    { path: GLOBAL.urlBase + '/reporterecibopuestoeventual/:page', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/reporteauditoria', component: ReporteDinamicoComponent },
-    { path: GLOBAL.urlBase + '/reporteauditoria/:page', component: ReporteDinamicoComponent },
     { path: GLOBAL.urlBase + '/tarifaanimal', component: TarifaanimalComponent },
+    { path: GLOBAL.urlBase + '/tarifavehiculo', component: TarifavehiculoComponent },
     { path: GLOBAL.urlBase + '/user-profile', component: UserProfileComponent },
     { path: GLOBAL.urlBase + '/tablapaginada', component: TablaPaginadaComponent },
     { path: GLOBAL.urlBase + '/typography', component: TypographyComponent },
@@ -108,6 +110,7 @@ export const AdminLayoutRoutes: Routes = [
     { path: GLOBAL.urlBase + '/notificacion', component: NotificationsComponent },
     { path: GLOBAL.urlBase + '/upgrade', component: UpgradeComponent },
     { path: GLOBAL.urlBase + '/tareas', component: TareasComponent },
+    { path: GLOBAL.urlBase + '/recaudoanimal', component: RecaudoAnimalComponent },
 
 
 

@@ -40,6 +40,8 @@ export class LoginComponent implements OnInit {
   claseDinamic = "alert alert-warning alert-with-icon";
   iconAlert = "warning";
 
+  //'../'+GLOBAL.urlBase+'/assets/img/empleado.png';
+  urllogo: any =  '../'+GLOBAL.urlBase+'/assets/img/logo.png';
 
   constructor(
     private identForm: FormBuilder,
@@ -144,7 +146,12 @@ export class LoginComponent implements OnInit {
               this.redirigirYalmacenar();
             } else if (response.status == 'error') {
               //En caso que no este el identificador, llama al dialogo de registrar el explorador
-              this.mostrarDialogoRegistroEquipo(fkidusuario, nombreuser, result);
+              if(response.msg!=null){
+                this.msg = response.msg;
+                this.identity = null;
+              }else{
+                this.mostrarDialogoRegistroEquipo(fkidusuario, nombreuser, result);
+              }
               this.logeandose = false;
 
 
@@ -178,10 +185,11 @@ export class LoginComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      if (result.status == null) {
-        this.msg = 'Debe Registrar el equipo para poder ingresar al sistema';
+      console.log('The dialog was closed',result);
+
+      if (result == null ) {
         this.identity = null;
+        this.msg = 'Debe Registrar el equipo para poder ingresar al sistema';
       } else {
         this.msg = result.respuesta;
         this.redirigirYalmacenar();

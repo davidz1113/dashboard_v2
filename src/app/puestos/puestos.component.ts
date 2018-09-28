@@ -121,7 +121,7 @@ export class PuestosComponent implements OnInit {
             console.log(this.puesto[0].getSector()['zona']['plaza'].nombreplaza);
             this.puesto.map((z) => {
               let pi: PuestoInterface = {
-                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: "false", fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
+                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
               };
               pi.pkidpuesto = z.getPkidpuesto();
               pi.codigopuesto = z.getCodigopuesto();
@@ -135,7 +135,7 @@ export class PuestosComponent implements OnInit {
               pi.pkidplaza = z.getSector()['zona']['plaza'].pkidplaza;
               pi.nombresector = z.getSector().nombresector;
               pi.nombretipopuesto = z.getTipopuesto().nombretipopuesto;
-              pi.puestoactivo = String(z.getPuestoactivo());
+              pi.puestoactivo = (z.getPuestoactivo());
               pi.fkidactividad = z.getActividadcomercial().pkidactividad;
               pi.fkidestado = z.getEstadoinfraestructura().pkidestado;
               pi.fkidsector = z.getSector().pkidsector;
@@ -268,7 +268,7 @@ export class PuestosComponent implements OnInit {
       //console.log(data.nombresector);
       //console.log(data.nombresector.indexOf(this.sectorselect) !== -1);
 
-      this.haydatos = ((data.numeropuesto.toLowerCase().indexOf(this.filtroNombrePuesto) !== -1) && (Boolean(data.puestoactivo) == true || this.toggleActDesc == true) && (data.nombresector.indexOf(this.sectorselect) !== -1) && (data.nombreplaza.indexOf(this.plazaselect) !== -1));
+      this.haydatos = ((data.numeropuesto.toLowerCase().indexOf(this.filtroNombrePuesto) !== -1) && ((data.puestoactivo) == true || this.toggleActDesc == true) && (data.nombresector.indexOf(this.sectorselect) !== -1) && (data.nombreplaza.indexOf(this.plazaselect) !== -1));
       console.log(this.haydatos);
       return (this.haydatos);
     };
@@ -453,7 +453,7 @@ export class PuestosComponent implements OnInit {
       this.creandopuesto = true;
       if (this.puesto2 == null) {
         this.puesto2 = {
-          pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: "false", fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
+          pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
         };
 
       }
@@ -466,7 +466,7 @@ export class PuestosComponent implements OnInit {
       this.puesto2.fkidestado = (this.nuevoPuestoForm.get('pkidestado').value);
       this.puesto2.fkidactividad = (this.nuevoPuestoForm.get('pkidactividad').value);
       this.puesto2.fkidtipopuesto = (this.nuevoPuestoForm.get('pkidtipopuesto').value);
-      this.puesto2.puestoactivo = (String(this.active));
+      this.puesto2.puestoactivo = ((this.active));
 
       const uploadData = new FormData();
       if (this.selectedFile != null) {
@@ -877,7 +877,7 @@ export interface PuestoInterface {
   numeropuesto: string;
   alto: number;
   ancho: number;
-  puestoactivo: string;
+  puestoactivo: boolean;
   fkidsector: number;
   nombresector: string;
   fkidestado: number;

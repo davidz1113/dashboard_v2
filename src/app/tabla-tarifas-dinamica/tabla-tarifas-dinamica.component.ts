@@ -57,6 +57,8 @@ export class TablaTarifasDinamicaComponent implements OnInit {
    */
   recibirFiltros(filtros) {
     //console.log(filtros);
+    console.log('aquiiii');
+    
     this.filtros = filtros;
     this.aplicarFiltro();
   }
@@ -136,7 +138,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
 
       let ban2: boolean;
 
-      if (this.filtros.length == 0) {//validamos en caso que 
+      if (this.filtros.length == 0) {//validamos de entrada q todos los datos sean igual a true
 
         ban2 = data[this.url.substring(1) + 'activo'] == true;
 

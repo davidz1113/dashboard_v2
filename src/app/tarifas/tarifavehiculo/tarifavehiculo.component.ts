@@ -1,15 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { TarifasServices } from '../servicios/tarifasdinamicosService.services';
+import { TarifasServices } from '../../servicios/tarifasdinamicosService.services';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { TablaTarifasDinamicaComponent } from '../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
-import { GLOBAL } from '../servicios/globales';
+import { TablaTarifasDinamicaComponent } from '../../tabla-tarifas-dinamica/tabla-tarifas-dinamica.component';
+import { GLOBAL } from '../../servicios/globales';
 @Component({
-    selector: 'app-tarifaanimal',
-    templateUrl: './tarifaanimal.component.html',
+    selector: 'app-tarifavehiculo',
+    templateUrl: './tarifavehiculo.component.html',
     providers: [TarifasServices]
 })
-export class TarifaanimalComponent implements OnInit {
+export class TarifavehiculoComponent implements OnInit {
 
     //toggle filtro activos/descativados
     toggleActDesc: boolean = false;
@@ -18,7 +18,7 @@ export class TarifaanimalComponent implements OnInit {
     url: string;
     //variables para los selectores
     plazasmercado: any[] = [];
-    tiposanimal: any[] = [];
+    tiposvehiculo: any[] = [];
 
     //captura de la respuesta del servidor global
     public respuesta;
@@ -92,10 +92,10 @@ export class TarifaanimalComponent implements OnInit {
     }
 
     /**
-     * Metodo que consulta todos los tipos de animales para listarlas en el selector de tipos de animal
+     * Metodo que consulta todos los tipos de vehiculoes para listarlas en el selector de tipos de vehiculo
      */
     consultarTiposAnimal() {
-        this.consultarDatos('tipoanimal', 2);
+        this.consultarDatos('tipovehiculo', 2);
     }
 
 
@@ -116,7 +116,7 @@ export class TarifaanimalComponent implements OnInit {
                     if (numero == 1) {//si es numero 1 se llena las plazas de mercado
                         this.plazasmercado = this.respuesta[nombrecontrolador];
                     } else {
-                        this.tiposanimal = this.respuesta[nombrecontrolador];
+                        this.tiposvehiculo = this.respuesta[nombrecontrolador];
                     }
                 }
             },
@@ -157,7 +157,7 @@ export class TarifaanimalComponent implements OnInit {
         if (index > -1) this.filtros.splice(index, 1);
 
         this.filtrotipo = {
-            nombreatributo: 'pkidtipoanimal',
+            nombreatributo: 'pkidtipovehiculo',
             valor: event.value
         }
         this.filtros.push(this.filtrotipo);
@@ -201,13 +201,13 @@ export class TarifaanimalComponent implements OnInit {
                 descripcion: [this.tarifa != null ? this.tarifa['descripcion' + this.tablatarifa] : ''],
                 numero: [this.tarifa != null ?  this.tarifa['numeroresolucion' + this.tablatarifa] : '', Validators.required],
                 fkidplaza: [this.tarifa != null ? this.tarifa.pkidplaza : '', Validators.required],
-                fkidtipoanimal: [this.tarifa != null ? this.tarifa.pkidtipoanimal : '', Validators.required]
+                fkidtipovehiculo: [this.tarifa != null ? this.tarifa.pkidtipovehiculo : '', Validators.required]
             });
         }
         if(this.tarifa!=null){//validacion para mostrar el documento o url
-            if(this.tarifa.documentoresoluciontarifaanimal!='sin documento'){
-                this.urldocumento = (GLOBAL.urlImagen+this.tarifa.documentoresoluciontarifaanimal.substring(3));
-                this.documento = this.tarifa.documentoresoluciontarifaanimal.substring(18);
+            if(this.tarifa.documentoresoluciontarifavehiculo!='sin documento'){
+                this.urldocumento = (GLOBAL.urlImagen+this.tarifa.documentoresoluciontarifavehiculo.substring(3));
+                this.documento = this.tarifa.documentoresoluciontarifavehiculo.substring(18);
             }else{
                 this.documento = 'Seleccionar documento de resolución';
             }
@@ -239,7 +239,7 @@ export class TarifaanimalComponent implements OnInit {
         this.msg='';
         if (this.tarifa == null){//significa que es una nueva tarifa
           /*this.tarifa = {
-            pkidtarifaanimal: null,valortarifaanimal:0, descripciontarifaanimal: '', numeroresoluciontarifaanimal: '', documentoresoluciontarifaanimal: null, fkidplaza: null, fkidtipoanimal: null,tarifaanimalactivo: false
+            pkidtarifavehiculo: null,valortarifavehiculo:0, descripciontarifavehiculo: '', numeroresoluciontarifavehiculo: '', documentoresoluciontarifavehiculo: null, fkidplaza: null, fkidtipovehiculo: null,tarifavehiculoactivo: false
           };*/
           //this.selectedFile = null;
           this.tarifa = {};
@@ -251,7 +251,7 @@ export class TarifaanimalComponent implements OnInit {
         this.tarifa['descripcion' + this.tablatarifa] = this.nuevoTarifaForm.get('descripcion').value;
         this.tarifa['numeroresolucion' + this.tablatarifa] = this.nuevoTarifaForm.get('numero').value;
         this.tarifa['fkidplaza'] = this.nuevoTarifaForm.get('fkidplaza').value;
-        this.tarifa['fkidtipoanimal'] = this.nuevoTarifaForm.get('fkidtipoanimal').value;
+        this.tarifa['fkidtipovehiculo'] = this.nuevoTarifaForm.get('fkidtipovehiculo').value;
         this.tarifa[this.tablatarifa + 'activo'] = (this.active);
 
         console.log(this.tarifa);
@@ -359,4 +359,7 @@ export class TarifaanimalComponent implements OnInit {
             }
         }
     }
+
+
+
 }

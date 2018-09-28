@@ -29,7 +29,7 @@ export class DialogRegistroEquipo implements OnInit {
     public respuesta;
 
     //token
-    public token=null;
+    public token = null;
 
     //Objeto de tipo 
     public identidad: EquiposInterface;
@@ -62,7 +62,7 @@ export class DialogRegistroEquipo implements OnInit {
     }
 
     onNoClick(): void {
-        this.dialogRef.close({status:null});
+        this.dialogRef.close();
     }
 
 
@@ -75,7 +75,7 @@ export class DialogRegistroEquipo implements OnInit {
 
         console.log(this.identidad);
 
-        this._equipoService.crearEquipo(this.identidad,this.token).subscribe(
+        this._equipoService.crearEquipo(this.identidad, this.token).subscribe(
             response => {
                 this.respuesta = response;
                 if (this.respuesta.length <= 1) {
@@ -86,7 +86,7 @@ export class DialogRegistroEquipo implements OnInit {
                     this.guardando = false;
                     if (this.respuesta.status == "Exito") {
 
-                        this.dialogRef.close({respuesta:this.respuesta.msg,status:this.respuesta.status});
+                        this.dialogRef.close({ respuesta: this.respuesta.msg, status: this.respuesta.status });
                     } else {
                         this.msg = this.respuesta.msg;
                     }

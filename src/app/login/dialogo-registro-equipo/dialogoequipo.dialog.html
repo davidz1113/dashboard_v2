@@ -37,7 +37,7 @@
 
 <div class="alert alert-warning alert-with-icon" data-notify="container" *ngIf="msg">
     <i class="material-icons" data-notify="icon">warning</i>
-    <button mat-button type="button" class="close" aria-label="Close" (click)="closeDialog2()">
+    <button mat-button type="button" class="close" aria-label="Close" (click)="msg=''">
         <i class="material-icons">close</i>
     </button>
     <span data-notify="message">
