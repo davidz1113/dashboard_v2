@@ -13,18 +13,23 @@ export class DatosPipe implements PipeTransform {
 
             if (contenido.toString().indexOf('../web/documentos')) {
 
-                if (contenido == true || contenido == false) {
-                    if (contenido == true) {
-                        return "Activo";
+                if(typeof(contenido)== 'boolean'){
+
+                    if (contenido == true || contenido == false) {
+                        if (contenido == true ) {
+                            return "Activo";
+                        }
+                        else if(contenido == false ){
+                            return "Inactivo";
+                        }
                     }
                     else {
-                        return "Inactivo";
+                        return contenido;
                     }
-                }
-                else {
+                }else{
                     return contenido;
                 }
-
+                    
             } else {
 
                 const link = GLOBAL.urlImagen;

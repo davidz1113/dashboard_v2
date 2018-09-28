@@ -302,10 +302,10 @@
 
               <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestado" name="pkidestado" formControlName="pkidestado">
-                    <mat-option [value]='estado.pkidestado' *ngFor="let estado of estados"> {{estado.nombreestado}}</mat-option>
+                  <mat-select placeholder="Seleccione estado infraestructura" id="pkidestadoinfraestructura" name="pkidestadoinfraestructura" formControlName="pkidestadoinfraestructura">
+                    <mat-option [value]='estado.pkidestadoinfraestructura' *ngFor="let estado of estados"> {{estado.nombreestadoinfraestructura}}</mat-option>
                   </mat-select>
-                  <mat-error *ngIf="nuevoPuestoForm.get('pkidestado').hasError('required')">
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidestadoinfraestructura').hasError('required')">
                     El estado de infraestructura es <strong>requerido</strong>
                   </mat-error>
                 </mat-form-field>
@@ -318,10 +318,10 @@
 
               <div class="col pr-4 mt-1">
                 <mat-form-field>
-                  <mat-select placeholder="Actividad comercial" id="pkidactividad" name="pkidactividad" formControlName="pkidactividad">
-                    <mat-option [value]='actividad.pkidactividad' *ngFor="let actividad of actividades">{{actividad.nombreactividad}}</mat-option>
+                  <mat-select placeholder="Actividad comercial" id="pkidactividadcomercial" name="pkidactividadcomercial" formControlName="pkidactividadcomercial">
+                    <mat-option [value]='actividad.pkidactividadcomercial' *ngFor="let actividad of actividades">{{actividad.nombreactividadcomercial}}</mat-option>
                   </mat-select>
-                  <mat-error *ngIf="nuevoPuestoForm.get('pkidactividad').hasError('required')">
+                  <mat-error *ngIf="nuevoPuestoForm.get('pkidactividadcomercial').hasError('required')">
                     La actividad comercial es <strong>requerida</strong>
                   </mat-error>
                 </mat-form-field>

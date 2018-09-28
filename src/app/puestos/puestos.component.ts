@@ -121,7 +121,7 @@ export class PuestosComponent implements OnInit {
             console.log(this.puesto[0].getSector()['zona']['plaza'].nombreplaza);
             this.puesto.map((z) => {
               let pi: PuestoInterface = {
-                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
+                pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividadcomercial: null, fkidestadoinfraestructura: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
               };
               pi.pkidpuesto = z.getPkidpuesto();
               pi.codigopuesto = z.getCodigopuesto();
@@ -136,8 +136,8 @@ export class PuestosComponent implements OnInit {
               pi.nombresector = z.getSector().nombresector;
               pi.nombretipopuesto = z.getTipopuesto().nombretipopuesto;
               pi.puestoactivo = (z.getPuestoactivo());
-              pi.fkidactividad = z.getActividadcomercial().pkidactividad;
-              pi.fkidestado = z.getEstadoinfraestructura().pkidestado;
+              pi.fkidactividadcomercial = z.getActividadcomercial().pkidactividadcomercial;
+              pi.fkidestadoinfraestructura = z.getEstadoinfraestructura().pkidestadoinfraestructura;
               pi.fkidsector = z.getSector().pkidsector;
               pi.fkidtipopuesto = z.getTipopuesto().pkidtipopuesto;
 
@@ -344,8 +344,8 @@ export class PuestosComponent implements OnInit {
 
       dialogRef.afterClosed().subscribe(result => {
         console.log('The dialog was closed');
-        this.mensaje = result.respuesta + " Nombre Zona : " + nombrepuesto;
         if (result != null) {
+          this.mensaje = result.respuesta + " Nombre Zona : " + nombrepuesto;
           console.log(result.status);
           if (result.status == "error") {
             this.mostrarMensaje(0);
@@ -419,8 +419,8 @@ export class PuestosComponent implements OnInit {
           pkidplaza: [this.puesto2 != null ? this.puesto2.pkidplaza : ''],
           pkidzona: [this.puesto2 != null ? this.puesto2.pkizona : ''],
           pkidsector: [this.puesto2 != null ? this.puesto2.fkidsector : '', Validators.required],
-          pkidestado: [this.puesto2 != null ? this.puesto2.fkidestado : '', Validators.required],
-          pkidactividad: [this.puesto2 != null ? this.puesto2.fkidactividad : '', Validators.required],
+          pkidestadoinfraestructura: [this.puesto2 != null ? this.puesto2.fkidestadoinfraestructura : '', Validators.required],
+          pkidactividadcomercial: [this.puesto2 != null ? this.puesto2.fkidactividadcomercial : '', Validators.required],
           pkidtipopuesto: [this.puesto2 != null ? this.puesto2.fkidtipopuesto : '', Validators.required],
         });
       }
@@ -453,7 +453,7 @@ export class PuestosComponent implements OnInit {
       this.creandopuesto = true;
       if (this.puesto2 == null) {
         this.puesto2 = {
-          pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividad: null, fkidestado: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
+          pkidpuesto: null, codigopuesto: '', nombrezona: '', nombreplaza: '', numeropuesto: '', puestoactivo: false, fkidactividadcomercial: null, fkidestadoinfraestructura: null, fkidtipopuesto: null, nombresector: '', alto: null, ancho: null, fkidsector: null, nombretipopuesto: '', pkidplaza: null, pkizona: null, imagenpuesto: ''
         };
 
       }
@@ -463,8 +463,8 @@ export class PuestosComponent implements OnInit {
       this.puesto2.alto = (this.nuevoPuestoForm.get('alto').value);
       this.puesto2.ancho = (this.nuevoPuestoForm.get('ancho').value);
       this.puesto2.fkidsector = (this.nuevoPuestoForm.get('pkidsector').value);
-      this.puesto2.fkidestado = (this.nuevoPuestoForm.get('pkidestado').value);
-      this.puesto2.fkidactividad = (this.nuevoPuestoForm.get('pkidactividad').value);
+      this.puesto2.fkidestadoinfraestructura = (this.nuevoPuestoForm.get('pkidestadoinfraestructura').value);
+      this.puesto2.fkidactividadcomercial = (this.nuevoPuestoForm.get('pkidactividadcomercial').value);
       this.puesto2.fkidtipopuesto = (this.nuevoPuestoForm.get('pkidtipopuesto').value);
       this.puesto2.puestoactivo = ((this.active));
 
@@ -880,8 +880,8 @@ export interface PuestoInterface {
   puestoactivo: boolean;
   fkidsector: number;
   nombresector: string;
-  fkidestado: number;
-  fkidactividad: number;
+  fkidestadoinfraestructura: number;
+  fkidactividadcomercial: number;
   fkidtipopuesto: number;
   nombretipopuesto: string;
   imagenpuesto: string;

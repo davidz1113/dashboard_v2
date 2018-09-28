@@ -1,77 +1,77 @@
 export class ActividadComercial {
 
-    public pkidactividad: number;
-    private codigoactividad: string;
-    public nombreactividad: string;
-    private descripcionactividad: string;
-    private actividadactivo: boolean;
-    private creacionactividad: Date;
-    private modificacionactividad: Date;
+    public pkidactividadcomercial: number;
+    private codigoactividadcomercial: string;
+    public nombreactividadcomercial: string;
+    private descripcionactividadcomercial: string;
+    private actividadcomercialactivo: boolean;
+    private creacionactividadcomercial: Date;
+    private modificacionactividadcomercial: Date;
  
     constructor(){
         
     }
 
     public getPkidactividad(): number {
-        return this.pkidactividad;
+        return this.pkidactividadcomercial;
     }
 
-    public setPkidactividad(pkidactividad: number
+    public setPkidactividad(pkidactividadcomercial: number
     ): void {
-        this.pkidactividad = pkidactividad;
+        this.pkidactividadcomercial = pkidactividadcomercial;
     }
 
     public getCodigoactividad(): string {
-        return this.codigoactividad;
+        return this.codigoactividadcomercial;
     }
 
-    public setCodigoactividad(codigoactividad: string
+    public setCodigoactividad(codigoactividadcomercial: string
     ): void {
-        this.codigoactividad = codigoactividad;
+        this.codigoactividadcomercial = codigoactividadcomercial;
     }
 
     public getNombreactividad(): string {
-        return this.nombreactividad;
+        return this.nombreactividadcomercial;
     }
 
-    public setNombreactividad(nombreactividad: string
+    public setNombreactividad(nombreactividadcomercial: string
     ): void {
-        this.nombreactividad = nombreactividad;
+        this.nombreactividadcomercial = nombreactividadcomercial;
     }
 
     public getDescripcionactividad(): string {
-        return this.descripcionactividad;
+        return this.descripcionactividadcomercial;
     }
 
-    public setDescripcionactividad(descripcionactividad: string
+    public setDescripcionactividad(descripcionactividadcomercial: string
     ): void {
-        this.descripcionactividad = descripcionactividad;
+        this.descripcionactividadcomercial = descripcionactividadcomercial;
     }
 
     public getActividadactivo(): boolean {
-        return this.actividadactivo;
+        return this.actividadcomercialactivo;
     }
 
-    public setActividadactivo(actividadactivo: boolean
+    public setActividadactivo(actividadcomercialactivo: boolean
     ): void {
-        this.actividadactivo = actividadactivo;
+        this.actividadcomercialactivo = actividadcomercialactivo;
     }
 
     public getCreacionactividad(): Date {
-        return this.creacionactividad;
+        return this.creacionactividadcomercial;
     }
 
-    public setCreacionactividad(creacionactividad: Date
+    public setCreacionactividad(creacionactividadcomercial: Date
     ): void {
-        this.creacionactividad = creacionactividad;
+        this.creacionactividadcomercial = creacionactividadcomercial;
     }
 
     public getModificacionactividad(): Date {
-        return this.modificacionactividad;
+        return this.modificacionactividadcomercial;
     }
 
-    public setModificacionactividad(modificacionactividad: Date): void {
-        this.modificacionactividad = modificacionactividad;
+    public setModificacionactividad(modificacionactividadcomercial: Date): void {
+        this.modificacionactividadcomercial = modificacionactividadcomercial;
     }
 
 

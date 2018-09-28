@@ -1,78 +1,78 @@
 //reflejo identidad de la base de datos
 export class EstadoInfraestructura {
 
-    public pkidestado: number;
-    private codigoestado: string;
-    public nombreestado: string;
-    private descripcionestado: string;
-    private estadoactivo: boolean;
-    private creacionestado: Date;
-    private modificacionestado: Date;
+    public pkidestadoinfraestructura: number;
+    private codigoestadoinfraestructura: string;
+    public nombreestadoinfraestructura: string;
+    private descripcionestadoinfraestructura: string;
+    private estadoinfraestructuraactivo: boolean;
+    private creacionestadoinfraestructura: Date;
+    private modificacionestadoinfraestructura: Date;
 
     constructor() {
 
     }
 
     public getPkidestado(): number {
-        return this.pkidestado;
+        return this.pkidestadoinfraestructura;
     }
 
-    public setPkidestado(pkidestado: number
+    public setPkidestado(pkidestadoinfraestructura: number
     ): void {
-        this.pkidestado = pkidestado;
+        this.pkidestadoinfraestructura = pkidestadoinfraestructura;
     }
 
     public getCodigoestado(): string {
-        return this.codigoestado;
+        return this.codigoestadoinfraestructura;
     }
 
-    public setCodigoestado(codigoestado: string
+    public setCodigoestado(codigoestadoinfraestructura: string
     ): void {
-        this.codigoestado = codigoestado;
+        this.codigoestadoinfraestructura = codigoestadoinfraestructura;
     }
 
     public getNombreestado(): string {
-        return this.nombreestado;
+        return this.nombreestadoinfraestructura;
     }
 
-    public setNombreestado(nombreestado: string
+    public setNombreestado(nombreestadoinfraestructura: string
     ): void {
-        this.nombreestado = nombreestado;
+        this.nombreestadoinfraestructura = nombreestadoinfraestructura;
     }
 
     public getDescripcionestado(): string {
-        return this.descripcionestado;
+        return this.descripcionestadoinfraestructura;
     }
 
-    public setDescripcionestado(descripcionestado: string
+    public setDescripcionestado(descripcionestadoinfraestructura: string
     ): void {
-        this.descripcionestado = descripcionestado;
+        this.descripcionestadoinfraestructura = descripcionestadoinfraestructura;
     }
 
     public getEstadoactivo(): boolean {
-        return this.estadoactivo;
+        return this.estadoinfraestructuraactivo;
     }
 
-    public setEstadoactivo(estadoactivo: boolean
+    public setEstadoactivo(estadoinfraestructuraactivo: boolean
     ): void {
-        this.estadoactivo = estadoactivo;
+        this.estadoinfraestructuraactivo = estadoinfraestructuraactivo;
     }
 
     public getCreacionestado(): Date {
-        return this.creacionestado;
+        return this.creacionestadoinfraestructura;
     }
 
-    public setCreacionestado(creacionestado: Date
+    public setCreacionestado(creacionestadoinfraestructura: Date
     ): void {
-        this.creacionestado = creacionestado;
+        this.creacionestadoinfraestructura = creacionestadoinfraestructura;
     }
 
     public getModificacionestado(): Date {
-        return this.modificacionestado;
+        return this.modificacionestadoinfraestructura;
     }
 
-    public setModificacionestado(modificacionestado: Date): void {
-        this.modificacionestado = modificacionestado;
+    public setModificacionestado(modificacionestadoinfraestructura: Date): void {
+        this.modificacionestadoinfraestructura = modificacionestadoinfraestructura;
     }
 
 
