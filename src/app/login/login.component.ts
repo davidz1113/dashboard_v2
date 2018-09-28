@@ -185,7 +185,7 @@ export class LoginComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed',result);
 
       if (result == null ) {
         this.identity = null;

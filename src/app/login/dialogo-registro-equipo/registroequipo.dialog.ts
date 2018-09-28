@@ -62,7 +62,7 @@ export class DialogRegistroEquipo implements OnInit {
     }
 
     onNoClick(): void {
-        this.dialogRef.close({ status: null });
+        this.dialogRef.close();
     }
 
 
