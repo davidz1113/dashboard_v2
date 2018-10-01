@@ -200,7 +200,7 @@ export class EquiposAgregarEditarComponent implements OnInit {
       }
 
       this.nuevoEquipoForm = this.nuevoForm.group({
-        codigoequipo: [this.equipo != null ? this.equipo.codigoequipo : ''],
+        codigoequipo: [this.equipo != null ? this.equipo.codigoequipo : '',Validators.pattern("^[0-9]*$")],
         nombrequipo: [this.equipo != null ? this.equipo.nombrequipo : '', Validators.required],
         descripcionequipo: [this.equipo != null ? this.equipo.descripcionequipo : ''],
         identificacionequipo: [this.equipo != null ? this.equipo.identificacionequipo : '',Validators.required],

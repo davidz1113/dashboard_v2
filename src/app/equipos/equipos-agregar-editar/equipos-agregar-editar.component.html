@@ -31,9 +31,11 @@
 
               <div class="col-sm-4 mx-auto ">
                 <mat-form-field class="example-full-width">
-                  <input matInput type="number" placeholder="Digite codigo de equipo " id="codigoequipo" name="codigoequipo"
+                  <input matInput type="tel" placeholder="Digite codigo de equipo " id="codigoequipo" name="codigoequipo"
                     formControlName="codigoequipo">
-
+                    <mat-error *ngIf="nuevoEquipoForm.get('codigoequipo').hasError('pattern')">
+                      El codigo del equipo solo admite <strong>numeros</strong> o sin espacios en blanco
+                    </mat-error>
                 </mat-form-field>
               </div>
 

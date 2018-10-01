@@ -55,7 +55,9 @@ export class EquiposComponent implements OnInit {
   tablaequipo = true;
   formequipo = false;
 
-  constructor(public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _equipoService: EquipoService) { }
+  constructor(public dialog: MatDialog, private injector: Injector, private _exceptionService: ExcepcionService, private _equipoService: EquipoService) {
+    
+  }
 
   ngOnInit() {
     this.consultarEquipos();
@@ -67,7 +69,7 @@ export class EquiposComponent implements OnInit {
       this.respuesta = null;
       this.equipo = [];
       this.toggleActDesc = false;
-      this.filtroNombreEquipo='';
+      this.filtroNombreEquipo = '';
       this._equipoService.consultarTodosEquipo().subscribe(
         response => {
           this.respuesta = response;
@@ -261,7 +263,7 @@ export class EquiposComponent implements OnInit {
         }
         //reiniciamos variables
         this.consultarEquipos();
-      
+
       }
     }
     this.formequipo = !this.formequipo;
