@@ -58,7 +58,7 @@ export class TablaTarifasDinamicaComponent implements OnInit {
   recibirFiltros(filtros) {
     //console.log(filtros);
     console.log('aquiiii');
-    
+
     this.filtros = filtros;
     this.aplicarFiltro();
   }
@@ -98,6 +98,8 @@ export class TablaTarifasDinamicaComponent implements OnInit {
     );
   }
 
+  contadortrue = 0;
+
   /**
    * Metodo que especifica los valores a los cuales se les aplicara el filtro
    */
@@ -118,10 +120,21 @@ export class TablaTarifasDinamicaComponent implements OnInit {
       // console.log(this.filtrotext);
 
       if (this.filtrotext === "") {
-        this.dataSource.filter = "true"; //solo los verdaderos
+        this.dataSource.filter = "true"; //solo los verdaderos en caso que venga por el campo "todos"
         //console.log("aqui");
-      } else {
+      } else {//en caso contrario, cuando se seleccione un campo diferente al toogle, por defecto debe quedar el "campoactivo" en true
+        if (this.filtrotext.indexOf('false') === -1) {//validamos que no encuentre de false, porque de lo contrario significa que el toggle de desactivados lo ha tocado y ya viene con un valor propio
+
+          if (this.filtrotext.indexOf('true') === -1) {//si no se encuentra un true, de inicio se lo agregamos, en caso contrario se lo quitamos
+            this.filtrotext += 'true';
+          } else {
+            this.filtrotext += ''
+          }
+        }
+        console.log(this.filtrotext);
+
         this.dataSource.filter = this.filtrotext;
+
       }
     }
 
@@ -148,7 +161,11 @@ export class TablaTarifasDinamicaComponent implements OnInit {
           ban2 = data[this.url.substring(1) + 'activo'] == true;
         } else {
 
+
           let ban: boolean[] = [];//llenado de un arreglo de booleanos para saber el campo exacto donde encuentre la igualdad
+          if (this.filtrotext.indexOf('true') !== -1) {//si encontramos un true por defecto, le agregamos al campo activo la validacion de si es igual a true
+            ban.push(data[this.url.substring(1) + 'activo'] == true);
+          }
           this.filtros.map(
             (campos) => {
               ban.push(data[campos.nombreatributo].toString().indexOf(campos.valor) !== -1);//llenamos los booleanos comparando el campo con el valor 
